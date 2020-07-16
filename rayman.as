@@ -277,7 +277,7 @@
             }
 	},
 	{
-            "info": "Esmerald Rayman by Samur_Game224",
+            "info": "Esmerald Rayman by Samur_Game224",
             "glow": "0x8ea684",
             "glowsize": 12,
             "glowalpha": "1",
