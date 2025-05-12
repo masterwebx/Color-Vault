@@ -154,5 +154,9 @@
     {
         "name": "Zero (Sandbox) Recolor Sheet",
         "url": "https://raw.githubusercontent.com/Color-Vault/Color-Vault/main/images/color%20sheets/Zero%20(Sandbox)%20Recolor%20Sheet%20.png"
-    }
+    },
+    {
+        "name": "Dedede Recolor Sheet",
+        "url": "https://raw.githubusercontent.com/masterwebx/Color-Vault/refs/heads/master/other/color%20sheets/Dedede%20Recolor%20Sheet.png"
+    },
 ]
