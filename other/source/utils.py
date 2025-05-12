@@ -184,19 +184,25 @@ def extract_character_names(as_path):
 def parse_as3_object(s):
     LBRACE, RBRACE, LBRACK, RBRACK, COLON, COMMA = map(pp.Suppress, "{}[]:,")
     number = pp.pyparsing_common.number
+    hex_number = pp.Regex(r"0x[0-9A-Fa-f]+").setParseAction(lambda t: int(t[0], 16))
     string = pp.quotedString.setParseAction(pp.removeQuotes)
+    unquoted_key = pp.Word(pp.alphas + "_", pp.alphanums + "_").setParseAction(lambda t: str(t[0]))
     boolean = pp.Keyword("true") | pp.Keyword("false")
     boolean.setParseAction(lambda t: t[0] == "true")
     null = pp.Keyword("null")
     value = pp.Forward()
     array = pp.Group(LBRACK + pp.Optional(pp.delimitedList(value)) + RBRACK)
-    key = string
+    key = string | unquoted_key
     pair = pp.Group(key + COLON + value)
     object_ = pp.Group(LBRACE + pp.Optional(pp.delimitedList(pair)) + RBRACE)
-    value << (number | string | boolean | null | array | object_)
+    value << (hex_number | number | string | boolean | null | array | object_)
 
-    parsed = object_.parseString(s, parseAll=True)
-    return parsed.asList()
+    try:
+        parsed = object_.parseString(s, parseAll=True)
+        return parsed.asList()
+    except pp.ParseException as e:
+        print(f"Parse error: {e}\nInput string: {s}")
+        raise
 
 def as3_to_dict(parsed):
     if isinstance(parsed, list):
@@ -241,11 +247,39 @@ def extract_costumes(as_path, character):
                 no_info_counter += 1
             costumes.append(costume)
         except Exception as e:
-            print(f"Error parsing costume: {e}")
+            print(f"Error parsing costume: {e}\nCostume string: {costume_str[:1000]}...")  # Truncate for readability
+            continue  # Skip malformed costume
 
     end_time = time.time()
     print(f"Extracted {len(costumes)} costumes in {end_time - start_time:.2f} seconds")
     return costumes
+
+
+# ... (previous imports and functions remain unchanged)
+
+def format_color_for_as3(color):
+    """Format a color value for AS3 (e.g., 'FFFF0000' or 4294967295 to '0xFFFFFFFF', 'transparent' unchanged)."""
+    if color == "transparent":
+        return "transparent"
+    try:
+        if isinstance(color, str):
+            # Handle string colors (hex format)
+            color_str = color.replace("#", "").replace("0x", "")
+            # Validate hex string (8 characters for RGBA)
+            if len(color_str) == 8 and all(c in "0123456789ABCDEFabcdef" for c in color_str):
+                return f"0x{color_str.upper()}"
+        elif isinstance(color, int):
+            # Handle integer colors (convert to 8-digit hex)
+            if 0 <= color <= 0xFFFFFFFF:
+                return f"0x{color:08X}"
+        print(f"Invalid color format: {color}, defaulting to 0xFF000000")
+        return "0xFF000000"
+    except Exception as e:
+        print(f"Error formatting color {color}: {str(e)}, defaulting to 0xFF000000")
+        return "0xFF000000"
+
+# ... (rest of the file remains unchanged)
+
 
 def update_costumes(original_as_path, new_as_path, character, costumes):
     print(f"Starting update_costumes for character '{character}' with {len(costumes)} costumes")
@@ -280,10 +314,10 @@ def update_costumes(original_as_path, new_as_path, character, costumes):
                 if not (isinstance(costume[key]["colors"], list) and isinstance(costume[key]["replacements"], list)):
                     raise ValueError(f"Costume {i} {key} has non-list subkeys: colors={type(costume[key]['colors'])}, replacements={type(costume[key]['replacements'])}")
 
-            palette_swap_colors = ",".join(map(str, costume["paletteSwap"]["colors"]))
-            palette_swap_replacements = ",".join(map(str, costume["paletteSwap"]["replacements"]))
-            palette_swap_pa_colors = ",".join(map(str, costume["paletteSwapPA"]["colors"]))
-            palette_swap_pa_replacements = ",".join(map(str, costume["paletteSwapPA"]["replacements"]))
+            palette_swap_colors = ",".join(format_color_for_as3(color) for color in costume["paletteSwap"]["colors"])
+            palette_swap_replacements = ",".join(format_color_for_as3(color) for color in costume["paletteSwap"]["replacements"])
+            palette_swap_pa_colors = ",".join(format_color_for_as3(color) for color in costume["paletteSwapPA"]["colors"])
+            palette_swap_pa_replacements = ",".join(format_color_for_as3(color) for color in costume["paletteSwapPA"]["replacements"])
 
             new_content += f'         _loc1_["{character}"].push({{\n'
 

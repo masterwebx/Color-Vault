@@ -11,6 +11,8 @@ import requests
 from PIL import Image, ImageTk, ImageDraw
 from io import BytesIO
 import hashlib
+import glob
+import time
 from utils import (
     decompress_ssf, extract_misc_as, modify_misc_as, inject_misc_as, compress_swf,
     extract_character_names, extract_costumes, update_costumes, load_costumes_from_file,
@@ -120,16 +122,12 @@ class SSF2ModGUI(tk.Tk):
         print("Setting up default paths for SSF2 and JPEXS Decompiler...")
         self.load_config()
 
-        documents_ssf2_dir = os.path.normpath(os.path.expandvars(r"%USERPROFILE%\Documents\Games\Super Smash Flash 2 Beta"))
-        default_ssf_path = os.path.join(documents_ssf2_dir, "data", "DAT67.ssf")
-        default_exe_path = os.path.join(documents_ssf2_dir, "SSF2.exe")
-
-        self.ffdec_path = tk.StringVar(value=self.config.get("ffdec_path", os.path.expandvars(r"%ProgramFiles(x86)%\FFDec\ffdec.jar")))
-        self.ssf_path = tk.StringVar(value=self.config.get("ssf_path", default_ssf_path))
-        self.ssf2_exe_path = tk.StringVar(value=self.config.get("ssf2_exe_path", default_exe_path))
+        self.ffdec_path = tk.StringVar(value=self.config.get("ffdec_path", ""))
+        self.ssf_path = tk.StringVar(value=self.config.get("ssf_path", ""))
+        self.ssf2_exe_path = tk.StringVar(value=self.config.get("ssf2_exe_path", ""))
         self.use_original = tk.BooleanVar(value=False)
         self.selected_character = tk.StringVar(value="Select a Character")
-        self.custom_character = tk.StringVar()
+        self.custom_character = tk.StringVar()        
 
         print(f"Setup completed status: {self.setup_completed}")
         if not self.setup_completed:
@@ -199,9 +197,16 @@ class SSF2ModGUI(tk.Tk):
             except Exception as e:
                 print(f"Error loading config: {e}")
         else:
-            self.config = {"setup_completed": False, "ffdec_path": "", "ssf_path": "", "ssf2_exe_path": "", "hide_log": False}
+            # Initialize default config with empty paths
+            self.config = {
+                "setup_completed": False,
+                "ffdec_path": "",
+                "ssf_path": "",
+                "ssf2_exe_path": "",
+                "hide_log": False
+            }
             self.hide_log = tk.BooleanVar(value=False)
-            print("Initialized default config.")
+            print("Initialized default config with empty paths.")
 
     def save_config(self):
         print("Saving config...")
@@ -726,18 +731,88 @@ class SSF2ModGUI(tk.Tk):
         print("Validating file paths for JPEXS and SSF2...")
         ffdec = self.ffdec_path.get()
         if not ffdec or not os.path.isfile(ffdec) or not ffdec.endswith("ffdec.jar"):
-            messagebox.showerror("Error", "Invalid FFDEC path. Please select a valid ffdec.jar file.")
+            messagebox.showerror("Error", "Invalid FFDEC path. Please select a valid ffdec.jar file in Settings.")
             return False
+        
         ssf = self.ssf_path.get()
         if not ssf or not os.path.isfile(ssf) or not ssf.endswith(".ssf"):
             print("Invalid SSF path: " + str(ssf))
+            messagebox.showerror("Error", "Invalid SSF file path. Please select a valid DAT67.ssf file in Settings.")
             return False
+        
+        # Check if Java is installed
+        java_found = False
         try:
-            subprocess.run(["java", "-version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        except subprocess.CalledProcessError:
-            messagebox.showerror("Error", "Java is not installed or not in PATH, required for FFDEC.")
+            result = subprocess.run(
+                ["java", "-version"],
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            print(f"Java installed: {result.stderr.strip()}")
+            java_found = True
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            print("Java executable not found in PATH. Checking common Java installation paths...")
+            # Check common Java installation paths
+            common_java_paths = [
+                r"C:\Program Files\Java\jre*\bin\java.exe",
+                r"C:\Program Files (x86)\Java\jre*\bin\java.exe",
+                r"C:\Program Files\Java\jdk*\bin\java.exe",
+                r"C:\Program Files (x86)\Java\jdk*\bin\java.exe",
+            ]
+            import glob
+            for pattern in common_java_paths:
+                for java_path in glob.glob(pattern):
+                    try:
+                        result = subprocess.run(
+                            [java_path, "-version"],
+                            check=True,
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            text=True
+                        )
+                        print(f"Java found at {java_path}: {result.stderr.strip()}")
+                        java_found = True
+                        # Update PATH temporarily for this session
+                        os.environ["PATH"] = f"{os.path.dirname(java_path)};{os.environ.get('PATH', '')}"
+                        break
+                    except (subprocess.CalledProcessError, FileNotFoundError):
+                        continue
+                if java_found:
+                    break
+        
+        if not java_found:
+            print("Java is not installed or not in PATH")
+            # Create custom dialog
+            dialog = Toplevel(self)
+            dialog.title("Java Not Found")
+            dialog.transient(self)
+            dialog.grab_set()
+            self.center_toplevel(dialog, 400, 200)
+            
+            tk.Label(
+                dialog,
+                text="Java is not installed or not in PATH, required for JPEXS Decompiler.\n"
+                    "Please download and install Java or add it to your system PATH."
+            ).pack(pady=10)
+            
+            tk.Button(
+                dialog,
+                text="Download Java",
+                command=lambda: [webbrowser.open("https://www.java.com/en/download/"), dialog.destroy()]
+            ).pack(pady=5)
+            
+            tk.Button(
+                dialog,
+                text="Cancel",
+                command=dialog.destroy
+            ).pack(pady=5)
+            
+            self.wait_window(dialog)
             return False
-        print("All paths validated successfully.")
+        
+        print("All paths and Java installation validated successfully.")
         return True
 
     def validate_character(self):
@@ -758,7 +833,9 @@ class SSF2ModGUI(tk.Tk):
 
     def handle_backup(self, ssf_path):
         print(f"Creating backup for SSF file: {ssf_path}")
-        backup_base_dir = os.path.expandvars(r"%USERPROFILE%\Documents\Games\Super Smash Flash 2 Beta\backup")
+        # Derive backup directory from the SSF2 folder
+        ssf_dir = os.path.dirname(ssf_path)
+        backup_base_dir = os.path.join(ssf_dir, "backup")
         backup_ssf = os.path.join(backup_base_dir, os.path.basename(ssf_path))
         
         try:
@@ -809,8 +886,7 @@ class SSF2ModGUI(tk.Tk):
             messagebox.showerror("Error", "Invalid SSF path. Please check your configuration.")
             return False
 
-        backup_base_dir = os.path.expandvars(r"%USERPROFILE%\Documents\Games\Super Smash Flash 2 Beta\backup")
-        backup_ssf = os.path.join(backup_base_dir, os.path.basename(self.ssf_path.get()))
+        backup_ssf = self.ssf_source  # Use the backup path set by handle_backup
 
         if not os.path.exists(backup_ssf):
             print(f"Backup SSF not found at: {backup_ssf}")
@@ -980,8 +1056,7 @@ class SSF2ModGUI(tk.Tk):
 
         self.set_busy("Downloading all costumes from Github", progress=0)
         try:
-            backup_base_dir = os.path.expandvars(r"%USERPROFILE%\Documents\Games\Super Smash Flash 2 Beta\backup")
-            backup_ssf = os.path.join(backup_base_dir, os.path.basename(self.ssf_path.get()))
+            backup_ssf = self.ssf_source
 
             if not os.path.exists(backup_ssf):
                 print(f"Backup SSF not found at: {backup_ssf}")
@@ -1478,20 +1553,17 @@ class SSF2ModGUI(tk.Tk):
             listbox_frame = tk.Frame(left_panel)
             listbox_frame.pack(pady=10, padx=10, fill=tk.BOTH, expand=True)
 
-            self.costume_count_label = tk.Label(listbox_frame, text=f"Current Costumes ({self.costume_offset}/{self.total_costumes})")
-            self.costume_count_label.grid(row=0, column=0, padx=5)
-            self.costume_listbox = tk.Listbox(listbox_frame, height=10, width=30, selectmode=tk.SINGLE)
+            self.costume_listbox = tk.Listbox(listbox_frame, height=10, width=30, selectmode=tk.EXTENDED)
             self.costume_listbox.grid(row=1, column=0, padx=5, sticky="nsew")
             tk.Button(listbox_frame, text="Download Current", command=self.download_current_costumes).grid(row=2, column=0, pady=5)
 
             tk.Label(listbox_frame, text="Loaded Costumes").grid(row=0, column=1, padx=5)
-            self.loaded_listbox = tk.Listbox(listbox_frame, height=10, width=30, selectmode=tk.SINGLE)
+            self.loaded_listbox = tk.Listbox(listbox_frame, height=10, width=30, selectmode=tk.EXTENDED)
             self.loaded_listbox.grid(row=1, column=1, padx=5, sticky="nsew")
             tk.Button(listbox_frame, text="Download Loaded", command=self.download_loaded_costumes).grid(row=2, column=1, pady=5)
-            # tk.Button(listbox_frame, text="Edit Loaded Costume", command=self.edit_loaded_costume).grid(row=3, column=1, pady=5)
 
             tk.Label(listbox_frame, text="For Removal").grid(row=0, column=2, padx=5)
-            self.remove_listbox = tk.Listbox(listbox_frame, height=10, width=30, selectmode=tk.SINGLE)
+            self.remove_listbox = tk.Listbox(listbox_frame, height=10, width=30, selectmode=tk.EXTENDED)
             self.remove_listbox.grid(row=1, column=2, padx=5, sticky="nsew")
 
             listbox_frame.grid_columnconfigure(0, weight=1)
@@ -1503,8 +1575,12 @@ class SSF2ModGUI(tk.Tk):
             for idx, costume in self.all_costumes:
                 self.costume_listbox.insert(tk.END, costume['display_name'])
 
-            if len(self.all_costumes) >= 4:
-                self.costume_listbox.select_set(3)
+            
+
+            # Select first non-protected costume or first costume
+            if self.all_costumes:
+                select_idx = self.protected_count if self.protected_count < len(self.all_costumes) else 0
+                self.costume_listbox.select_set(select_idx)
                 self.last_selected_listbox = 'costume'
                 self.update_preview()
 
@@ -1517,7 +1593,7 @@ class SSF2ModGUI(tk.Tk):
             self.preview_label = tk.Label(right_panel, text="Select a costume to preview", fg="gray")
             self.preview_label.pack(pady=5)
 
-            self.costume_listbox.bind("<ButtonRelease-1>", lambda event: [setattr(self, 'last_selected_listbox', 'costume'), self.debounce_preview_update()])
+            self.costume_listbox.bind("<ButtonRelease-1>", lambda event: [setattr(self, 'last_selected_listbox', 'costume'), self.update_preview()])
             self.loaded_listbox.bind("<ButtonRelease-1>", lambda event: [setattr(self, 'last_selected_listbox', 'loaded'), self.update_button_states(), self.update_preview() if self.loaded_listbox.curselection() else None])
             self.remove_listbox.bind("<ButtonRelease-1>", lambda event: self.update_button_states())
 
@@ -1566,8 +1642,7 @@ class SSF2ModGUI(tk.Tk):
                 self.load_online_button = None
                 print(f"No online costumes available for character '{character}' at {self.online_url}")
 
-            backup_base_dir = os.path.expandvars(r"%USERPROFILE%\Documents\Games\Super Smash Flash 2 Beta\backup")
-            backup_ssf = os.path.join(backup_base_dir, os.path.basename(self.ssf_path.get()))
+            backup_ssf = self.ssf_source
             if os.path.exists(backup_ssf):
                 self.load_original_button = tk.Button(self.online_button_frame, text="Load Original", width=25, command=lambda: self.load_original(character))
                 self.load_original_button.pack(side=tk.LEFT, padx=5)
@@ -1606,7 +1681,15 @@ class SSF2ModGUI(tk.Tk):
     def update_preview(self):
         import json
         import hashlib
-
+        # Debounce: Skip if called within 300ms of last update
+        if not hasattr(self, '_last_preview_time'):
+            self._last_preview_time = 0
+        current_time = time.time() * 1000  # Convert to milliseconds
+        if current_time - self._last_preview_time < 300:
+            print("Skipping preview update due to debounce")
+            return
+        self._last_preview_time = current_time        
+        print("Update preview called")
         if not hasattr(self, 'preview_canvas') or not hasattr(self, 'preview_label'):
             print("Error: Preview canvas or label not defined.")
             return
@@ -1764,17 +1847,49 @@ class SSF2ModGUI(tk.Tk):
             self.set_busy("Saving changes", progress=50)
 
             print("Injecting modified Misc.as...")
+            if not self.suppress_prompts["jpexs_inject"]:
+                dialog = Toplevel(self)
+                dialog.title("Confirm")
+                dialog.transient(self)
+                dialog.grab_set()
+                self.center_toplevel(dialog, 400, 150)
+                tk.Label(dialog, text="This operation will use JPEXS Decompiler to inject scripts. Continue?").pack(pady=10)
+                result = tk.BooleanVar(value=False)
+                suppress = tk.BooleanVar(value=False)
+                button_frame = tk.Frame(dialog)
+                button_frame.pack(pady=10)
+                tk.Button(button_frame, text="Yes", command=lambda: [result.set(True), dialog.destroy()]).pack(side=tk.LEFT, padx=5)
+                tk.Button(button_frame, text="No", command=lambda: [result.set(False), dialog.destroy()]).pack(side=tk.LEFT, padx=5)
+                tk.Checkbutton(button_frame, text="Do not show again", variable=suppress).pack(side=tk.LEFT, padx=5)
+                self.wait_window(dialog)
+                if suppress.get():
+                    self.suppress_prompts["jpexs_inject"] = True
+                    self.save_config()
+                if not result.get():
+                    print("User cancelled JPEXS Decompiler operation.")
+                    self.clear_busy()
+                    return
             inject_misc_as(self.temp_swf, self.loaded_misc_as, modified_swf, self.java_path, self.ffdec_jar)
             self.set_busy("Saving changes", progress=75)
 
             print(f"Compressing to {self.original_ssf}...")
             compress_swf(modified_swf, self.original_ssf)
-            self.set_busy("Saving changes", progress=100)
+            self.set_busy("Saving changes", progress=90)
+
+            # Update the ssf_source backup to match the modified SSF
+            backup_ssf = self.handle_backup(self.original_ssf, force_update=True)
+            print(f"Updated ssf_source backup to: {backup_ssf}")
+            self.ssf_source = backup_ssf
+            self.set_busy("Saving changes", progress=95)
 
             if os.path.exists(self.original_ssf):
                 print(f"SSF updated: {self.original_ssf}")
             else:
                 raise Exception("SSF file not found after save")
+
+            # Extract the updated Misc.as to ensure loaded_misc_as is current
+            extract_misc_as(modified_swf, self.loaded_misc_as, self.java_path, self.ffdec_jar)
+            print(f"Refreshed loaded_misc_as: {self.loaded_misc_as}")
 
             messagebox.showinfo("Success", f"Updated costumes for {character}")
             self.hide_costume_list()

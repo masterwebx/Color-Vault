@@ -204,12 +204,12 @@ class AddCostumeWindow(tk.Toplevel):
             costume = {
                 "info": costume_data.get("info", "") if costume_data else "",
                 "paletteSwap": {
-                    "colors": [self.main_app.int_to_hex(c) if c != "transparent" else "transparent" for c in self.original_palette_strips[0]],
-                    "replacements": [self.main_app.int_to_hex(c) if c != "transparent" else "transparent" for c in self.uploaded_palette_strips[0]]
+                    "colors": self.original_palette_strips[0],  # Already hex strings
+                    "replacements": self.uploaded_palette_strips[0]  # Already hex strings
                 },
                 "paletteSwapPA": {
-                    "colors": [self.main_app.int_to_hex(c) if c != "transparent" else "transparent" for c in self.original_palette_strips[1]] if len(self.original_palette_strips) > 1 else [],
-                    "replacements": [self.main_app.int_to_hex(c) if c != "transparent" else "transparent" for c in self.uploaded_palette_strips[1]] if len(self.uploaded_palette_strips) > 1 else []
+                    "colors": self.original_palette_strips[1] if len(self.original_palette_strips) > 1 else [],
+                    "replacements": self.uploaded_palette_strips[1] if len(self.uploaded_palette_strips) > 1 else []
                 }
             }
             self.new_costume_text.delete("1.0", tk.END)
@@ -222,7 +222,6 @@ class AddCostumeWindow(tk.Toplevel):
         self.update_recolor_preview()
         self.update_converted_palette_preview()
     def generate_image_from_preview(self):
-        """Generate an image from the main app's preview cache for the current costume."""
         print(f"Generating image from preview for costume: {self.costume_data.get('info', 'No info') if self.costume_data else 'No costume data'}")
         if not self.costume_data:
             print("No costume data provided, cannot generate image")
@@ -230,7 +229,6 @@ class AddCostumeWindow(tk.Toplevel):
             return
 
         try:
-            # Generate the same hash used in SSF2ModGUI.update_preview
             costume_json = json.dumps(self.costume_data, sort_keys=True)
             costume_hash = hashlib.md5(costume_json.encode()).hexdigest()
             
@@ -246,12 +244,10 @@ class AddCostumeWindow(tk.Toplevel):
                 os.makedirs(character_dir)
                 print(f"Created directory: {character_dir}")
             
-            # Save the image with a unique filename
             self.uploaded_file_path = os.path.join(character_dir, f"{info}.png")
             image.save(self.uploaded_file_path)
             print(f"Saved generated image to: {self.uploaded_file_path}")
             
-            # Load the generated image
             self.uploaded_image = Image.open(self.uploaded_file_path).convert("RGBA")
             self.original_width, self.original_height = self.uploaded_image.size
             self.extract_palette_strips(self.uploaded_image)
@@ -265,6 +261,22 @@ class AddCostumeWindow(tk.Toplevel):
                     draw.line([(start_x, row + 1), (end_x, row + 1)], fill=(255, 0, 0, 255), width=1)
             self.last_image_mtime = os.path.getmtime(self.uploaded_file_path)
             print("Successfully generated and loaded image from preview")
+            
+            if self.original_palette_strips and self.uploaded_palette_strips:
+                costume = {
+                    "info": self.costume_data.get("info", ""),
+                    "paletteSwap": {
+                        "colors": [c if c == "transparent" else c for c in self.original_palette_strips[0]],  # Already hex strings
+                        "replacements": [c if c == "transparent" else c for c in self.uploaded_palette_strips[0]]  # Already hex strings
+                    },
+                    "paletteSwapPA": {
+                        "colors": [c if c == "transparent" else c for c in self.original_palette_strips[1]] if len(self.original_palette_strips) > 1 else [],
+                        "replacements": [c if c == "transparent" else c for c in self.uploaded_palette_strips[1]] if len(self.uploaded_palette_strips) > 1 else []
+                    }
+                }
+                self.new_costume_text.delete("1.0", tk.END)
+                self.new_costume_text.insert(tk.END, json.dumps(costume, indent=2))
+                print("Updated JSON with palette strips from generated image")
         except Exception as e:
             print(f"Error generating image from preview: {str(e)}")
             self.uploaded_image = None
@@ -295,12 +307,12 @@ class AddCostumeWindow(tk.Toplevel):
                 costume = {
                     "info": "",
                     "paletteSwap": {
-                        "colors": [self.main_app.int_to_hex(c) if c != "transparent" else "transparent" for c in self.original_palette_strips[0]],
-                        "replacements": [self.main_app.int_to_hex(c) if c != "transparent" else "transparent" for c in self.uploaded_palette_strips[0]]
+                        "colors": [c if c == "transparent" else c for c in self.original_palette_strips[0]],  # Already hex strings
+                        "replacements": [c if c == "transparent" else c for c in self.uploaded_palette_strips[0]]  # Already hex strings
                     },
                     "paletteSwapPA": {
-                        "colors": [self.main_app.int_to_hex(c) if c != "transparent" else "transparent" for c in self.original_palette_strips[1]] if len(self.original_palette_strips) > 1 else [],
-                        "replacements": [self.main_app.int_to_hex(c) if c != "transparent" else "transparent" for c in self.uploaded_palette_strips[1]] if len(self.uploaded_palette_strips) > 1 else []
+                        "colors": [c if c == "transparent" else c for c in self.original_palette_strips[1]] if len(self.original_palette_strips) > 1 else [],
+                        "replacements": [c if c == "transparent" else c for c in self.uploaded_palette_strips[1]] if len(self.uploaded_palette_strips) > 1 else []
                     }
                 }
                 self.new_costume_text.delete("1.0", tk.END)
@@ -484,7 +496,7 @@ class AddCostumeWindow(tk.Toplevel):
                         in_strip = True
                     strip_colors.append(color)
                 elif in_strip:
-                    if len(set(strip_colors)) >= 5:
+                    if len(set(strip_colors) - {"transparent"}) >= 5:
                         valid_strip = True
                         end_x = x - 1
                         for pos in range(strip_start, end_x + 1):
@@ -512,22 +524,22 @@ class AddCostumeWindow(tk.Toplevel):
                                     if y < height - 1 and pixels[pos, y + 1] == (r, g, b, a):
                                         include_color = False
                                     if include_color and color not in ignored_colors:
-                                        full_strip_colors.append(color)
+                                        full_strip_colors.append(f"{color:08X}")
                                 else:
                                     full_strip_colors.append("transparent")
-                            if len(set(full_strip_colors)) >= 5:
+                            if len(set(full_strip_colors) - {"transparent"}) >= 5:
                                 palette_strips.append(full_strip_colors)
                                 self.strip_data.append((y, strip_start, end_x))
                                 print(f"Detected strip at row {y}: start_x={strip_start}, end_x={end_x}, num_colors={len(full_strip_colors)}")
                     strip_colors = []
                     in_strip = False
-            if in_strip and len(set(strip_colors)) >= 5:
+            if in_strip and len(set(strip_colors) - {"transparent"}) >= 5:
                 valid_strip = True
                 end_x = width - 1
                 for pos in range(strip_start, end_x + 1):
                     if y > 0:
                         r_above, g_above, b_above, a_above = pixels[pos, y - 1]
-                        above_color = "transparent" if a_above == 0 else (r_above << 16) + (g_above << 8) + b_above | (a_above << 24)
+                        above_color = "transparent" if a_above == 0 else (r_above << 16) + (g_above << 16) + b_above | (a_above << 24)
                         if above_color in strip_colors:
                             valid_strip = False
                             break
@@ -549,10 +561,10 @@ class AddCostumeWindow(tk.Toplevel):
                             if y < height - 1 and pixels[pos, y + 1] == (r, g, b, a):
                                 include_color = False
                             if include_color and color not in ignored_colors:
-                                full_strip_colors.append(color)
+                                full_strip_colors.append(f"{color:08X}")
                         else:
                             full_strip_colors.append("transparent")
-                    if len(set(full_strip_colors)) >= 5:
+                    if len(set(full_strip_colors) - {"transparent"}) >= 5:
                         palette_strips.append(full_strip_colors)
                         self.strip_data.append((y, strip_start, end_x))
                         print(f"Detected strip at row {y}: start_x={strip_start}, end_x={end_x}, num_colors={len(full_strip_colors)}")
@@ -746,6 +758,7 @@ class AddCostumeWindow(tk.Toplevel):
         self.recolor_preview_label.config(text="")
 
     def update_extracted_palette_preview(self):
+        print("Updating extracted palette preview...")
         self.extracted_palette_canvas.delete("all")
         canvas_width, canvas_height = 300, 200
         palette_img = Image.new("RGBA", (canvas_width, canvas_height), (0, 0, 0, 0))
@@ -761,10 +774,12 @@ class AddCostumeWindow(tk.Toplevel):
                 if color == "transparent":
                     draw.rectangle([x * 10, y, x * 10 + 9, y + 9], fill=(0, 0, 0, 0))
                 else:
-                    r = (color >> 16) & 255
-                    g = (color >> 8) & 255
-                    b = color & 255
-                    a = (color >> 24) & 255
+                    # Convert hex string to integer
+                    color_int = int(color, 16)
+                    r = (color_int >> 16) & 255
+                    g = (color_int >> 8) & 255
+                    b = color_int & 255
+                    a = (color_int >> 24) & 255
                     draw.rectangle([x * 10, y, x * 10 + 9, y + 9], fill=(r, g, b, a))
             y_offset += row_height
 
@@ -775,10 +790,12 @@ class AddCostumeWindow(tk.Toplevel):
                 if color == "transparent":
                     draw.rectangle([x * 10, y, x * 10 + 9, y + 9], fill=(0, 0, 0, 0))
                 else:
-                    r = (color >> 16) & 255
-                    g = (color >> 8) & 255
-                    b = color & 255
-                    a = (color >> 24) & 255
+                    # Convert hex string to integer
+                    color_int = int(color, 16)
+                    r = (color_int >> 16) & 255
+                    g = (color_int >> 8) & 255
+                    b = color_int & 255
+                    a = (color_int >> 24) & 255
                     draw.rectangle([x * 10, y, x * 10 + 9, y + 9], fill=(r, g, b, a))
             y_offset += row_height
 
@@ -789,10 +806,12 @@ class AddCostumeWindow(tk.Toplevel):
                 if color == "transparent":
                     draw.rectangle([x * 10, y, x * 10 + 9, y + 9], fill=(0, 0, 0, 0))
                 else:
-                    r = (color >> 16) & 255
-                    g = (color >> 8) & 255
-                    b = color & 255
-                    a = (color >> 24) & 255
+                    # Convert hex string to integer
+                    color_int = int(color, 16)
+                    r = (color_int >> 16) & 255
+                    g = (color_int >> 8) & 255
+                    b = color_int & 255
+                    a = (color_int >> 24) & 255
                     draw.rectangle([x * 10, y, x * 10 + 9, y + 9], fill=(r, g, b, a))
             y_offset += row_height
 
@@ -803,15 +822,18 @@ class AddCostumeWindow(tk.Toplevel):
                 if color == "transparent":
                     draw.rectangle([x * 10, y, x * 10 + 9, y + 9], fill=(0, 0, 0, 0))
                 else:
-                    r = (color >> 16) & 255
-                    g = (color >> 8) & 255
-                    b = color & 255
-                    a = (color >> 24) & 255
+                    # Convert hex string to integer
+                    color_int = int(color, 16)
+                    r = (color_int >> 16) & 255
+                    g = (color_int >> 8) & 255
+                    b = color_int & 255
+                    a = (color_int >> 24) & 255
                     draw.rectangle([x * 10, y, x * 10 + 9, y + 9], fill=(r, g, b, a))
 
         self.extracted_palette_photo = ImageTk.PhotoImage(palette_img)
         self.extracted_palette_canvas.create_image(-self.extracted_pan_x, -self.extracted_pan_y, anchor="nw", image=self.extracted_palette_photo)
         self.extracted_palette_label.config(text="")
+        print("Extracted palette preview updated successfully.")
 
     def update_converted_palette_preview(self):
         self.converted_palette_canvas.delete("all")
