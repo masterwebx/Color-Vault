@@ -21,6 +21,15 @@ from utils import (
 import platform
 from add_costume_window import AddCostumeWindow
 
+def resource_path(relative_path):
+    """Get the absolute path to a resource, works for dev and for PyInstaller."""
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except AttributeError:
+        # Use the current directory during development
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 class TextRedirector:
     """Redirect print statements to a Tkinter scrolledtext widget."""
     def __init__(self, widget):
@@ -44,6 +53,9 @@ class TextRedirector:
 class SSF2ModGUI(tk.Tk):
     def __init__(self):
         super().__init__()
+        self.title("SSF2 Costume Injector v1.0.4")
+        icon_path = resource_path("icon.ico")
+        self.wm_iconbitmap(icon_path)        
         # Determine the directory of the executable or script
         if getattr(sys, 'frozen', False):
             # Running as compiled executable (e.g., PyInstaller)
@@ -54,6 +66,7 @@ class SSF2ModGUI(tk.Tk):
         self.config_file = os.path.join(base_dir, "config.json")
         print(f"Config file path set to: {self.config_file}")
         self.setup_completed = False
+        
         self.preview_cache = {}
         self.help_mode = False
         self.tooltips = {}
@@ -83,8 +96,7 @@ class SSF2ModGUI(tk.Tk):
         self.was_log_visible = False
         self.costume_offset = 0
         self.total_costumes = 0
-        self.costume_count_label = None
-        self.character_to_url = self.load_url_mappings()
+        self.costume_count_label = None        
         self.preview_photo = None
         self.protected_count = 4
         self.image_cache_dir = os.path.join(os.getcwd(), "image_cache")
@@ -142,6 +154,8 @@ class SSF2ModGUI(tk.Tk):
                 print("Paths validated successfully, loading characters from SSF file...")
                 self.load_characters()
             self.toggle_custom_field()
+        print("About to call load_url_mappings...")
+        self.character_to_url = self.load_url_mappings()
 
     def on_close(self):
         if os.path.exists(self.image_cache_dir):
@@ -151,6 +165,7 @@ class SSF2ModGUI(tk.Tk):
             except Exception as e:
                 print(f"Error deleting cache directory on exit: {str(e)}")
         self.destroy()
+
     def get_display_name(self, costume):
         if 'team' in costume:
             return f"Team {costume['team'].capitalize()}"
@@ -160,10 +175,11 @@ class SSF2ModGUI(tk.Tk):
             return costume['info']
         else:
             return "No Info"
+
     def load_url_mappings(self):
         print("Loading character-to-URL mappings from remote URL...")
         character_to_url = {}
-        url = "https://raw.githubusercontent.com/masterwebx/Color-Vault/refs/heads/master/other/urls.json"
+        url = "https://raw.githubusercontent.com/masterwebx/Color-Vault/refs/heads/master/other/urls.json"        
         try:
             response = requests.get(url)
             response.raise_for_status()  # Raise an exception for HTTP errors
@@ -341,7 +357,7 @@ class SSF2ModGUI(tk.Tk):
             print(f"Editing costume from current list, idx: {idx}, info: {costume.get('info', 'No info')}, image_path: {image_path}")
             # Ensure preview is cached
             self.update_preview()
-            AddCostumeWindow(self, self.selected_character.get(), costume_data=costume, image_path=image_path, source=source, current_idx=idx)
+            AddCostumeWindow(self, self.selected_character.get(), costume_data=costume, image_path=image_path, source=source, current_idx=idx, on_save_callback=self.add_new_costume_to_list)
         elif self.last_selected_listbox == 'loaded' and self.loaded_listbox.curselection():
             idx = self.loaded_listbox.curselection()[0]
             costume = self.loaded_costumes[idx]
@@ -350,7 +366,7 @@ class SSF2ModGUI(tk.Tk):
             print(f"Editing costume from loaded list, idx: {idx}, info: {costume.get('info', 'No info')}, image_path: {image_path}")
             # Ensure preview is cached
             self.update_preview()
-            AddCostumeWindow(self, self.selected_character.get(), costume_data=costume, image_path=image_path, source=source, loaded_idx=idx)
+            AddCostumeWindow(self, self.selected_character.get(), costume_data=costume, image_path=image_path, source=source, loaded_idx=idx, on_save_callback=self.add_new_costume_to_list)
         else:
             print("No costume selected for editing")
             messagebox.showerror("Error", "Please select a costume to edit.")
@@ -389,6 +405,7 @@ class SSF2ModGUI(tk.Tk):
         except Exception as e:
             print(f"Error generating image from preview: {str(e)}")
             return None
+
     def get_image_path_for_costume(self, costume):
         character_dir = os.path.join(os.getcwd(), "recolors", self.selected_character.get())
         print(f"Searching for image in directory: {character_dir}")
@@ -449,6 +466,12 @@ class SSF2ModGUI(tk.Tk):
         # Join Discord button below help button
         self.discord_button = tk.Button(self, text="Join Discord", command=lambda: webbrowser.open("https://discord.gg/xZtTqX4"))
         self.discord_button.pack(anchor="ne", padx=5, pady=5)
+        self.char_selection_frame = tk.Frame(self)
+        self.char_selection_frame.pack(fill=tk.X, padx=5)
+
+        # Color creator button
+        self.colorcreator_button = tk.Button(self, text="Create your own recolor", command=lambda: webbrowser.open("https://color-vault.github.io/Color-Vault/colorcreator2.html"))
+        self.colorcreator_button.pack(anchor="ne", padx=5, pady=5)
         self.char_selection_frame = tk.Frame(self)
         self.char_selection_frame.pack(fill=tk.X, padx=5)
 
@@ -532,8 +555,8 @@ class SSF2ModGUI(tk.Tk):
         about_window.title("About")
         about_window.transient(self)
         about_window.grab_set()
-        self.center_toplevel(about_window, 400, 150)
-        tk.Label(about_window, text="SSF2 Costume Injector\nVersion: 1.0.0\n\nA tool for injecting custom costumes into Super Smash Flash 2.").pack(pady=20)
+        self.center_toplevel(about_window, 400, 150)        
+        tk.Label(about_window, text="SSF2 Costume Injector\nVersion: 1.0.4\n\nA tool for injecting custom costumes into Super Smash Flash 2.").pack(pady=20)
         tk.Button(about_window, text="OK", command=about_window.destroy).pack(pady=10)
 
     def restart_setup(self):
@@ -604,7 +627,7 @@ class SSF2ModGUI(tk.Tk):
                     dialog.title("Confirm")
                     dialog.transient(self)
                     dialog.grab_set()
-                    self.center_toplevel(dialog, 400, 150)
+                    self.center_toplevel(dialog, 700, 150)
                     tk.Label(dialog, text=f"Directory already exists at {dest_dir}. Overwrite?").pack(pady=10)
                     result = tk.BooleanVar(value=False)
                     suppress = tk.BooleanVar(value=False)
@@ -965,13 +988,12 @@ class SSF2ModGUI(tk.Tk):
 
     def update_costume_preview(self):
         self.update_preview()
-        
-    
+
     def int_to_hex(self, int_val):
-            if int_val < 0:
-                int_val += 0x100000000
-            hex_str = hex(int_val)[2:].upper().zfill(8)
-            return hex_str
+        if int_val < 0:
+            int_val += 0x100000000
+        hex_str = hex(int_val)[2:].upper().zfill(8)
+        return hex_str
 
     def hex_to_signed_32bit_int(self, hex_str):
         int_value = int(hex_str.replace('#', ''), 16)
@@ -999,10 +1021,6 @@ class SSF2ModGUI(tk.Tk):
             print(f"Extracting costumes for character '{character}' from updated Misc.as...")
             costumes_data = extract_costumes(self.loaded_misc_as, character)
             self.total_costumes = len(costumes_data)
-            #if not costumes_data:
-             #   print(f"No costumes found for {character} in Misc.as.")
-              #  self.clear_busy()
-               # return
             self.set_busy("Refreshing costume list", progress=50)
 
             costumes_data = costumes_data[offset:offset + limit]
@@ -1018,11 +1036,11 @@ class SSF2ModGUI(tk.Tk):
                     editable_costumes.append((idx + offset, costume))
 
             self.all_costumes = [(idx, costume) for idx, costume in protected_costumes + editable_costumes]
-            self.protected_count = len(protected_costumes)  # Add this line
+            self.protected_count = len(protected_costumes)
             self.costume_listbox.delete(0, tk.END)
             for idx, costume in self.all_costumes:
-               display_name = self.get_display_name(costume)  # Use get_display_name
-            self.costume_listbox.insert(tk.END, display_name)
+                display_name = self.get_display_name(costume)
+                self.costume_listbox.insert(tk.END, display_name)
             print(f"Refreshed costume list with {len(self.all_costumes)} costumes for character '{character}'.")
             self.set_busy("Refreshing costume list", progress=100)
 
@@ -1307,7 +1325,8 @@ class SSF2ModGUI(tk.Tk):
         character = self.selected_character.get()
         if character == "Custom":
             character = self.custom_character.get().strip()
-        AddCostumeWindow(self, character)
+        # Pass the callback to AddCostumeWindow to handle the new costume
+        AddCostumeWindow(self, character, on_save_callback=self.add_new_costume_to_list)
 
     def add_from_file(self):
         print("Opening file dialog to load costumes from a file...")
@@ -1326,11 +1345,24 @@ class SSF2ModGUI(tk.Tk):
             messagebox.showerror("Error", f"Failed to load costumes from file: {str(e)}")
             print(f"Error loading costumes from file: {str(e)}")
 
-    def add_new_costume_to_list(self, new_costume):
-        display_name = self.get_display_name(new_costume)  # Compute display_name
-        self.all_costumes.append((len(self.all_costumes), new_costume))
-        self.costume_listbox.insert(tk.END, display_name)
-        self.costume_listbox.select_set(len(self.all_costumes) - 1)
+    def add_new_costume_to_list(self, new_costume, source=None, current_idx=None, loaded_idx=None):
+        # Handle new costume addition (source is None or not 'current'/'loaded')
+        if source not in ['current', 'loaded']:
+            display_name = self.get_display_name(new_costume)
+            self.all_costumes.append((len(self.all_costumes), new_costume))
+            self.costume_listbox.insert(tk.END, display_name)
+            self.costume_listbox.select_set(len(self.all_costumes) - 1)
+            print(f"Added new costume: {display_name}")
+        # Optionally handle editing existing costumes if source is 'current' or 'loaded'
+        elif source == 'current' and current_idx is not None:
+            self.all_costumes[current_idx] = (current_idx, new_costume)
+            self.update_costume_list()
+            print(f"Updated costume at index {current_idx}")
+        elif source == 'loaded' and loaded_idx is not None:
+            self.loaded_costumes[loaded_idx] = new_costume
+            self.loaded_listbox.delete(loaded_idx)
+            self.loaded_listbox.insert(loaded_idx, self.get_display_name(new_costume))
+            print(f"Updated loaded costume at index {loaded_idx}")
 
     def move_to_current_list(self):
         sel = sorted(self.loaded_listbox.curselection(), reverse=True)
@@ -1512,10 +1544,6 @@ class SSF2ModGUI(tk.Tk):
             costumes_data = extract_costumes(self.loaded_misc_as, character)
             self.total_costumes = len(costumes_data)
             self.costume_offset = 0
-            #if not costumes_data:
-             #   print(f"No costumes found for {character} in Misc.as.")
-              #  self.clear_busy()
-               # return
             self.set_busy("Loading costume list", progress=50)
 
             costumes_data = costumes_data[:50]
@@ -1533,7 +1561,7 @@ class SSF2ModGUI(tk.Tk):
             self.costume_list_frame.pack_forget()
             self.costume_list_frame = tk.Frame(self)
             self.costume_list_visible = True
-
+            print(f"costume list visible")
             self.back_button = tk.Button(self.costume_list_frame, text="Back", command=self.hide_costume_list, font=("Arial", 16), width=10, height=2)
             self.back_button.pack(anchor="nw", padx=5, pady=5)
             self.register_tooltip(self.back_button, "Return to character selection.")
@@ -1573,16 +1601,10 @@ class SSF2ModGUI(tk.Tk):
 
             self.all_costumes = [(idx, costume) for idx, costume in protected_costumes + editable_costumes]
             for idx, costume in self.all_costumes:
-                self.costume_listbox.insert(tk.END, costume['display_name'])
+                display_name = self.get_display_name(costume)
+                self.costume_listbox.insert(tk.END, display_name)
 
             
-
-            # Select first non-protected costume or first costume
-            if self.all_costumes:
-                select_idx = self.protected_count if self.protected_count < len(self.all_costumes) else 0
-                self.costume_listbox.select_set(select_idx)
-                self.last_selected_listbox = 'costume'
-                self.update_preview()
 
             self.loaded_costumes = []
 
@@ -1593,9 +1615,7 @@ class SSF2ModGUI(tk.Tk):
             self.preview_label = tk.Label(right_panel, text="Select a costume to preview", fg="gray")
             self.preview_label.pack(pady=5)
 
-            self.costume_listbox.bind("<ButtonRelease-1>", lambda event: [setattr(self, 'last_selected_listbox', 'costume'), self.update_preview()])
-            self.loaded_listbox.bind("<ButtonRelease-1>", lambda event: [setattr(self, 'last_selected_listbox', 'loaded'), self.update_button_states(), self.update_preview() if self.loaded_listbox.curselection() else None])
-            self.remove_listbox.bind("<ButtonRelease-1>", lambda event: self.update_button_states())
+            
 
             self.button_frame = tk.Frame(left_panel)
             self.button_frame.pack(pady=5)
@@ -1652,21 +1672,35 @@ class SSF2ModGUI(tk.Tk):
                 print(f"No backup file found at {backup_ssf}, 'Load Original' button not added.")
 
             self.save_button = tk.Button(left_panel, text="Save Changes", command=lambda: self.save_changes(character))
-            self.save_button.pack(pady=5)
+            self.save_button.pack(side=tk.LEFT, pady=5)
             self.register_tooltip(self.save_button, "Save costume changes to the SSF file.")
 
             self.save_play_button = tk.Button(left_panel, text="Save and Play", command=lambda: self.save_and_play(character))
-            self.save_play_button.pack(pady=5)
+            self.save_play_button.pack(side=tk.LEFT, pady=5)
             self.register_tooltip(self.save_play_button, "Save costume changes and launch SSF2.")
 
-            tk.Button(left_panel, text="Open Recolors Directory", command=self.open_recolors_directory).pack(pady=5)
-            self.register_tooltip(tk.Button(left_panel, text="Open Recolors Directory"), "Open the directory containing recolor sheets for this character.")
+            # tk.Button(left_panel, text="Open Recolors Directory", command=self.open_recolors_directory).pack(pady=5)
+            # self.register_tooltip(tk.Button(left_panel, text="Open Recolors Directory"), "Open the directory containing recolor sheets for this character.")
 
             self.update_button_states()
 
             self.costume_list_frame.pack(fill=tk.BOTH, expand=True)
             self.set_busy("Loading costume list", progress=100)
             self.clear_busy()
+
+            # Select first non-protected costume or first costume
+            if self.all_costumes:
+                select_idx = self.protected_count - 1 if self.protected_count < len(self.all_costumes) else 0
+                self.costume_listbox.select_set(select_idx)
+                self.last_selected_listbox = 'costume'
+                self.update_preview()
+            self.costume_listbox.bind("<ButtonRelease-1>", lambda event: [setattr(self, 'last_selected_listbox', 'costume'), self.update_preview()])
+            self.loaded_listbox.bind("<ButtonRelease-1>", lambda event: [setattr(self, 'last_selected_listbox', 'loaded'), self.update_button_states(), self.update_preview() if self.loaded_listbox.curselection() else None])
+            self.remove_listbox.bind("<ButtonRelease-1>", lambda event: self.update_button_states())
+
+            # Trigger initial preview update only if a selection exists
+            if self.costume_listbox.curselection():
+                self.update_preview()
 
         except Exception as e:
             print(f"Error loading costume list: {str(e)}")
@@ -1681,13 +1715,13 @@ class SSF2ModGUI(tk.Tk):
     def update_preview(self):
         import json
         import hashlib
+        
+        
         # Debounce: Skip if called within 300ms of last update
         if not hasattr(self, '_last_preview_time'):
-            self._last_preview_time = 0
+            self._last_preview_time = 0        
         current_time = time.time() * 1000  # Convert to milliseconds
-        if current_time - self._last_preview_time < 300:
-            print("Skipping preview update due to debounce")
-            return
+        
         self._last_preview_time = current_time        
         print("Update preview called")
         if not hasattr(self, 'preview_canvas') or not hasattr(self, 'preview_label'):
@@ -1877,7 +1911,7 @@ class SSF2ModGUI(tk.Tk):
             self.set_busy("Saving changes", progress=90)
 
             # Update the ssf_source backup to match the modified SSF
-            backup_ssf = self.handle_backup(self.original_ssf, force_update=True)
+            backup_ssf = self.handle_backup(self.original_ssf)
             print(f"Updated ssf_source backup to: {backup_ssf}")
             self.ssf_source = backup_ssf
             self.set_busy("Saving changes", progress=95)
@@ -1911,6 +1945,7 @@ class SSF2ModGUI(tk.Tk):
         if hasattr(self, 'preview_label'):
             self.preview_label.config(text="Select a costume to preview")
         self.clear_busy()
+
     def center_toplevel(self, toplevel, width, height):
         self.update_idletasks()
         main_width = self.winfo_width()
@@ -1924,5 +1959,5 @@ class SSF2ModGUI(tk.Tk):
 if __name__ == "__main__":
     print("Starting SSF2ModGUI application...")
     app = SSF2ModGUI()
-    app.mainloop()
+    app.mainloop()    
     print("Application closed.")

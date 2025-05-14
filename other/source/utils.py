@@ -269,7 +269,10 @@ def format_color_for_as3(color):
             if len(color_str) == 8 and all(c in "0123456789ABCDEFabcdef" for c in color_str):
                 return f"0x{color_str.upper()}"
         elif isinstance(color, int):
-            # Handle integer colors (convert to 8-digit hex)
+            # Handle integer colors, including negative values
+            if color < 0:
+                # Convert negative integer to unsigned 32-bit integer
+                color = color & 0xFFFFFFFF
             if 0 <= color <= 0xFFFFFFFF:
                 return f"0x{color:08X}"
         print(f"Invalid color format: {color}, defaulting to 0xFF000000")
@@ -277,8 +280,6 @@ def format_color_for_as3(color):
     except Exception as e:
         print(f"Error formatting color {color}: {str(e)}, defaulting to 0xFF000000")
         return "0xFF000000"
-
-# ... (rest of the file remains unchanged)
 
 
 def update_costumes(original_as_path, new_as_path, character, costumes):

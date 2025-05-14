@@ -22,5 +22,5 @@ if __name__ == "__main__":
     FFDEC_JAR = "C:\\Program Files (x86)\\FFDec\\ffdec.jar"
     JAVA_PATH = "java"
 
-    app = SSF2ModGUI()
+    app = SSF2ModGUI()    
     app.mainloop()
