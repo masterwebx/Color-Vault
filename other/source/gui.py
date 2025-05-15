@@ -13,10 +13,12 @@ from io import BytesIO
 import hashlib
 import glob
 import time
+import re
 from utils import (
     decompress_ssf, extract_misc_as, modify_misc_as, inject_misc_as, compress_swf,
     extract_character_names, extract_costumes, update_costumes, load_costumes_from_file,
-    check_url_exists, load_costumes_from_url, launch_ssf2, copy_ssf2_directory
+    check_url_exists, load_costumes_from_url, launch_ssf2, copy_ssf2_directory,
+    color_to_int, int_to_color_str
 )
 import platform
 from add_costume_window import AddCostumeWindow
@@ -53,15 +55,13 @@ class TextRedirector:
 class SSF2ModGUI(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("SSF2 Costume Injector v1.0.4")
+        self.title("SSF2 Costume Injector v1.0.5")
         icon_path = resource_path("icon.ico")
         self.wm_iconbitmap(icon_path)        
         # Determine the directory of the executable or script
         if getattr(sys, 'frozen', False):
-            # Running as compiled executable (e.g., PyInstaller)
             base_dir = os.path.dirname(sys.executable)
         else:
-            # Running as Python script
             base_dir = os.path.dirname(os.path.abspath(__file__))
         self.config_file = os.path.join(base_dir, "config.json")
         print(f"Config file path set to: {self.config_file}")
@@ -82,8 +82,8 @@ class SSF2ModGUI(tk.Tk):
         self.ssf_source = None
         self.java_path = None
         self.last_selected_listbox = None
-        self.costume_listbox = tk.Listbox(self)  # Current costumes listbox
-        self.loaded_listbox = tk.Listbox(self)   # Loaded costumes listbox
+        self.costume_listbox = tk.Listbox(self)
+        self.loaded_listbox = tk.Listbox(self)
         self.move_to_trash_button = tk.Button(self, text="Move to Trash", command=self.move_to_trash)
         self.add_new_button = tk.Button(self, text="Add New", command=self.add_costume)
         self.ffdec_jar = None
@@ -121,19 +121,24 @@ class SSF2ModGUI(tk.Tk):
         self.preview_debounce_timer = None
         self.preview_debounce_delay = 300
 
-        window_width = 1200
-        window_height = 800
+        # Load config to determine log visibility
+        self.load_config()
+
+        initial_width = 1204
+        initial_height = 712
+        self.minsize(initial_width, initial_height)
+
+        
+        # Center window on screen with initial size
         screen_width = self.winfo_screenwidth()
-        screen_height = self.winfo_screenheight()
-        x = (screen_width - window_width) // 2
-        y = (screen_height - window_height) // 2
-        self.geometry(f"{window_width}x{window_height}+{x}+{y}")
-        self.resizable(False, False)
+        screen_height = self.winfo_screenheight() - 50  # Adjust for taskbar
+        x = (screen_width - initial_width) // 2
+        y = (screen_height - initial_height) // 2
+        self.geometry(f"{initial_width}x{initial_height}+{x}+{y}")
 
         print("Initializing SSF2ModGUI application...")
         print("Setting up default paths for SSF2 and JPEXS Decompiler...")
-        self.load_config()
-
+        
         self.ffdec_path = tk.StringVar(value=self.config.get("ffdec_path", ""))
         self.ssf_path = tk.StringVar(value=self.config.get("ssf_path", ""))
         self.ssf2_exe_path = tk.StringVar(value=self.config.get("ssf2_exe_path", ""))
@@ -329,6 +334,14 @@ class SSF2ModGUI(tk.Tk):
         else:
             print("Setup incomplete. Required paths for JPEXS or SSF2 are missing.")
 
+    def fix_missing_commas(self, json_str):
+        # Add commas between hex colors or "transparent" in arrays
+        # Match hex colors (0x followed by 6-8 hex digits) or "transparent"
+        json_str = re.sub(r'("0x[0-9A-Fa-f]{6,8}"|"transparent")\s+("0x[0-9A-Fa-f]{6,8}"|"transparent")', r'\1,\2', json_str)
+        # Match numbers (positive or negative) for other arrays
+        json_str = re.sub(r'(\d+)\s+(-\d+)', r'\1,\2', json_str)
+        json_str = re.sub(r'(\d+)\s+(\d+)', r'\1,\2', json_str)
+        return json_str
     def download_current_costumes(self):
         costumes = [costume for idx, costume in self.all_costumes]
         self.save_costumes_to_file(costumes)
@@ -341,8 +354,22 @@ class SSF2ModGUI(tk.Tk):
         if not file_path:
             return
         try:
-            with open(file_path, "w") as f:
-                json.dump(costumes, f, indent=2)
+            # Create a deep copy of costumes to avoid modifying the original
+            costumes_copy = json.loads(json.dumps(costumes))
+            # Process colors in the costume data
+            for costume in costumes_copy:
+                for key in ["paletteSwap", "paletteSwapPA"]:
+                    if key in costume:
+                        for subkey in ["colors", "replacements"]:
+                            if subkey in costume[key]:
+                                costume[key][subkey] = [
+                                    int_to_color_str(color_to_int(color))
+                                    for color in costume[key][subkey]
+                                ]
+            # Generate JSON with indentation
+            json_str = json.dumps(costumes_copy, indent=2)
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write(json_str)
             messagebox.showinfo("Success", "Costumes saved successfully.")
         except Exception as e:
             messagebox.showerror("Error", f"Failed to save costumes: {str(e)}")
@@ -447,31 +474,67 @@ class SSF2ModGUI(tk.Tk):
     def create_main_ui(self):
         print("Creating main UI for SSF2 Costume Injector...")
 
+        # Status frame (progress bar and status label)
         self.status_frame = tk.Frame(self)
         self.status_frame.pack(fill=tk.X, padx=5, pady=5)
         self.progress_bar = ttk.Progressbar(self.status_frame, mode="determinate", maximum=100)
         self.progress_bar.pack(fill=tk.X, expand=True)
         self.status_label = tk.Label(self.status_frame, text="Ready", fg="black", bg="#d9d9d9", anchor="center")
         self.status_label.place(in_=self.progress_bar, relx=0.5, rely=0.5, anchor="center")
-        self.register_tooltip(self.progress_bar, "Progress indicator and status message for ongoing operations.")
+        self.register_tooltip(self.progress_bar, "Progress indicator and status messages for ongoing operations.")
 
-        settings_button = tk.Button(self, text="Settings", command=self.open_settings)
-        settings_button.pack(anchor="ne", padx=5, pady=5)
-        self.register_tooltip(settings_button, "Open the settings menu to configure paths.")
+        # Top container frame for log and buttons
+        top_container = tk.Frame(self)
+        top_container.pack(fill=tk.X, padx=5, pady=5)
 
-        self.help_button = tk.Button(self, text="Help Tooltips", command=self.toggle_help_mode)
-        self.help_button.pack(anchor="ne", padx=5)
-        self.register_tooltip(self.help_button, "Toggle help mode to view tooltips for UI elements.")
+        # Log frame (on the left, if visible)
+        if not self.hide_log.get():
+            log_frame = tk.Frame(top_container)
+            log_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=5)
+            self.log_label = tk.Label(log_frame, text="Log:")
+            self.log_label.pack(anchor="w", pady=5)
+            self.log_text = scrolledtext.ScrolledText(log_frame, height=6, width=50, state='normal')
+            self.log_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+            sys.stdout = TextRedirector(self.log_text)
+            self.register_tooltip(self.log_text, "View logs and status messages for operations.")
+            self.log_visible = True
+        else:
+            self.log_visible = False
+
+        # Button frame (on the right)
+        top_button_frame = tk.Frame(top_container)
+        top_button_frame.pack(side=tk.RIGHT, fill=tk.Y, padx=5)
         
-        # Join Discord button below help button
-        self.discord_button = tk.Button(self, text="Join Discord", command=lambda: webbrowser.open("https://discord.gg/xZtTqX4"))
-        self.discord_button.pack(anchor="ne", padx=5, pady=5)
-        self.char_selection_frame = tk.Frame(self)
-        self.char_selection_frame.pack(fill=tk.X, padx=5)
+        # List of buttons to add
+        buttons = [
+            ("Settings", self.open_settings, "Open the settings menu to configure paths."),
+            ("Help Tooltips", self.toggle_help_mode, "Toggle help mode to view tooltips for UI elements."),
+            ("Join Discord", lambda: webbrowser.open("https://discord.gg/xZtTqX4"), "Join the Discord community."),
+            ("Create your own recolor", lambda: webbrowser.open("https://color-vault.github.io/Color-Vault/colorcreator2.html"), "Create a custom recolor online.")
+            
+        ]
+        
 
-        # Color creator button
-        self.colorcreator_button = tk.Button(self, text="Create your own recolor", command=lambda: webbrowser.open("https://color-vault.github.io/Color-Vault/colorcreator2.html"))
-        self.colorcreator_button.pack(anchor="ne", padx=5, pady=5)
+        # Use a flow layout for buttons
+        current_row = tk.Frame(top_button_frame)
+        current_row.pack(side=tk.TOP, anchor="ne", padx=5)
+        max_width = 200  # Maximum width before wrapping
+        current_width = 0
+
+        for text, command, tooltip in buttons:
+            # Estimate button width (approximate, adjust as needed)
+            button_width = len(text) * 10 + 20  # Rough estimate
+            if current_width + button_width + 10 > max_width:
+                current_row = tk.Frame(top_button_frame)
+                current_row.pack(side=tk.TOP, anchor="ne", padx=5)
+                current_width = 0
+
+            button = tk.Button(current_row, text=text, command=command)
+            button.pack(side=tk.LEFT, padx=5, pady=5)
+            self.register_tooltip(button, tooltip)
+            current_width += button_width + 10
+
+        # Character selection frame
         self.char_selection_frame = tk.Frame(self)
         self.char_selection_frame.pack(fill=tk.X, padx=5)
 
@@ -494,17 +557,6 @@ class SSF2ModGUI(tk.Tk):
         self.custom_entry.pack(side=tk.LEFT)
 
         self.costume_list_frame = tk.Frame(self)
-
-        if not self.hide_log.get():
-            self.log_label = tk.Label(self, text="Log:")
-            self.log_label.pack(pady=5, anchor="w")
-            self.log_text = scrolledtext.ScrolledText(self, height=6, width=50, state='normal')
-            self.log_text.pack(padx=5, pady=5, fill=tk.X)
-            sys.stdout = TextRedirector(self.log_text)
-            self.register_tooltip(self.log_text, "View logs and status messages for operations.")
-            self.log_visible = True
-        else:
-            self.log_visible = False
 
         print("Main UI created successfully.")
 
@@ -556,7 +608,7 @@ class SSF2ModGUI(tk.Tk):
         about_window.transient(self)
         about_window.grab_set()
         self.center_toplevel(about_window, 400, 150)        
-        tk.Label(about_window, text="SSF2 Costume Injector\nVersion: 1.0.4\n\nA tool for injecting custom costumes into Super Smash Flash 2.").pack(pady=20)
+        tk.Label(about_window, text="SSF2 Costume Injector\nVersion: 1.0.5\n\nA tool for injecting custom costumes into Super Smash Flash 2.").pack(pady=20)
         tk.Button(about_window, text="OK", command=about_window.destroy).pack(pady=10)
 
     def restart_setup(self):
@@ -679,8 +731,7 @@ class SSF2ModGUI(tk.Tk):
         widget.bind("<Leave>", self.hide_tooltip)
 
     def toggle_help_mode(self):
-        self.help_mode = not self.help_mode
-        self.help_button.config(text="?" if not self.help_mode else "X")
+        self.help_mode = not self.help_mode        
         if not self.help_mode:
             self.hide_all_tooltips()
 
@@ -952,21 +1003,8 @@ class SSF2ModGUI(tk.Tk):
             self.clear_busy()
 
     def convert_color(self, color):
-        if isinstance(color, str):
-            color = color.replace('#', '')
-            try:
-                color_int = int(color, 16)
-                if len(color) == 6:
-                    color_int = (color_int << 8) | 0xFF
-                return color_int & 0xFFFFFFFF
-            except ValueError:
-                print(f"Invalid hex color: {color}")
-                return 0xFF000000
-        elif isinstance(color, int):
-            return color & 0xFFFFFFFF
-        else:
-            print(f"Unsupported color type: {type(color)}, value: {color}")
-            return 0xFF000000
+        """Convert a color to a 32-bit integer."""
+        return color_to_int(color)
 
     def update_costume_list(self):
         if not self.costume_list_visible:
@@ -990,16 +1028,29 @@ class SSF2ModGUI(tk.Tk):
         self.update_preview()
 
     def int_to_hex(self, int_val):
-        if int_val < 0:
-            int_val += 0x100000000
-        hex_str = hex(int_val)[2:].upper().zfill(8)
-        return hex_str
+        """Convert a 32-bit integer color to a hex string (e.g., 'AARRGGBB')."""
+        if int_val == -1:
+            return "transparent"
+        # Ensure unsigned 32-bit integer
+        int_val = int_val & 0xFFFFFFFF
+        return f"{int_val:08X}"
 
-    def hex_to_signed_32bit_int(self, hex_str):
-        int_value = int(hex_str.replace('#', ''), 16)
-        if int_value & 0x80000000:
-            int_value -= 0x100000000
-        return int_value | 0xFF000000
+    def hex_to_int(self, hex_str):
+        """Convert a hex string (e.g., 'AARRGGBB' or '#AARRGGBB') to a 32-bit integer."""
+        if hex_str.lower() == "transparent":
+            return -1
+        try:
+            hex_str = hex_str.replace('#', '').replace('0x', '')
+            if len(hex_str) == 6:
+                # Assume fully opaque if alpha not specified
+                return int(hex_str + "FF", 16)
+            elif len(hex_str) == 8:
+                return int(hex_str, 16)
+            else:
+                raise ValueError(f"Invalid hex string length: {hex_str}")
+        except ValueError as e:
+            print(f"Error converting hex {hex_str}: {str(e)}")
+            return 0xFF000000  # Default to opaque black
 
     def load_costume_list_for_character(self, character, offset=0, limit=50):
         print(f"Refreshing costume list for character '{character}' (offset: {offset}, limit: {limit})...")
@@ -1562,9 +1613,20 @@ class SSF2ModGUI(tk.Tk):
             self.costume_list_frame = tk.Frame(self)
             self.costume_list_visible = True
             print(f"costume list visible")
-            self.back_button = tk.Button(self.costume_list_frame, text="Back", command=self.hide_costume_list, font=("Arial", 16), width=10, height=2)
-            self.back_button.pack(anchor="nw", padx=5, pady=5)
+
+            # Header frame for Back button and Costumes label
+            header_frame = tk.Frame(self.costume_list_frame)
+            header_frame.pack(fill=tk.X, padx=5, pady=5)
+
+            # Back button (left)
+            self.back_button = tk.Button(header_frame, text="Back", command=self.hide_costume_list, font=("Arial", 16), width=10, height=2)
+            self.back_button.pack(side=tk.LEFT, padx=5)
             self.register_tooltip(self.back_button, "Return to character selection.")
+
+            # Costumes for {character} label (right)
+            costumes_label = tk.Label(header_frame, text=f"Costumes for {character}", font=("Arial", 14))
+            costumes_label.pack(side=tk.LEFT, padx=5)
+            self.register_tooltip(costumes_label, "List of costumes for the selected character.")
 
             main_frame = tk.Frame(self.costume_list_frame)
             main_frame.pack(fill=tk.BOTH, expand=True)
@@ -1574,9 +1636,6 @@ class SSF2ModGUI(tk.Tk):
 
             right_panel = tk.Frame(main_frame)
             right_panel.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=5, pady=5)
-
-            tk.Label(left_panel, text=f"Costumes for {character}", font=("Arial", 14)).pack(pady=10)
-            self.register_tooltip(tk.Label(left_panel, text=f"Costumes for {character}"), "List of costumes for the selected character.")
 
             listbox_frame = tk.Frame(left_panel)
             listbox_frame.pack(pady=10, padx=10, fill=tk.BOTH, expand=True)
@@ -1604,45 +1663,52 @@ class SSF2ModGUI(tk.Tk):
                 display_name = self.get_display_name(costume)
                 self.costume_listbox.insert(tk.END, display_name)
 
-            
-
             self.loaded_costumes = []
 
-            tk.Label(right_panel, text="Costume Preview", font=("Arial", 14)).pack(pady=10)
+            # Costume preview section
+            preview_header_frame = tk.Frame(right_panel)
+            preview_header_frame.pack(fill=tk.X, pady=10)
+
+            tk.Label(preview_header_frame, text="Costume Preview", font=("Arial", 14)).pack(side=tk.LEFT, padx=5)
+            tk.Button(preview_header_frame, text="Download Code and Image for Selected", command=lambda: self.download_selected_costume(character)).pack(side=tk.LEFT, padx=5)
+            self.register_tooltip(tk.Button(preview_header_frame, text="Download Code and Image for Selected"), "Download the selected costume's JSON code and preview image to a folder named after the character.")
+
             self.preview_canvas = tk.Canvas(right_panel, width=600, height=400, bg="white", highlightthickness=1, highlightbackground="black")
             self.preview_canvas.pack(pady=10, padx=10)
             self.register_tooltip(self.preview_canvas, "Preview of the selected costume's recolored sheet.")
             self.preview_label = tk.Label(right_panel, text="Select a costume to preview", fg="gray")
             self.preview_label.pack(pady=5)
 
-            
-
+            # Button frame with single-row layout
             self.button_frame = tk.Frame(left_panel)
-            self.button_frame.pack(pady=5)
+            self.button_frame.pack(pady=5, fill=tk.X)
 
-            self.move_up_button = tk.Button(self.button_frame, text="Move Up", command=self.move_up)
-            self.move_up_button.pack(side=tk.LEFT, padx=5)
-            self.register_tooltip(self.move_up_button, "Move selected costumes up in the list.")
+            buttons = [
+                ("Move Up", self.move_up, "Move selected costumes up in the list."),
+                ("Move Down", self.move_down, "Move selected costumes down in the list."),
+                ("Move to Trash", self.move_to_trash, "Move selected costumes to the removal list."),
+                ("Add New", self.add_costume, "Create a new costume."),
+                ("Add from File", self.add_from_file, "Load costumes from a .txt or .as file."),
+                ("Move to Current List", self.move_to_current_list, "Add selected loaded costumes to the current list.")
+            ]
 
-            self.move_down_button = tk.Button(self.button_frame, text="Move Down", command=self.move_down)
-            self.move_down_button.pack(side=tk.LEFT, padx=5)
-            self.register_tooltip(self.move_down_button, "Move selected costumes down in the list.")
+            current_row = tk.Frame(self.button_frame)
+            current_row.pack(side=tk.TOP, fill=tk.X, padx=5)
+            max_width = 900  # Increased to fit all buttons in one row
+            current_width = 0
 
-            self.move_to_trash_button = tk.Button(self.button_frame, text="Move to Trash", command=self.move_to_trash)
-            self.move_to_trash_button.pack(side=tk.LEFT, padx=5)
-            self.register_tooltip(self.move_to_trash_button, "Move selected costumes to the removal list.")
+            for text, command, tooltip in buttons:
+                # Estimate button width (approximate, adjust as needed)
+                button_width = len(text) * 10 + 20  # Rough estimate
+                if current_width + button_width + 10 > max_width:
+                    current_row = tk.Frame(self.button_frame)
+                    current_row.pack(side=tk.TOP, fill=tk.X, padx=5)
+                    current_width = 0
 
-            self.add_new_button = tk.Button(self.button_frame, text="Add New", command=self.add_costume)
-            self.add_new_button.pack(side=tk.LEFT, padx=5)
-            self.register_tooltip(self.add_new_button, "Create a new costume.")
-
-            self.add_from_file_button = tk.Button(self.button_frame, text="Add from File", command=self.add_from_file)
-            self.add_from_file_button.pack(side=tk.LEFT, padx=5)
-            self.register_tooltip(self.add_from_file_button, "Load costumes from a .txt or .as file.")
-
-            self.move_to_current_button = tk.Button(self.button_frame, text="Move to Current List", command=self.move_to_current_list)
-            self.move_to_current_button.pack(side=tk.LEFT, padx=5)
-            self.register_tooltip(self.move_to_current_button, "Add selected loaded costumes to the current list.")
+                button = tk.Button(current_row, text=text, command=command)
+                button.pack(side=tk.LEFT, padx=5, pady=5)
+                self.register_tooltip(button, tooltip)
+                current_width += button_width + 10
 
             pagination_frame = tk.Frame(left_panel)
             pagination_frame.pack(pady=5)
@@ -1679,16 +1745,12 @@ class SSF2ModGUI(tk.Tk):
             self.save_play_button.pack(side=tk.LEFT, pady=5)
             self.register_tooltip(self.save_play_button, "Save costume changes and launch SSF2.")
 
-            # tk.Button(left_panel, text="Open Recolors Directory", command=self.open_recolors_directory).pack(pady=5)
-            # self.register_tooltip(tk.Button(left_panel, text="Open Recolors Directory"), "Open the directory containing recolor sheets for this character.")
-
             self.update_button_states()
 
             self.costume_list_frame.pack(fill=tk.BOTH, expand=True)
             self.set_busy("Loading costume list", progress=100)
             self.clear_busy()
 
-            # Select first non-protected costume or first costume
             if self.all_costumes:
                 select_idx = self.protected_count - 1 if self.protected_count < len(self.all_costumes) else 0
                 self.costume_listbox.select_set(select_idx)
@@ -1698,7 +1760,6 @@ class SSF2ModGUI(tk.Tk):
             self.loaded_listbox.bind("<ButtonRelease-1>", lambda event: [setattr(self, 'last_selected_listbox', 'loaded'), self.update_button_states(), self.update_preview() if self.loaded_listbox.curselection() else None])
             self.remove_listbox.bind("<ButtonRelease-1>", lambda event: self.update_button_states())
 
-            # Trigger initial preview update only if a selection exists
             if self.costume_listbox.curselection():
                 self.update_preview()
 
@@ -1707,6 +1768,215 @@ class SSF2ModGUI(tk.Tk):
             self.hide_costume_list()
             self.clear_busy()
 
+    def download_selected_costume(self, character):
+        import re
+        import hashlib
+        from PIL import ImageTk
+
+        if self.last_selected_listbox == 'costume' and self.costume_listbox.curselection():
+            idx = self.costume_listbox.curselection()[0]
+            costume = self.all_costumes[idx][1] if idx < len(self.all_costumes) else None
+        elif self.last_selected_listbox == 'loaded' and self.loaded_listbox.curselection():
+            idx = self.loaded_listbox.curselection()[0]
+            costume = self.loaded_costumes[idx] if idx < len(self.loaded_costumes) else None
+        else:
+            messagebox.showerror("Error", "Please select a costume to download.")
+            return
+
+        if not costume:
+            messagebox.showerror("Error", "No costume selected.")
+            return
+
+        # Sanitize filename from info key
+        info = costume.get("info", "NoInfo")
+        # Replace invalid characters with underscores
+        safe_filename = re.sub(r'[<>:"/\\|?*]', '_', info)
+        safe_filename = safe_filename.replace(' ', '_').strip('_')
+        if not safe_filename:
+            safe_filename = "UnnamedCostume"
+
+        # Create character folder
+        character_dir = os.path.join(os.getcwd(), character)
+        os.makedirs(character_dir, exist_ok=True)
+
+        # Generate costume JSON
+        costume_json = json.dumps(costume, indent=2)
+        # Apply comma fixes
+        costume_json = self.fix_missing_commas(costume_json)
+        costume_hash = hashlib.md5(costume_json.encode()).hexdigest()
+
+        # Save JSON to .txt file
+        json_filename = os.path.join(character_dir, f"{safe_filename}.txt")
+        try:
+            with open(json_filename, "w", encoding="utf-8") as f:
+                f.write(costume_json)
+            print(f"Saved JSON to {json_filename}")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to save JSON file: {str(e)}")
+            return
+
+        # Try to get image from canvas (self.preview_photo)
+        image = None
+        if hasattr(self, 'preview_photo') and self.preview_photo:
+            try:
+                image = ImageTk.getimage(self.preview_photo)
+                print("Retrieved image from canvas preview_photo")
+            except Exception as e:
+                print(f"Error retrieving image from canvas: {str(e)}")
+
+        # Fallback: Generate image if canvas image is unavailable
+        if not image:
+            print("No canvas image available, generating preview image")
+            try:
+                image = self.generate_preview_image(character, costume)
+                if not image:
+                    messagebox.showwarning("Warning", f"No preview image available for this costume. JSON saved to {json_filename}")
+                    return
+            except Exception as e:
+                messagebox.showwarning("Warning", f"Failed to generate preview image: {str(e)}. JSON saved to {json_filename}")
+                return
+
+        # Save preview image
+        image_filename = os.path.join(character_dir, f"{safe_filename}.png")
+        try:
+            image.save(image_filename)
+            print(f"Saved image to {image_filename}")
+            # Show custom success dialog
+            dialog = Toplevel(self)
+            dialog.title("Success")
+            dialog.transient(self)
+            dialog.grab_set()
+            self.center_toplevel(dialog, 400, 150)
+            tk.Label(dialog, text=f"Downloaded JSON and image to {character_dir}", wraplength=350).pack(pady=10)
+            button_frame = tk.Frame(dialog)
+            button_frame.pack(pady=10)
+            tk.Button(button_frame, text="Open Directory", command=lambda: [self.open_folder(character_dir), dialog.destroy()]).pack(side=tk.LEFT, padx=5)
+            tk.Button(button_frame, text="OK", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to save image file: {str(e)}")
+            return
+
+    def generate_preview_image(self, character, costume):
+        import hashlib
+        import requests
+        from io import BytesIO
+        from PIL import Image
+
+        # Validate costume data
+        palette_swap = costume.get("paletteSwap")
+        palette_swap_pa = costume.get("paletteSwapPA")
+        if not (palette_swap and palette_swap_pa and
+                "colors" in palette_swap and "replacements" in palette_swap and
+                "colors" in palette_swap_pa and "replacements" in palette_swap_pa):
+            print("Invalid costume data for preview generation")
+            return None
+
+        # Get image URL
+        normalized_character = character.lower().replace(" ", "").replace("(sandbox)", "")
+        image_url = self.character_to_url.get(normalized_character)
+        if not image_url:
+            print(f"No preview URL for character {character}")
+            return None
+
+        try:
+            # Generate costume hash
+            costume_json = json.dumps(costume, sort_keys=True)
+            costume_hash = hashlib.md5(costume_json.encode()).hexdigest()
+
+            # Check cache first
+            if costume_hash in self.preview_cache:
+                return self.preview_cache[costume_hash]
+
+            # Fetch image
+            url_hash = hashlib.md5(image_url.encode()).hexdigest()
+            cache_file = os.path.join(self.image_cache_dir, f"{url_hash}.png")
+            if os.path.exists(cache_file):
+                image = Image.open(cache_file).convert("RGBA")
+            else:
+                response = requests.get(image_url, stream=True)
+                response.raise_for_status()
+                image = Image.open(BytesIO(response.content)).convert("RGBA")
+                image.save(cache_file)
+
+            # Apply palette swaps
+            pixels = image.load()
+            width, height = image.size
+            color_map_swap = {self.convert_color(orig): self.convert_color(repl)
+                            for orig, repl in zip(palette_swap["colors"], palette_swap["replacements"])}
+            color_map_swap_pa = {self.convert_color(orig): self.convert_color(repl)
+                                for orig, repl in zip(palette_swap_pa["colors"], palette_swap_pa["replacements"])}
+
+            def colors_are_close(color1, color2, tolerance=5):
+                if color1 == -1 or color2 == -1:
+                    return color1 == color2
+                r1, g1, b1, a1 = (color1 >> 16) & 255, (color1 >> 8) & 255, color1 & 255, (color1 >> 24) & 255
+                r2, g2, b2, a2 = (color2 >> 16) & 255, (color2 >> 8) & 255, color2 & 255, (color2 >> 24) & 255
+                return (abs(r1 - r2) <= tolerance and
+                        abs(g1 - g2) <= tolerance and
+                        abs(b1 - b2) <= tolerance and
+                        abs(a1 - a2) <= tolerance)
+
+            cache_swap = {}
+            cache_swap_pa = {}
+
+            for y in range(height):
+                for x in range(width):
+                    r, g, b, a = pixels[x, y]
+                    pixel_int = -1 if a == 0 else ((a << 24) | (r << 16) | (g << 8) | b)
+
+                    if pixel_int in cache_swap:
+                        new_pixel_int = cache_swap[pixel_int]
+                    else:
+                        if pixel_int in color_map_swap:
+                            new_pixel_int = color_map_swap[pixel_int]
+                        else:
+                            for orig_int in color_map_swap:
+                                if colors_are_close(pixel_int, orig_int):
+                                    new_pixel_int = color_map_swap[orig_int]
+                                    break
+                            else:
+                                new_pixel_int = pixel_int
+                        cache_swap[pixel_int] = new_pixel_int
+
+                    if new_pixel_int == -1:
+                        pixels[x, y] = (0, 0, 0, 0)
+                        continue
+                    r = (new_pixel_int >> 16) & 255
+                    g = (new_pixel_int >> 8) & 255
+                    b = new_pixel_int & 255
+                    a = (new_pixel_int >> 24) & 255
+                    pixels[x, y] = (r, g, b, a)
+
+                    pixel_int = ((a << 24) | (r << 16) | (g << 8) | b)
+                    if pixel_int in cache_swap_pa:
+                        new_pixel_int = cache_swap_pa[pixel_int]
+                    else:
+                        if pixel_int in color_map_swap_pa:
+                            new_pixel_int = color_map_swap_pa[pixel_int]
+                        else:
+                            for orig_int in color_map_swap_pa:
+                                if colors_are_close(pixel_int, orig_int):
+                                    new_pixel_int = color_map_swap_pa[orig_int]
+                                    break
+                            else:
+                                new_pixel_int = pixel_int
+                        cache_swap_pa[pixel_int] = new_pixel_int
+
+                    if new_pixel_int == -1:
+                        pixels[x, y] = (0, 0, 0, 0)
+                    else:
+                        r = (new_pixel_int >> 16) & 255
+                        g = (new_pixel_int >> 8) & 255
+                        b = new_pixel_int & 255
+                        a = (new_pixel_int >> 24) & 255
+                        pixels[x, y] = (r, g, b, a)
+
+            image.thumbnail((600, 400), Image.Resampling.LANCZOS)
+            self.preview_cache[costume_hash] = image
+            return image
+        except Exception as e:
+            print(f"Error generating preview image: {str(e)}")
+            return None
     def debounce_preview_update(self):
         if self.preview_debounce_timer:
             self.after_cancel(self.preview_debounce_timer)
@@ -1715,15 +1985,6 @@ class SSF2ModGUI(tk.Tk):
     def update_preview(self):
         import json
         import hashlib
-        
-        
-        # Debounce: Skip if called within 300ms of last update
-        if not hasattr(self, '_last_preview_time'):
-            self._last_preview_time = 0        
-        current_time = time.time() * 1000  # Convert to milliseconds
-        
-        self._last_preview_time = current_time        
-        print("Update preview called")
         if not hasattr(self, 'preview_canvas') or not hasattr(self, 'preview_label'):
             print("Error: Preview canvas or label not defined.")
             return
@@ -1779,17 +2040,20 @@ class SSF2ModGUI(tk.Tk):
 
                 pixels = image.load()
                 width, height = image.size
-                color_map_swap = {self.convert_color(orig): self.convert_color(repl)
+                color_map_swap = {color_to_int(orig): color_to_int(repl)
                                 for orig, repl in zip(palette_swap["colors"], palette_swap["replacements"])}
-                color_map_swap_pa = {self.convert_color(orig): self.convert_color(repl)
+                color_map_swap_pa = {color_to_int(orig): color_to_int(repl)
                                     for orig, repl in zip(palette_swap_pa["colors"], palette_swap_pa["replacements"])}
 
                 def colors_are_close(color1, color2, tolerance=5):
-                    r1, g1, b1 = (color1 >> 16) & 255, (color1 >> 8) & 255, color1 & 255
-                    r2, g2, b2 = (color2 >> 16) & 255, (color2 >> 8) & 255, color2 & 255
+                    if color1 == -1 or color2 == -1:
+                        return color1 == color2
+                    r1, g1, b1, a1 = (color1 >> 16) & 255, (color1 >> 8) & 255, color1 & 255, (color1 >> 24) & 255
+                    r2, g2, b2, a2 = (color2 >> 16) & 255, (color2 >> 8) & 255, color2 & 255, (color2 >> 24) & 255
                     return (abs(r1 - r2) <= tolerance and
                             abs(g1 - g2) <= tolerance and
-                            abs(b1 - b2) <= tolerance)
+                            abs(b1 - b2) <= tolerance and
+                            abs(a1 - a2) <= tolerance)
 
                 cache_swap = {}
                 cache_swap_pa = {}
@@ -1797,9 +2061,7 @@ class SSF2ModGUI(tk.Tk):
                 for y in range(height):
                     for x in range(width):
                         r, g, b, a = pixels[x, y]
-                        if a == 0:
-                            continue
-                        pixel_int = ((r << 16) + (g << 8) + b) | 0xFF000000
+                        pixel_int = -1 if a == 0 else ((a << 24) | (r << 16) | (g << 8) | b)
 
                         if pixel_int in cache_swap:
                             new_pixel_int = cache_swap[pixel_int]
@@ -1815,12 +2077,16 @@ class SSF2ModGUI(tk.Tk):
                                     new_pixel_int = pixel_int
                             cache_swap[pixel_int] = new_pixel_int
 
-                        new_r = (new_pixel_int >> 16) & 255
-                        new_g = (new_pixel_int >> 8) & 255
-                        new_b = new_pixel_int & 255
-                        pixels[x, y] = (new_r, new_g, new_b, a)
+                        if new_pixel_int == -1:
+                            pixels[x, y] = (0, 0, 0, 0)
+                            continue
+                        r = (new_pixel_int >> 16) & 255
+                        g = (new_pixel_int >> 8) & 255
+                        b = new_pixel_int & 255
+                        a = (new_pixel_int >> 24) & 255
+                        pixels[x, y] = (r, g, b, a)
 
-                        pixel_int = ((new_r << 16) + (new_g << 8) + new_b) | 0xFF000000
+                        pixel_int = ((a << 24) | (r << 16) | (g << 8) | b)
                         if pixel_int in cache_swap_pa:
                             new_pixel_int = cache_swap_pa[pixel_int]
                         else:
@@ -1835,10 +2101,14 @@ class SSF2ModGUI(tk.Tk):
                                     new_pixel_int = pixel_int
                             cache_swap_pa[pixel_int] = new_pixel_int
 
-                        new_r = (new_pixel_int >> 16) & 255
-                        new_g = (new_pixel_int >> 8) & 255
-                        new_b = new_pixel_int & 255
-                        pixels[x, y] = (new_r, new_g, new_b, a)
+                        if new_pixel_int == -1:
+                            pixels[x, y] = (0, 0, 0, 0)
+                        else:
+                            r = (new_pixel_int >> 16) & 255
+                            g = (new_pixel_int >> 8) & 255
+                            b = new_pixel_int & 255
+                            a = (new_pixel_int >> 24) & 255
+                            pixels[x, y] = (r, g, b, a)
 
                 image.thumbnail((600, 400), Image.Resampling.LANCZOS)
                 self.preview_cache[costume_hash] = image

@@ -315,10 +315,10 @@ def update_costumes(original_as_path, new_as_path, character, costumes):
                 if not (isinstance(costume[key]["colors"], list) and isinstance(costume[key]["replacements"], list)):
                     raise ValueError(f"Costume {i} {key} has non-list subkeys: colors={type(costume[key]['colors'])}, replacements={type(costume[key]['replacements'])}")
 
-            palette_swap_colors = ",".join(format_color_for_as3(color) for color in costume["paletteSwap"]["colors"])
-            palette_swap_replacements = ",".join(format_color_for_as3(color) for color in costume["paletteSwap"]["replacements"])
-            palette_swap_pa_colors = ",".join(format_color_for_as3(color) for color in costume["paletteSwapPA"]["colors"])
-            palette_swap_pa_replacements = ",".join(format_color_for_as3(color) for color in costume["paletteSwapPA"]["replacements"])
+            palette_swap_colors = ",".join(int_to_color_str(color_to_int(color)) for color in costume["paletteSwap"]["colors"])
+            palette_swap_replacements = ",".join(int_to_color_str(color_to_int(color)) for color in costume["paletteSwap"]["replacements"])
+            palette_swap_pa_colors = ",".join(int_to_color_str(color_to_int(color)) for color in costume["paletteSwapPA"]["colors"])
+            palette_swap_pa_replacements = ",".join(int_to_color_str(color_to_int(color)) for color in costume["paletteSwapPA"]["replacements"])
 
             new_content += f'         _loc1_["{character}"].push({{\n'
 
@@ -331,11 +331,11 @@ def update_costumes(original_as_path, new_as_path, character, costumes):
                     else:
                         new_content += f'            "{key}":{value},\n'
 
-            new_content += f'            "paletteSwap":{{' \
+            new_content += f'            "paletteSwapPA":{{' \
                            f'\n               "colors":[{palette_swap_colors}],' \
                            f'\n               "replacements":[{palette_swap_replacements}]' \
                            f'\n            }},\n' \
-                           f'            "paletteSwapPA":{{' \
+                           f'            "paletteSwap":{{' \
                            f'\n               "colors":[{palette_swap_pa_colors}],' \
                            f'\n               "replacements":[{palette_swap_pa_replacements}]' \
                            f'\n            }}\n' \
@@ -354,6 +354,28 @@ def update_costumes(original_as_path, new_as_path, character, costumes):
         f.write(new_content)
     print(f"Updated costumes for {character} at {new_as_path}")
 
+def color_to_int(color):
+    """Convert a color (string or int) to a 32-bit integer, with -1 for transparent."""
+    if color == "transparent":
+        return -1
+    try:
+        if isinstance(color, str):
+            color_str = color.replace("#", "").replace("0x", "")
+            if len(color_str) == 8:
+                return int(color_str, 16)
+            elif len(color_str) == 6:
+                return int(color_str + "FF", 16)  # Assume fully opaque
+        elif isinstance(color, int):
+            return color & 0xFFFFFFFF
+        raise ValueError(f"Invalid color: {color}")
+    except Exception as e:
+        print(f"Error converting color {color}: {str(e)}")
+        return 0xFF000000
+def int_to_color_str(color_int):
+    
+    # Ensure unsigned 32-bit integer
+    color_int = color_int & 0xFFFFFFFF
+    return f"0x{color_int:08X}"
 def load_costumes_from_file(file_path):
     """Load costumes from a .as or .txt file."""
     with open(file_path, "r", encoding="utf-8") as f:

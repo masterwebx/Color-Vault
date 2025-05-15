@@ -9,7 +9,7 @@ import os
 import subprocess
 import time
 import platform
-from utils import format_color_for_as3
+from utils import format_color_for_as3, color_to_int, int_to_color_str
 
 class CanvasState:
     def __init__(self):
@@ -75,11 +75,14 @@ class AddCostumeWindow(tk.Toplevel):
         self.grab_set()
         self.main_app.center_toplevel(self, 1200, 800)
         self.focus_set()
+        initial_width = 1204
+        initial_height = 712
+        self.minsize(initial_width, initial_height)
 
     def _initialize_variables(self):
         self.uploaded_image = None
         self.original_recolor_sheet = None
-        self.recolor_image = None
+        self.recolor_image = None  # Will store the precomputed palette-swapped image
         self.uploaded_photo = None
         self.recolor_photo = None
         self.extracted_palette_photo = None
@@ -94,6 +97,7 @@ class AddCostumeWindow(tk.Toplevel):
         self.online_name = self.main_app.config.get("online_name", "")
         self.uploaded_file_path = None
         self.last_image_mtime = 0
+        self.last_costume_json = None  # Cache last JSON to detect changes
 
     def _create_ui(self):
         main_frame = tk.Frame(self)
@@ -140,7 +144,7 @@ class AddCostumeWindow(tk.Toplevel):
         zoom_frame = tk.Frame(image_previews_frame)
         zoom_frame.pack(pady=5)
         tk.Label(zoom_frame, text="Zoom:").pack(side=tk.LEFT)
-        self.zoom_slider = tk.Scale(zoom_frame, from_=-20.0, to=20.0, resolution=0.1, orient=tk.HORIZONTAL, variable=self.zoom_var, command=lambda _: self.update_uploaded_preview())
+        self.zoom_slider = tk.Scale(zoom_frame, from_=-2.0, to=2.0, resolution=0.1, orient=tk.HORIZONTAL, variable=self.zoom_var, command=lambda _: self.update_uploaded_preview())
         self.zoom_slider.pack(side=tk.LEFT, fill=tk.X, expand=True)
         self.uploaded_preview_label = tk.Label(image_previews_frame, text="Upload an image to see the preview", fg="gray")
         self.uploaded_preview_label.pack(pady=5)
@@ -152,7 +156,7 @@ class AddCostumeWindow(tk.Toplevel):
         recolor_zoom_frame = tk.Frame(image_previews_frame)
         recolor_zoom_frame.pack(pady=5)
         tk.Label(recolor_zoom_frame, text="Recolor Zoom:").pack(side=tk.LEFT)
-        self.recolor_zoom_slider = tk.Scale(recolor_zoom_frame, from_=-20.0, to=20.0, resolution=0.1, orient=tk.HORIZONTAL, variable=self.recolor_zoom_var, command=lambda _: self.update_recolor_preview())
+        self.recolor_zoom_slider = tk.Scale(recolor_zoom_frame, from_=-2.0, to=2.0, resolution=0.1, orient=tk.HORIZONTAL, variable=self.recolor_zoom_var, command=lambda _: self.update_recolor_preview())
         self.recolor_zoom_slider.pack(side=tk.LEFT, fill=tk.X, expand=True)
         self.recolor_preview_label = tk.Label(image_previews_frame, text="Select a character and upload an image to see the recolor", fg="gray")
         self.recolor_preview_label.pack(pady=5)
@@ -184,8 +188,12 @@ class AddCostumeWindow(tk.Toplevel):
         self.recolor_pan_handler = CanvasPanHandler(self.recolor_preview_canvas, self.update_recolor_preview, self.recolor_canvas_state)
         self.extracted_pan_handler = CanvasPanHandler(self.extracted_palette_canvas, self.update_extracted_palette_preview, self.extracted_canvas_state)
         self.converted_pan_handler = CanvasPanHandler(self.converted_palette_canvas, self.update_converted_palette_preview, self.converted_canvas_state)
-        self.new_costume_text.bind("<<Modified>>", lambda event: [self.update_recolor_preview(), self.update_converted_palette_preview(), self.new_costume_text.edit_modified(False)])
-
+        self.new_costume_text.bind("<<Modified>>", lambda event: [
+            self._update_recolor_image(),
+            self.update_recolor_preview(),
+            self.update_converted_palette_preview(),
+            self.new_costume_text.edit_modified(False)
+        ])
     def _load_initial_data(self):
         self.load_recolor_sheet_preview()
         if self.image_path and os.path.exists(self.image_path):
@@ -193,6 +201,7 @@ class AddCostumeWindow(tk.Toplevel):
         elif self.costume_data:
             self.generate_image_from_preview()
         self._update_json_with_palette_strips()
+        self._update_recolor_image()  # Precompute initial recolor image
         self.update_all_previews()
 
     def _load_image_from_path(self, path):
@@ -204,6 +213,7 @@ class AddCostumeWindow(tk.Toplevel):
             self._draw_palette_lines()
             self.last_image_mtime = os.path.getmtime(path)
             print(f"Successfully loaded image from {path}")
+            self._update_recolor_image()  # Update recolor image when a new image is loaded
         except FileNotFoundError:
             print(f"File not found: {path}")
             self.uploaded_image = None
@@ -232,18 +242,49 @@ class AddCostumeWindow(tk.Toplevel):
             costume = {
                 "info": self.costume_data.get("info", "") if self.costume_data else "",
                 "paletteSwap": {
-                    "colors": self.original_palette_strips[0],
-                    "replacements": self.uploaded_palette_strips[0]
+                    "colors": [int_to_color_str(color_to_int(c)) for c in self.original_palette_strips[0]],
+                    "replacements": [int_to_color_str(color_to_int(c)) for c in self.uploaded_palette_strips[0]]
                 },
                 "paletteSwapPA": {
-                    "colors": self.original_palette_strips[1] if len(self.original_palette_strips) > 1 else [],
-                    "replacements": self.uploaded_palette_strips[1] if len(self.uploaded_palette_strips) > 1 else []
+                    "colors": [int_to_color_str(color_to_int(c)) for c in self.original_palette_strips[1]] if len(self.original_palette_strips) > 1 else [],
+                    "replacements": [int_to_color_str(color_to_int(c)) for c in self.uploaded_palette_strips[1]] if len(self.uploaded_palette_strips) > 1 else []
                 }
             }
             self.new_costume_text.delete("1.0", tk.END)
             self.new_costume_text.insert(tk.END, json.dumps(costume, indent=2))
             print("Updated JSON with palette strips from loaded/generated image")
+            self._update_recolor_image()  # Update recolor image after JSON update
 
+    def _update_recolor_image(self):
+        """Precompute the palette-swapped image based on current JSON and recolor sheet."""
+        if not self.original_recolor_sheet:
+            self.recolor_image = None
+            self.recolor_preview_label.config(text="No recolor sheet loaded")
+            return
+
+        # Get current JSON and check if it changed
+        try:
+            current_json = self.new_costume_text.get("1.0", tk.END).strip()
+            if current_json == self.last_costume_json:
+                return  # No change, skip recomputation
+            costume = json.loads(current_json)
+            self.last_costume_json = current_json
+        except json.JSONDecodeError:
+            self.recolor_image = self.original_recolor_sheet.copy().convert("RGBA")
+            self.recolor_preview_label.config(text="Invalid JSON, showing original sheet")
+            return
+
+        # Create a copy of the original sheet and apply palette swap
+        image = self.original_recolor_sheet.copy().convert("RGBA")
+        try:
+            self._apply_palette_swap(image, costume)
+            self.recolor_image = image.convert("RGBA")  # Ensure RGBA mode
+            self.recolor_canvas_state.original_width, self.recolor_canvas_state.original_height = self.recolor_image.size
+            print("Precomputed palette-swapped recolor image")
+        except Exception as e:
+            print(f"Error applying palette swap: {str(e)}")
+            self.recolor_image = self.original_recolor_sheet.copy().convert("RGBA")
+            self.recolor_preview_label.config(text="Error applying palette, showing original sheet")
     def update_all_previews(self):
         self.update_uploaded_preview()
         self.update_extracted_palette_preview()
@@ -272,6 +313,7 @@ class AddCostumeWindow(tk.Toplevel):
             self._draw_palette_lines()
             self.last_image_mtime = os.path.getmtime(self.uploaded_file_path)
             print("Successfully generated and loaded image from preview")
+            self._update_recolor_image()  # Update recolor image after generating
         except Exception as e:
             print(f"Error generating image from preview: {str(e)}")
             self.uploaded_image = None
@@ -292,6 +334,7 @@ class AddCostumeWindow(tk.Toplevel):
             if current_mtime > self.last_image_mtime:
                 self._load_image_from_path(self.uploaded_file_path)
                 self._update_json_with_palette_strips()
+        self._update_recolor_image()  # Refresh recolor image if JSON or image changed
         self.update_all_previews()
 
     def load_recolor_sheet_preview(self):
@@ -312,6 +355,7 @@ class AddCostumeWindow(tk.Toplevel):
                 img.save(cache_file)
             self.original_recolor_sheet = img
             self.extract_original_colors()
+            self._update_recolor_image()  # Precompute recolor image after loading sheet
             self.update_recolor_preview()
             self.update_extracted_palette_preview()
         except requests.RequestException as e:
@@ -326,6 +370,7 @@ class AddCostumeWindow(tk.Toplevel):
         try:
             self.original_recolor_sheet = Image.open(file_path).convert("RGBA")
             self.extract_original_colors()
+            self._update_recolor_image()  # Precompute recolor image after uploading sheet
             self.update_recolor_preview()
             self.update_extracted_palette_preview()
             self.update_converted_palette_preview()
@@ -352,12 +397,12 @@ class AddCostumeWindow(tk.Toplevel):
                 r, g, b, a = pixels[x, y]
                 color = "transparent" if a == 0 else (r << 16) + (g << 8) + b | (a << 24)
                 row_colors[y].add(color)
-        common_colors = set.intersection(*row_colors)
-        palette_strips = []
+        common_colors = set.intersection(*row_colors) if row_colors else set()
+        palette_rows = []
         self.strip_data = []
 
         for y in range(height):
-            if len(palette_strips) >= 2:
+            if len(palette_rows) >= 2:
                 break
             color_counts = {}
             for x in range(width):
@@ -365,34 +410,62 @@ class AddCostumeWindow(tk.Toplevel):
                 color = "transparent" if a == 0 else (r << 16) + (g << 8) + b | (a << 24)
                 color_counts[color] = color_counts.get(color, 0) + 1
             ignored_colors = {c for c, count in color_counts.items() if count > width // 2 or c in common_colors}
-            strip_colors = []
-            strip_start = None
-            in_strip = False
+            adjacent_colors = set()
+            if y > 0:
+                adjacent_colors.update(row_colors[y - 1])
+            if y < height - 1:
+                adjacent_colors.update(row_colors[y + 1])
+            ignored_colors.update(adjacent_colors)
+
+            has_valid_strip = False
+            valid_strip_colors = []
+            start_x = 0
+            end_x = 0
             for x in range(width):
                 r, g, b, a = pixels[x, y]
                 color = "transparent" if a == 0 else (r << 16) + (g << 8) + b | (a << 24)
                 if color not in ignored_colors:
-                    if not in_strip:
-                        strip_start = x
-                        in_strip = True
-                    strip_colors.append(color)
-                elif in_strip:
+                    strip_colors = [color]
+                    for pos in range(x + 1, width):
+                        r2, g2, b2, a2 = pixels[pos, y]
+                        color2 = "transparent" if a2 == 0 else (r2 << 16) + (g2 << 8) + b2 | (a2 << 24)
+                        if color2 not in ignored_colors:
+                            strip_colors.append(color2)
+                        else:
+                            break
                     if len(set(strip_colors) - {"transparent"}) >= 5:
-                        if self._is_valid_strip(pixels, y, strip_start, x - 1, strip_colors, height):
-                            full_strip_colors = self._get_full_strip_colors(pixels, y, strip_start, x - 1, ignored_colors)
-                            if len(set(full_strip_colors) - {"transparent"}) >= 5:
-                                palette_strips.append(full_strip_colors)
-                                self.strip_data.append((y, strip_start, x - 1))
-                    strip_colors = []
-                    in_strip = False
-            if in_strip and len(set(strip_colors) - {"transparent"}) >= 5:
-                if self._is_valid_strip(pixels, y, strip_start, width - 1, strip_colors, height):
-                    full_strip_colors = self._get_full_strip_colors(pixels, y, strip_start, width - 1, ignored_colors)
-                    if len(set(full_strip_colors) - {"transparent"}) >= 5:
-                        palette_strips.append(full_strip_colors)
-                        self.strip_data.append((y, strip_start, width - 1))
+                        if self._is_valid_strip(pixels, y, x, pos - 1, strip_colors, height):
+                            has_valid_strip = True
+                            self.strip_data.append((y, x, pos - 1))
+                            valid_strip_colors = strip_colors
+                            start_x, end_x = x, pos - 1
+                            break
+            if has_valid_strip and y not in palette_rows:
+                palette_rows.append((y, start_x, end_x, valid_strip_colors))
 
-        self.uploaded_palette_strips = palette_strips
+        self.uploaded_palette_strips = []
+        for y, start_x, end_x, valid_strip_colors in palette_rows:
+            strip_colors = []
+            adjacent_colors = set()
+            if y > 0:
+                for x in range(width):
+                    r, g, b, a = pixels[x, y - 1]
+                    color = "transparent" if a == 0 else (r << 16) + (g << 8) + b | (a << 24)
+                    adjacent_colors.add(color)
+            if y < height - 1:
+                for x in range(width):
+                    r, g, b, a = pixels[x, y + 1]
+                    color = "transparent" if a == 0 else (r << 16) + (g << 8) + b | (a << 24)
+                    adjacent_colors.add(color)
+            for x in range(start_x, end_x + 1):
+                r, g, b, a = pixels[x, y]
+                color = "transparent" if a == 0 else (r << 16) + (g << 8) + b | (a << 24)
+                if color in adjacent_colors:
+                    strip_colors.append("transparent")
+                else:
+                    color_str = color if color == "transparent" else f"{color:08X}"
+                    strip_colors.append(color_str)
+            self.uploaded_palette_strips.append(strip_colors)
 
     def _is_valid_strip(self, pixels, y, start_x, end_x, strip_colors, height):
         for pos in range(start_x, end_x + 1):
@@ -445,29 +518,32 @@ class AddCostumeWindow(tk.Toplevel):
             self.uploaded_preview_label.config(text="Failed to display image")
 
     def update_recolor_preview(self):
+        """Update the recolor preview by resizing and panning the precomputed recolor image."""
         self.recolor_preview_canvas.delete("all")
         canvas_width, canvas_height = 300, 200
-        if not self.original_recolor_sheet:
-            self.recolor_preview_label.config(text="No recolor sheet loaded")
+        if not self.recolor_image:
+            self.recolor_preview_label.config(text="No recolor image available")
             return
-        image = self.original_recolor_sheet.copy()
+
         try:
-            costume = json.loads(self.new_costume_text.get("1.0", tk.END).strip())
-            self._apply_palette_swap(image, costume)
-            self.recolor_image = image
-        except json.JSONDecodeError:
-            pass
-        self.recolor_canvas_state.original_width, self.recolor_canvas_state.original_height = image.size
-        self.recolor_canvas_state.zoom_scale = 2 ** self.recolor_zoom_var.get()
-        new_width = int(self.recolor_canvas_state.original_width * self.recolor_canvas_state.zoom_scale)
-        new_height = int(self.recolor_canvas_state.original_height * self.recolor_canvas_state.zoom_scale)
-        image = image.resize((new_width, new_height), Image.Resampling.NEAREST)
-        display_img = Image.new("RGBA", (canvas_width, canvas_height), (0, 0, 0, 0))
-        offset_x, offset_y = self._calculate_offsets(new_width, new_height, canvas_width, canvas_height, self.recolor_canvas_state)
-        display_img.paste(image, (offset_x, offset_y))
-        self.recolor_photo = ImageTk.PhotoImage(display_img)
-        self.recolor_preview_canvas.create_image(0, 0, anchor="nw", image=self.recolor_photo)
-        self.recolor_preview_label.config(text="")
+            img = self.recolor_image.copy()  # Use precomputed image
+            self.recolor_canvas_state.zoom_scale = 2 ** self.recolor_zoom_var.get()
+            new_width = int(self.recolor_canvas_state.original_width * self.recolor_canvas_state.zoom_scale)
+            new_height = int(self.recolor_canvas_state.original_height * self.recolor_canvas_state.zoom_scale)
+            # Prevent resize errors with extreme zoom values
+            if new_width <= 0 or new_height <= 0:
+                self.recolor_preview_label.config(text="Zoom level too extreme")
+                return
+            img = img.resize((new_width, new_height), Image.Resampling.NEAREST)
+            display_img = Image.new("RGBA", (canvas_width, canvas_height), (0, 0, 0, 0))
+            offset_x, offset_y = self._calculate_offsets(new_width, new_height, canvas_width, canvas_height, self.recolor_canvas_state)
+            display_img.paste(img, (offset_x, offset_y))
+            self.recolor_photo = ImageTk.PhotoImage(display_img)
+            self.recolor_preview_canvas.create_image(0, 0, anchor="nw", image=self.recolor_photo)
+            self.recolor_preview_label.config(text="")
+        except Exception as e:
+            print(f"Error updating recolor preview: {str(e)}")
+            self.recolor_preview_label.config(text="Failed to display recolor")
 
     def _apply_palette_swap(self, image, costume):
         palette_swap = costume.get("paletteSwap", {"colors": [], "replacements": []})
@@ -510,38 +586,68 @@ class AddCostumeWindow(tk.Toplevel):
 
     def update_extracted_palette_preview(self):
         self.extracted_palette_canvas.delete("all")
-        canvas_width, canvas_height = 300, 200
-        palette_img = Image.new("RGBA", (canvas_width, canvas_height), (0, 0, 0, 0))
-        draw = ImageDraw.Draw(palette_img)
-        y_offset = 10
         row_height = 45
-        self._draw_palette_strips(draw, y_offset, row_height, self.uploaded_palette_strips, "Uploaded")
-        y_offset += len(self.uploaded_palette_strips) * row_height
-        self._draw_palette_strips(draw, y_offset, row_height, self.original_palette_strips, "Original")
+        
+        uploaded_strips_to_display = self.uploaded_palette_strips[:2]
+        original_strips_to_display = self.original_palette_strips[:2]
+        all_strips = uploaded_strips_to_display + original_strips_to_display
+        
+        if all_strips:
+            max_length = max(len(strip) for strip in all_strips)
+        else:
+            max_length = 0
+        
+        required_width = 20 + max_length * 10  # 10 pixels per color, plus 20 for padding
+        required_height = 20 + len(all_strips) * row_height  # 45 pixels per strip, plus 20 for padding
+        
+        palette_img = Image.new("RGBA", (required_width, required_height), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(palette_img)
+        
+        y_offset = 10
+        self._draw_palette_strips(draw, y_offset, row_height, uploaded_strips_to_display, "Uploaded")
+        y_offset += len(uploaded_strips_to_display) * row_height
+        self._draw_palette_strips(draw, y_offset, row_height, original_strips_to_display, "Original")
+        
         self.extracted_palette_photo = ImageTk.PhotoImage(palette_img)
         self.extracted_palette_canvas.create_image(-self.extracted_canvas_state.pan_x, -self.extracted_canvas_state.pan_y, anchor="nw", image=self.extracted_palette_photo)
         self.extracted_palette_label.config(text="")
 
     def update_converted_palette_preview(self):
         self.converted_palette_canvas.delete("all")
-        canvas_width, canvas_height = 300, 200
+        row_height = 45
+        
         try:
             costume = json.loads(self.new_costume_text.get("1.0", tk.END).strip())
             palette_swap = costume.get("paletteSwap", {"colors": [], "replacements": []})
             palette_swap_pa = costume.get("paletteSwapPA", {"colors": [], "replacements": []})
+            
+            lists = [
+                palette_swap.get("colors", []),
+                palette_swap.get("replacements", []),
+                palette_swap_pa.get("colors", []),
+                palette_swap_pa.get("replacements", [])
+            ]
+            if any(lists):
+                max_length = max(len(lst) for lst in lists)
+            else:
+                max_length = 0
+            
+            required_width = 20 + max_length * 10  # 10 pixels per color, plus 20 for padding
+            required_height = 20 + 4 * row_height  # 4 rows at 45 pixels each, plus 20 for padding
+            
+            palette_img = Image.new("RGBA", (required_width, required_height), (0, 0, 0, 0))
+            draw = ImageDraw.Draw(palette_img)
+            
+            y_offset = 10
+            self._draw_converted_strips(draw, y_offset, row_height, palette_swap, "paletteSwap")
+            y_offset += 2 * row_height
+            self._draw_converted_strips(draw, y_offset, row_height, palette_swap_pa, "paletteSwapPA")
+            
+            self.converted_palette_photo = ImageTk.PhotoImage(palette_img)
+            self.converted_palette_canvas.create_image(-self.converted_canvas_state.pan_x, -self.converted_canvas_state.pan_y, anchor="nw", image=self.converted_palette_photo)
+            self.converted_palette_label.config(text="")
         except json.JSONDecodeError:
             self.converted_palette_label.config(text="Invalid JSON data")
-            return
-        palette_img = Image.new("RGBA", (canvas_width, canvas_height), (0, 0, 0, 0))
-        draw = ImageDraw.Draw(palette_img)
-        y_offset = 10
-        row_height = 45
-        self._draw_converted_strips(draw, y_offset, row_height, palette_swap, "paletteSwap")
-        y_offset += 2 * row_height
-        self._draw_converted_strips(draw, y_offset, row_height, palette_swap_pa, "paletteSwapPA")
-        self.converted_palette_photo = ImageTk.PhotoImage(palette_img)
-        self.converted_palette_canvas.create_image(-self.converted_canvas_state.pan_x, -self.converted_canvas_state.pan_y, anchor="nw", image=self.converted_palette_photo)
-        self.converted_palette_label.config(text="")
 
     def _draw_palette_strips(self, draw, y_offset, row_height, strips, prefix):
         for i, strip in enumerate(strips):
@@ -606,7 +712,7 @@ class AddCostumeWindow(tk.Toplevel):
             costume = json.loads(self.new_costume_text.get("1.0", tk.END).strip())
             
             # Set the costume name in the 'info' field
-            costume['info'] = costume_name
+            costume['info'] = costume_name + " by " + online_name
             
             # Remove 'display_name' if it exists to avoid confusion
             if 'display_name' in costume:
