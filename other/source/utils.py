@@ -5,10 +5,47 @@ import re
 import struct
 import json
 import requests
+from tkinter import messagebox
 import pyparsing as pp
 from pyparsing import *
 import shutil
 import time
+import sys
+import logging
+import logging.handlers
+
+# Setup logging
+logger = logging.getLogger('SSF2CostumeInjector')
+def setup_logging(app_dir, enable_file_logging=True, debug=False):
+    """Set up logging to file and console with rotation and privacy."""
+    logger.setLevel(logging.DEBUG if debug else logging.INFO)
+    
+    for handler in logger.handlers[:]:
+        logger.removeHandler(handler)
+    
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s'))
+    logger.addHandler(console_handler)
+    
+    if enable_file_logging:
+        log_file = os.path.join(app_dir, "log.txt")
+        try:
+            file_handler = logging.handlers.RotatingFileHandler(
+                log_file,
+                maxBytes=1_000_000,
+                backupCount=5,
+                encoding='utf-8'
+            )
+            file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s'))
+            file_handler.flush = lambda: file_handler.stream.flush()
+            logger.addHandler(file_handler)
+            
+            if not os.path.exists(log_file) or os.path.getsize(log_file) == 0:
+                with open(log_file, 'a', encoding='utf-8') as f:
+                    f.write("WARNING: This log file may contain file paths or settings. "
+                           "Review and redact sensitive information before sharing.\n")
+        except Exception as e:
+            logger.error(f"Failed to set up file logging to {log_file}: {e}")
 
 def decompress_ssf(ssf_path, swf_path):
     """Decompress SSF to SWF, following the logic from Main.as."""
@@ -167,6 +204,13 @@ def modify_misc_as(original_as_path, new_as_path, costume_data, character):
     with open(new_as_path, "w", encoding="utf-8") as f:
         f.write(new_content)
     print(f"Modified Misc.as with new costume for {character} at {new_as_path}")
+def resource_path(relative_path):
+    """Resolve path for resources, handling PyInstaller bundles."""
+    try:
+        base_path = sys._MEIPASS
+    except AttributeError:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 def extract_character_names(as_path):
     """Extract character names from Misc.as."""
@@ -258,28 +302,23 @@ def extract_costumes(as_path, character):
 # ... (previous imports and functions remain unchanged)
 
 def format_color_for_as3(color):
-    """Format a color value for AS3 (e.g., 'FFFF0000' or 4294967295 to '0xFFFFFFFF', 'transparent' unchanged)."""
-    if color == "transparent":
-        return "transparent"
-    try:
-        if isinstance(color, str):
-            # Handle string colors (hex format)
-            color_str = color.replace("#", "").replace("0x", "")
-            # Validate hex string (8 characters for RGBA)
-            if len(color_str) == 8 and all(c in "0123456789ABCDEFabcdef" for c in color_str):
-                return f"0x{color_str.upper()}"
-        elif isinstance(color, int):
-            # Handle integer colors, including negative values
-            if color < 0:
-                # Convert negative integer to unsigned 32-bit integer
-                color = color & 0xFFFFFFFF
-            if 0 <= color <= 0xFFFFFFFF:
-                return f"0x{color:08X}"
-        print(f"Invalid color format: {color}, defaulting to 0xFF000000")
-        return "0xFF000000"
-    except Exception as e:
-        print(f"Error formatting color {color}: {str(e)}, defaulting to 0xFF000000")
-        return "0xFF000000"
+    if isinstance(color, str):
+        color_str = color.replace("#", "").replace("0x", "").upper()
+        if not all(c in "0123456789ABCDEF" for c in color_str):
+            raise ValueError(f"Invalid hex characters in {color}")
+        if len(color_str) == 8:
+            color_int = int(color_str, 16)
+            if (color_int & 0xFF000000) == 0:
+                return "0x00000000"
+            return f"0x{color_str}"
+        elif len(color_str) == 6:
+            return f"0x{color_str}FF"  # Assume opaque
+        raise ValueError(f"Invalid hex length: {color}")
+    elif isinstance(color, int):
+        if color == 0 or (color & 0xFF000000) == 0:
+            return "0x00000000"
+        return f"0x{(color & 0xFFFFFFFF):08X}"
+    raise ValueError(f"Invalid color format: {color}")
 
 
 def update_costumes(original_as_path, new_as_path, character, costumes):
@@ -287,20 +326,26 @@ def update_costumes(original_as_path, new_as_path, character, costumes):
     with open(original_as_path, "r", encoding="utf-8") as f:
         content = f.read()
 
+    # Find the character's array initialization
     start_pos = content.find(f'_loc1_["{character}"] = new Array();')
     if start_pos == -1:
         end_of_loc1 = content.rfind('};')
         if end_of_loc1 == -1:
             raise ValueError("Could not find end of _loc1_ array in Misc.as")
         new_content = content[:end_of_loc1] + f'\n         _loc1_["{character}"] = new Array();\n'
+        start_pos = end_of_loc1
     else:
-        pattern = f'_loc1_\\["{re.escape(character)}"\\]\\.push\\({{(.*?)}}\\);'
-        character_entries = list(re.finditer(pattern, content, re.DOTALL))
-        if not character_entries:
-            end_pos = start_pos + len(f'_loc1_["{character}"] = new Array();')
-        else:
-            end_pos = character_entries[-1].end()
         new_content = content[:start_pos] + f'_loc1_["{character}"] = new Array();\n'
+
+    # Parse existing costumes to preserve their format
+    pattern = f'_loc1_\\["{re.escape(character)}"\\]\\.push\\({{(.*?)}}\\);'
+    character_entries = list(re.finditer(pattern, content, re.DOTALL))
+    existing_costume_strings = [match.group(0) for match in character_entries]
+
+    # Compare costumes to identify new or edited ones
+    existing_costumes = extract_costumes(original_as_path, character)
+    new_costume_entries = []
+    edited_indices = []
 
     for i, costume in enumerate(costumes):
         print(f"Processing costume {i} ({costume.get('display_name', f'Costume #{i}')})")
@@ -315,65 +360,136 @@ def update_costumes(original_as_path, new_as_path, character, costumes):
                 if not (isinstance(costume[key]["colors"], list) and isinstance(costume[key]["replacements"], list)):
                     raise ValueError(f"Costume {i} {key} has non-list subkeys: colors={type(costume[key]['colors'])}, replacements={type(costume[key]['replacements'])}")
 
-            palette_swap_colors = ",".join(int_to_color_str(color_to_int(color)) for color in costume["paletteSwap"]["colors"])
-            palette_swap_replacements = ",".join(int_to_color_str(color_to_int(color)) for color in costume["paletteSwap"]["replacements"])
-            palette_swap_pa_colors = ",".join(int_to_color_str(color_to_int(color)) for color in costume["paletteSwapPA"]["colors"])
-            palette_swap_pa_replacements = ",".join(int_to_color_str(color_to_int(color)) for color in costume["paletteSwapPA"]["replacements"])
+            # Adjust paletteSwapPA.replacements to preserve transparency from paletteSwap
+            palette_swap_colors = [color_to_int(c) for c in costume["paletteSwap"]["colors"]]
+            palette_swap_replacements = [color_to_int(c) for c in costume["paletteSwap"]["replacements"]]
+            palette_swap_pa_colors = [color_to_int(c) for c in costume["paletteSwapPA"]["colors"]]
+            palette_swap_pa_replacements = [color_to_int(c) for c in costume["paletteSwapPA"]["replacements"]]
 
-            new_content += f'         _loc1_["{character}"].push({{\n'
+            # Map original colors to their replacements in paletteSwap
+            color_map_swap = dict(zip(palette_swap_colors, palette_swap_replacements))
+            # Ensure paletteSwapPA preserves transparency
+            for j, (orig, repl) in enumerate(zip(palette_swap_pa_colors, palette_swap_pa_replacements)):
+                if orig in color_map_swap and color_map_swap[orig] == 0:
+                    if repl != 0:
+                        print(f"Preserving transparency for color {orig} in paletteSwapPA at index {j}")
+                        palette_swap_pa_replacements[j] = 0
 
-            for key, value in costume.items():
-                if key not in ["paletteSwap", "paletteSwapPA", "display_name"]:
-                    if key == "base":
-                        new_content += f'            "{key}":{str(value).lower()},\n'
-                    elif isinstance(value, str):
-                        new_content += f'            "{key}":"{value}",\n'
-                    else:
-                        new_content += f'            "{key}":{value},\n'
+            # Convert to decimal strings for ActionScript
+            palette_swap_colors_str = ",".join(format_color_for_as3_decimal(color) for color in palette_swap_colors)
+            palette_swap_replacements_str = ",".join(format_color_for_as3_decimal(color) for color in palette_swap_replacements)
+            palette_swap_pa_colors_str = ",".join(format_color_for_as3_decimal(color) for color in palette_swap_pa_colors)
+            palette_swap_pa_replacements_str = ",".join(format_color_for_as3_decimal(color) for color in palette_swap_pa_replacements)
 
-            new_content += f'            "paletteSwapPA":{{' \
-                           f'\n               "colors":[{palette_swap_colors}],' \
-                           f'\n               "replacements":[{palette_swap_replacements}]' \
-                           f'\n            }},\n' \
-                           f'            "paletteSwap":{{' \
-                           f'\n               "colors":[{palette_swap_pa_colors}],' \
-                           f'\n               "replacements":[{palette_swap_pa_replacements}]' \
-                           f'\n            }}\n' \
-                           f'         }});\n'
+            # Check if costume is new or edited
+            if i < len(existing_costumes):
+                import json
+                current_json = json.dumps(costume, sort_keys=True)
+                original_json = json.dumps(existing_costumes[i], sort_keys=True)
+                if current_json != original_json:
+                    edited_indices.append(i)
+                    entry = f'         _loc1_["{character}"].push({{\n'
+                    for key, value in costume.items():
+                        if key not in ["paletteSwap", "paletteSwapPA", "display_name"]:
+                            if key == "base":
+                                entry += f'            "{key}":{str(value).lower()},\n'
+                            elif isinstance(value, str):
+                                entry += f'            "{key}":"{value}",\n'
+                            else:
+                                entry += f'            "{key}":{value},\n'
+                    entry += f'            "paletteSwap":{{' \
+                             f'\n               "colors":[{palette_swap_colors_str}],' \
+                             f'\n               "replacements":[{palette_swap_replacements_str}]' \
+                             f'\n            }},\n' \
+                             f'            "paletteSwapPA":{{' \
+                             f'\n               "colors":[{palette_swap_pa_colors_str}],' \
+                             f'\n               "replacements":[{palette_swap_pa_replacements_str}]' \
+                             f'\n            }}\n' \
+                             f'         }});\n'
+                    new_costume_entries.append(entry)
+                else:
+                    if i < len(existing_costume_strings):
+                        new_costume_entries.append(existing_costume_strings[i])
+            else:
+                entry = f'         _loc1_["{character}"].push({{\n'
+                for key, value in costume.items():
+                    if key not in ["paletteSwap", "paletteSwapPA", "display_name"]:
+                        if key == "base":
+                            entry += f'            "{key}":{str(value).lower()},\n'
+                        elif isinstance(value, str):
+                            entry += f'            "{key}":"{value}",\n'
+                        else:
+                            entry += f'            "{key}":{value},\n'
+                entry += f'            "paletteSwap":{{' \
+                         f'\n               "colors":[{palette_swap_colors_str}],' \
+                         f'\n               "replacements":[{palette_swap_replacements_str}]' \
+                         f'\n            }},\n' \
+                         f'            "paletteSwapPA":{{' \
+                         f'\n               "colors":[{palette_swap_pa_colors_str}],' \
+                         f'\n               "replacements":[{palette_swap_pa_replacements_str}]' \
+                         f'\n            }}\n' \
+                         f'         }});\n'
+                new_costume_entries.append(entry)
             print(f"Successfully processed costume {i}")
         except Exception as e:
             print(f"Error processing costume {i} ({costume.get('display_name', f'Costume #{i}')}): {str(e)}")
             raise
 
-    if start_pos == -1:
-        new_content += content[end_of_loc1:]
-    else:
+    # Combine preserved and new/edited entries
+    new_content += "".join(new_costume_entries)
+
+    # Append the rest of the original content
+    if start_pos != -1 and character_entries:
+        end_pos = character_entries[-1].end()
         new_content += content[end_pos:]
+    else:
+        new_content += content[start_pos:]
 
     with open(new_as_path, "w", encoding="utf-8") as f:
         f.write(new_content)
     print(f"Updated costumes for {character} at {new_as_path}")
 
+def format_color_for_as3_decimal(color):
+    if isinstance(color, str):
+        # Convert hex string to integer
+        color_str = color.replace("#", "").replace("0x", "")
+        if not all(c in "0123456789ABCDEFabcdef" for c in color_str):
+            raise ValueError(f"Invalid hex characters in {color}")
+        color_int = int(color_str, 16)
+        if len(color_str) == 6:
+            color_int = (color_int << 8) | 0xFF  # Assume opaque
+    elif isinstance(color, int):
+        color_int = color
+    else:
+        raise ValueError(f"Invalid color format: {color}")
+    # Return the decimal integer as a string
+    if color_int == 0 or (color_int & 0xFF000000) == 0:
+        return "0"
+    return str(color_int & 0xFFFFFFFF)
 def color_to_int(color):
-    """Convert a color (string or int) to a 32-bit integer, with -1 for transparent."""
-    if color == "transparent":
-        return -1
-    try:
-        if isinstance(color, str):
-            color_str = color.replace("#", "").replace("0x", "")
-            if len(color_str) == 8:
-                return int(color_str, 16)
-            elif len(color_str) == 6:
-                return int(color_str + "FF", 16)  # Assume fully opaque
-        elif isinstance(color, int):
-            return color & 0xFFFFFFFF
-        raise ValueError(f"Invalid color: {color}")
-    except Exception as e:
-        print(f"Error converting color {color}: {str(e)}")
-        return 0xFF000000
+    if isinstance(color, str):
+        color_str = color.replace("#", "").replace("0x", "")
+        if not all(c in "0123456789ABCDEFabcdef" for c in color_str):
+            raise ValueError(f"Invalid hex characters in {color}")
+        if len(color_str) == 8:
+            color_int = int(color_str, 16)
+            # Check if alpha is 0 (transparent)
+            if (color_int & 0xFF000000) == 0:
+                return 0
+            return color_int
+        elif len(color_str) == 6:
+            print(f"Warning: 6-digit hex {color} assumed opaque (alpha=FF)")
+            return int(color_str + "FF", 16)
+        raise ValueError(f"Invalid hex length: {color}")
+    elif isinstance(color, int):
+        # If color is 0 or has alpha 0, treat as transparent
+        if color == 0 or (color & 0xFF000000) == 0:
+            return 0
+        return color & 0xFFFFFFFF
+    raise ValueError(f"Invalid color type: {type(color)}")
 def int_to_color_str(color_int):
-    
-    # Ensure unsigned 32-bit integer
+    if color_int == 0:
+        return "0x00000000"
     color_int = color_int & 0xFFFFFFFF
     return f"0x{color_int:08X}"
 def load_costumes_from_file(file_path):

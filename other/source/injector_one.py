@@ -1,7 +1,7 @@
-### injector_one.py
 import sys
 import os
 import tkinter as tk
+import time
 
 # Set the working directory to the script's directory
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -21,6 +21,9 @@ from utils import decompress_ssf, extract_misc_as, modify_misc_as, inject_misc_a
 if __name__ == "__main__":
     FFDEC_JAR = "C:\\Program Files (x86)\\FFDec\\ffdec.jar"
     JAVA_PATH = "java"
-
-    app = SSF2ModGUI()    
+    
+    start_time = time.perf_counter()
+    app = SSF2ModGUI()
+    end_time = time.perf_counter()
+    print(f"Application loading time: {end_time - start_time:.2f} seconds")
     app.mainloop()
