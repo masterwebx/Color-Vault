@@ -2745,5 +2745,42 @@
                 -9009409
             ]
         }
+    },
+    {
+        "info": "Trans GW by Sonicant",
+        "paletteSwapPA": {
+            "colors": [
+                "0xFFFFFFFF",
+                "0xFFBFBFBF",
+                "0xFF7F7F7F",
+                "0xFF3F3F3F",
+                "0xFF545454",
+                "0xFF262626"
+            ],
+            "replacements": [
+                "0xFFFFFFFF",
+                "0xFFC5EBF9",
+                "0xFF5BCEFA",
+                "0xFF377D96",
+                "0xFF49A5C6",
+                "0xFFF5A9B8"
+            ]
+        },
+        "paletteSwap": {
+            "colors": [
+                "0xFFFFFFFF",
+                "0xFFA5A5A5",
+                "0xFF515151",
+                "0xFF636363",
+                "0xFF262626"
+            ],
+            "replacements": [
+                "0xFFFFFFFF",
+                "0xFF5BCEFA",
+                "0xFF377D96",
+                "0xFFF5A9B8",
+                "0xFFF5A9B8"
+            ]
+        }
     }
 ]
