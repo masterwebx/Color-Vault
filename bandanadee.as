@@ -21599,17 +21599,6 @@
         }
     },
     {
-        "info": "by cl1v3",
-        "paletteSwap": {
-            "colors": [],
-            "replacements": []
-        },
-        "paletteSwapPA": {
-            "colors": [],
-            "replacements": []
-        }
-    },
-    {
         "info": "by alexstartgame",
         "paletteSwap": {
             "colors": [
@@ -26869,28 +26858,6 @@
                 -33448,
                 -35816
             ]
-        }
-    },
-    {
-        "info": "by cl1v3",
-        "paletteSwap": {
-            "colors": [],
-            "replacements": []
-        },
-        "paletteSwapPA": {
-            "colors": [],
-            "replacements": []
-        }
-    },
-    {
-        "info": "by cl1v3",
-        "paletteSwap": {
-            "colors": [],
-            "replacements": []
-        },
-        "paletteSwapPA": {
-            "colors": [],
-            "replacements": []
         }
     },
     {
