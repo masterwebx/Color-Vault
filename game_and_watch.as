@@ -81,5 +81,42 @@
                 "0xFF262626"
             ]
         }
+    },
+    {
+        "info": "Shadow G&M by Ashlenio",
+        "paletteSwapPA": {
+            "colors": [
+                "0xFFFFFFFF",
+                "0xFFBFBFBF",
+                "0xFF7F7F7F",
+                "0xFF3F3F3F",
+                "0xFF545454",
+                "0xFF262626"
+            ],
+            "replacements": [
+                "0xFF000000",
+                "0xFF000000",
+                "0xFF090909",
+                "0xFFAE00FF",
+                "0xFFAE00FF",
+                "0xFFAE00FF"
+            ]
+        },
+        "paletteSwap": {
+            "colors": [
+                "0xFFFFFFFF",
+                "0xFFA5A5A5",
+                "0xFF515151",
+                "0xFF636363",
+                "0xFF262626"
+            ],
+            "replacements": [
+                "0xFF000000",
+                "0xFF000000",
+                "0xFF650094",
+                "0xFF636363",
+                "0xFFAE00FF"
+            ]
+        }
     }
 ]
