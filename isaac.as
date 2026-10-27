@@ -458,7 +458,8 @@
         "0xFF5A4820",
         "0xFFF580C9"
       ]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Trans Isaac by Sonicant",
@@ -919,7 +920,8 @@
         "0xFF5A4820",
         "0xFFAD7226"
       ]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Erdrick DQ3 by Sonicant",
@@ -1380,7 +1382,8 @@
         "0xFF5A4820",
         "0xFFAD7226"
       ]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Erdrick by Sonicant",
@@ -1841,7 +1844,8 @@
         "0xFF5A4820",
         "0xFFAD7226"
       ]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Asta by Sonicant",
@@ -2302,7 +2306,8 @@
         "0xFF5A4820",
         "0xFFAD7226"
       ]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Eren Jaeger by Sonicant",
@@ -2763,7 +2768,8 @@
         "0xFF5A4820",
         "0xFFAD7226"
       ]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Crono from chrono trigger Remake (LBP) by Meminpinpin",
@@ -3224,7 +3230,8 @@
         "0xFF5A4820",
         "0xFF875514"
       ]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Shulk Issac Remake (Zoey) by Meminpinpin",
@@ -3685,7 +3692,8 @@
         "0xFF5A4820",
         "0xFFC42B49"
       ]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Trans Isaac v2 by Sonicant",
@@ -4146,7 +4154,8 @@
         "0xFF5A4820",
         "0xFFAD7226"
       ]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Saturos (Golden Sun) by Meminpinpin",
@@ -4608,6 +4617,7 @@
         "0xFFAD7226"
       ]
     },
-    "display_name": "Saturos (Golden Sun) by Meminpinpin"
+    "display_name": "Saturos (Golden Sun) by Meminpinpin",
+    "ssf2Version": "1.4.0.1"
   }
 ]

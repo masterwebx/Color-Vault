@@ -8,7 +8,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-7168, -6254848, -7504381, -9280000, -9280000, -13620476]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "by .lunaro",
@@ -19,7 +20,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-65536, -590080, -14745856, -16741633, -14745856]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "code by yoshihaze",
@@ -30,7 +32,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-11053057, -16776961, -16777002, -16777055, -16777088, -16777168]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "by yatomate",
@@ -41,7 +44,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-65390, -5686427, -6881242, -11665408, -14286336, -12320768]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "by yoshihaze",
@@ -52,7 +56,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-38401, -384774, -54785, -712459, -2876460, -7598708]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Golden Game & Watch by Glace's Tarot",
@@ -63,7 +68,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-2037554, -2434649, -3163274, -7771383, -3037124, -13885184]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Void Game & Watch by Glace's Tarot",
@@ -74,7 +80,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-14871249, -14408360, -13679479, -9006093, -13805630, -2958085]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Multiman Smash G&W by KnightKL",
@@ -85,7 +92,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-16777216, -16777216, -15921907, -11711155, -13092808, -10066330]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "3d Deafult G&W by Mario322",
@@ -96,7 +104,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-14079703, -14737633, -15461356, -16119286, -15856114, -6448228]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Rad Red Game and Watch by That One Fellow",
@@ -107,7 +116,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-54241, -54241, -5432315, -8514811, -12187134, -12184832]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Nintendo Switch by Godgear",
@@ -118,7 +128,8 @@
     "paletteSwapPA": {
       "colors": [-4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-65536, -65536, -1, -1, -1]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Mr Gum and Watch by Glace's Tarot",
@@ -129,7 +140,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-146947, -1213237, -2605678, -8052399, -5168270, -9693883]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "1.1 Wine G & W by Glace's Tarot",
@@ -140,7 +152,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-9502697, -9502697, -9502697, -9502697, -7916216, -4947575]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Team DanTum Game & Watch by Jack DX",
@@ -151,7 +164,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-6099172, -8007678, -8007678, -12227328, -13150720, -14540254]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Phantom Ruby by ThatOneGamingDude",
@@ -162,7 +176,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-986896, -1007416, -1048168, -7339640, -7339640, -12582552]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Indigo Game n Watch by RRMG",
@@ -173,7 +188,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-14155626, -14811024, -15466421, -16121819, -15925199, -16383978]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Reverse Dark Mode Discord by Glace's Tarot",
@@ -184,7 +200,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-9204777, -9204777, -9204777, -9204777, -9204777, -13223617]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Reverse Discord by Glace's Tarot",
@@ -195,7 +212,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-9204777, -9204777, -9204777, -9204777, -9204777, -1]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Discord Game and Watchi by Glace's Tarot",
@@ -206,7 +224,8 @@
     "paletteSwapPA": {
       "colors": [-4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-1, -1, -1, -1, -9204777]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Dark Mode Discord Game and Watch by Glace's Tarot",
@@ -217,7 +236,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-13223617, -13223617, -13223617, -13223617, -13223617, -9204777]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Discord background by meh_Ok",
@@ -228,7 +248,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-13223616, -13223616, -13223616, -13223616, -13223616, -13223616]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Red Palette - Game & Watch by RRMG",
@@ -239,7 +260,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-4980736, -4980736, -4980736, -4980736, -4980736, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Orange Palette - Game & Watch by RRMG",
@@ -250,7 +272,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-3059456, -3059456, -3059456, -3059456, -3059456, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Yellow Palette - Game & Watch by RRMG",
@@ -261,7 +284,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-5132544, -5132544, -5132544, -5132544, -5132544, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Lime Palette - Game & Watch by RRMG",
@@ -272,7 +296,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-13185024, -13185024, -13185024, -13185024, -13185024, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Green Palette - Game & Watch by RRMG",
@@ -283,7 +308,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-16755456, -16755456, -16755456, -16755456, -16755456, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Teal Palette - Game & Watch by RRMG",
@@ -294,7 +320,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-16743844, -16743844, -16743844, -16743844, -16743844, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Cyan Palette - Game & Watch by RRMG",
@@ -305,7 +332,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-16735572, -16735572, -16735572, -16735572, -16735572, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Blue Palette - Game & Watch by RRMG",
@@ -316,7 +344,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-16758324, -16758324, -16758324, -16758324, -16758324, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Purple-Violet Palette - Game & Watch by RRMG",
@@ -327,7 +356,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-8191745, -8191745, -8191745, -8191745, -8191745, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Pink-Magenta-Rose Palette - Game & Watch by RRMG",
@@ -338,7 +368,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-2094737, -2094737, -2094737, -2094737, -2094737, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Crimson-Maroon Palette - Game & Watch by RRMG",
@@ -349,7 +380,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-8650726, -8650726, -8650726, -8650726, -8650726, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Navy Palette - Game & Watch by RRMG",
@@ -360,7 +392,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-16777119, -16777119, -16777119, -16777119, -16777119, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Emerald Palette - Game & Watch by RRMG",
@@ -371,7 +404,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-16766464, -16766464, -16766464, -16766464, -16766464, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Brown Palette - Game & Watch by RRMG",
@@ -382,7 +416,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-9691904, -9691904, -9691904, -9691904, -9691904, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta White Palette - Game & Watch by RRMG",
@@ -393,7 +428,8 @@
     "paletteSwapPA": {
       "colors": [-4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-1, -1, -1, -1, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Gray Palette - Game & Watch by RRMG",
@@ -404,7 +440,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-7434610, -7434610, -7434610, -7434610, -7434610, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Beta Metal Palette - Game & Watch by RRMG",
@@ -415,7 +452,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-12105913, -12105913, -12105913, -12105913, -12105913, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PMFE Hue 1 - Game & Watch by RRMG",
@@ -426,7 +464,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-12955648, -12955648, -12955648, -12955648, -12955648, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PMFE Hue 2 - Game & Watch by RRMG",
@@ -437,7 +476,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-3202816, -3202816, -3202816, -3202816, -3202816, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PMFE Hue 3 - Game & Watch by RRMG",
@@ -448,7 +488,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-7424, -7424, -7424, -7424, -7424, -10142464]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PMFE Hue 4 - Game & Watch by RRMG",
@@ -459,7 +500,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-15466497, -15466497, -15466497, -15466497, -15466497, -14596283]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PMFE Hue 5 - Game & Watch by RRMG",
@@ -470,7 +512,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-16711790, -16711790, -16711790, -16711790, -16711790, -15643856]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PMFE Hue 6 - Game & Watch by RRMG",
@@ -481,7 +524,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-6223444, -6223444, -6223444, -6223444, -6223444, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PMFE Hue 7 - Game & Watch by RRMG",
@@ -492,7 +536,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-6398479, -6398479, -6398479, -6398479, -6398479, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PMFE Hue 8 - Game & Watch by RRMG",
@@ -503,7 +548,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-33793, -33793, -33793, -33793, -33793, -10012305]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PMFE Hue 9 - Game & Watch by RRMG",
@@ -514,7 +560,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-21117, -21117, -21117, -21117, -21117, -10799052]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PMFE Hue 10 - Game & Watch by RRMG",
@@ -525,7 +572,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-6211840, -6211840, -6211840, -6211840, -6211840, -11461888]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PMFE Hue 11 - Game & Watch by RRMG",
@@ -536,7 +584,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-7434610, -7434610, -7434610, -7434610, -7434610, -12303292]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PMFE Hue 12 - Game & Watch by RRMG",
@@ -547,7 +596,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-13092808, -13092808, -13092808, -13092808, -13092808, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PMFE Hue 13 - Game & Watch by RRMG",
@@ -558,7 +608,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-16777216, -16777216, -16777216, -16777216, -16777216, -16777216]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PRSA Hue 1 - Game & Watch by RRMG",
@@ -569,7 +620,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2134982978]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PRSA Hue 2 - Game & Watch by RRMG",
@@ -580,7 +632,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-13808896, -13808896, -13808896, -13808896, -13808896, -4981142]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PRSA Hue 3 - Game & Watch by RRMG",
@@ -591,7 +644,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-4845032, -4845032, -4845032, -4845032, -4845032, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PRSA Hue 4 - Game & Watch by RRMG",
@@ -602,7 +656,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-14392826, -14392826, -14392826, -14392826, -14392826, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "PRSA Hue 5 - Game & Watch by RRMG",
@@ -613,7 +668,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-14928752, -14928752, -14928752, -14928752, -14928752, -5395027]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "by alexstartgame",
@@ -624,7 +680,8 @@
     "paletteSwapPA": {
       "colors": [-4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-1, -2228225, -8544257, -6436353, -10982163]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "by alexstartgame",
@@ -635,7 +692,8 @@
     "paletteSwapPA": {
       "colors": [-4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-2228225, -6436353, -8544257, -7881217, -10982163]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "by alexstartgame",
@@ -646,7 +704,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-5526697, -9737449, -13948160, -16777216, -16777216, -16777216]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "by alexstartgame",
@@ -657,7 +716,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-8504944, -8504944, -8504944, -8504944, -8504944, -8504944]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Ultra Instinct GAMER? by alexstartgame",
@@ -668,7 +728,8 @@
     "paletteSwapPA": {
       "colors": [-4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-1973761, -6184509, -10395261, -9013608, -12040086]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "KaiokenGamer? by alexstartgame",
@@ -679,7 +740,8 @@
     "paletteSwapPA": {
       "colors": [-4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-32640, -3848628, -8388604, -7072484, -8388608]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "FisherMan From FNAF World? by alexstartgame",
@@ -690,7 +752,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-1019528, -1019528, -1019528, -1019528, -1019528, -8388608]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Blue vaporwave by Cimten",
@@ -701,7 +764,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-5832708, -6438913, -15692164, -16758191, -8570007, -14002804, -16764892]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Translucent Cyan G&W by NamelessVega_Nss.V",
@@ -712,7 +776,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-2030031571, -2030031571, -2030031571, -2030031571, -16728900, -16711681]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Vaporwave/ Pastel GW by Ploosh",
@@ -723,7 +788,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-16658946, -16729857, -16729857, -16739073, -16739073, -11992833]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Diamond G&W by Mario322",
@@ -734,7 +800,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-2883588, -7012361, -9056825, -12550278, -11299183, -14665417]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Original G&W Skin by Mario322",
@@ -745,7 +812,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-9048742, -14450774, -13425750, -10419620, -8692334, -732114]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Bronze G&W by Mario322",
@@ -756,7 +824,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-30680, -4303616, -7980032, -12115968, -11065600, -12575488]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Demon G&W by Mario322",
@@ -767,7 +836,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-12648443, -9764856, -4456436, -1550494, -2671288, -1067334]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Emerald G&W by Glace's Tarot",
@@ -778,7 +848,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-3735582, -8785233, -13904521, -13726876, -13328782, -15185098]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Phantom Ruby by Glace's Tarot",
@@ -789,7 +860,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-13041635, -7991984, -2872696, -3050341, -3448435, -1592119]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Outline Game & Watch by Zaaravugotasxicesuelpicudactibie",
@@ -800,7 +872,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [986895, 986895, 986895, 986895, 986895, -16645630]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Dozo Haiki GnW by Glace's Tarot",
@@ -811,7 +884,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-3928296, -7402478, -12253943, -14677747, -16317178, -3856]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Mr Game and Watch (Mario Maker) by Samur_Game224",
@@ -822,7 +896,8 @@
     "paletteSwapPA": {
       "colors": [-1, -4210753, -8421505, -12632257, -11250604, -14277082],
       "replacements": [-16777216, -16777216, -16777216, -16777216, -16777216, -9009409]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Trans GW by Sonicant",
@@ -859,7 +934,8 @@
         "0xFFF5A9B8",
         "0xFFF5A9B8"
       ]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Nickelodeon Game and Watch by Sonicant",
@@ -870,7 +946,8 @@
     "paletteSwapPA": {
       "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
       "replacements": [-36096, -36096, -36096, -36096, -36096, -460552]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Heartless GW by Sonicant",
@@ -881,7 +958,8 @@
     "paletteSwapPA": {
       "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
       "replacements": [-14866876, -15524806, -15985877, -16578020, -16249053, -858310]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Trans GW v2 by Sonicant",
@@ -918,7 +996,8 @@
         "0xFF5BCEFA",
         "0xFF5BCEFA"
       ]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "virtual watch by Brayxen 075",
@@ -960,7 +1039,8 @@
         "0xFF262626"
       ]
     },
-    "author": "Brayxen 075"
+    "author": "Brayxen 075",
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "gnw 5",
@@ -1001,7 +1081,8 @@
         "0xFF545454",
         "0xFF262626"
       ]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Shadow G&M by Ashlenio",
@@ -1038,7 +1119,8 @@
         "0xFF636363",
         "0xFFAE00FF"
       ]
-    }
+    },
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "gnw 3 by brayxen 075",
@@ -1050,7 +1132,8 @@
       "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
       "replacements": [4280517259, 4280117121, 4279651183, 4278521916, 4278986063, 4278190626]
     },
-    "display_name": "gnw 3 by brayxen 075"
+    "display_name": "gnw 3 by brayxen 075",
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "gnw 2 by brayxen 075",
@@ -1062,7 +1145,8 @@
       "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
       "replacements": [4282918288, 4282193524, 4281536103, 4281335864, 4281993042, 4281860148]
     },
-    "display_name": "gnw 2 by brayxen 075"
+    "display_name": "gnw 2 by brayxen 075",
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "gnw 8 by brayxen 075",
@@ -1074,7 +1158,8 @@
       "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
       "replacements": [4294798335, 4292953827, 4290913477, 4287627666, 4292220952, 4289396993]
     },
-    "display_name": "gnw 8 by brayxen 075"
+    "display_name": "gnw 8 by brayxen 075",
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "gnw 7 by brayxen 075",
@@ -1086,7 +1171,8 @@
       "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
       "replacements": [4280095602, 4279701086, 4278977861, 4278452265, 4293104143, 4289621252]
     },
-    "display_name": "gnw 7 by brayxen 075"
+    "display_name": "gnw 7 by brayxen 075",
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "gnw 4 by brayxen 075",
@@ -1098,7 +1184,8 @@
       "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
       "replacements": [4291856968, 4289028126, 4286923008, 4284561424, 4283108665, 4280418328]
     },
-    "display_name": "gnw 4 by brayxen 075"
+    "display_name": "gnw 4 by brayxen 075",
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "gnw 10 by brayxen 075",
@@ -1110,7 +1197,8 @@
       "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
       "replacements": [4294946964, 4294937184, 4291584315, 4288161792, 4279571476, 4278190080]
     },
-    "display_name": "gnw 10 by brayxen 075"
+    "display_name": "gnw 10 by brayxen 075",
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "gnw 9 by brayxen 075",
@@ -1122,7 +1210,8 @@
       "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
       "replacements": [4294961590, 4294105243, 4291276662, 4288316236, 4279704479, 4278190947]
     },
-    "display_name": "gnw 9 by brayxen 075"
+    "display_name": "gnw 9 by brayxen 075",
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "platino gwn by brayxen 075",
@@ -1134,7 +1223,8 @@
       "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
       "replacements": [4294967295, 4286481889, 4282468242, 4280295996, 4281217368, 4279243038]
     },
-    "display_name": "platino gwn by brayxen 075"
+    "display_name": "platino gwn by brayxen 075",
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "gnw 12 by brayxen 075",
@@ -1146,7 +1236,8 @@
       "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
       "replacements": [4286644161, 4283818910, 4280597362, 4278359630, 4294950953, 4293107712]
     },
-    "display_name": "gnw 12 by brayxen 075"
+    "display_name": "gnw 12 by brayxen 075",
+    "ssf2Version": "1.4.0.1"
   },
   {
     "info": "gnw 11 by brayxen 075",
@@ -1158,6 +1249,7 @@
       "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
       "replacements": [4285640191, 4283073746, 4281295009, 4278201705, 4291414473, 4288322202]
     },
-    "display_name": "gnw 11 by brayxen 075"
+    "display_name": "gnw 11 by brayxen 075",
+    "ssf2Version": "1.4.0.1"
   }
 ]
