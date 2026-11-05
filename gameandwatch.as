@@ -902,38 +902,12 @@
   {
     "info": "Trans GW by Sonicant",
     "paletteSwapPA": {
-      "colors": [
-        "0xFFFFFFFF",
-        "0xFFBFBFBF",
-        "0xFF7F7F7F",
-        "0xFF3F3F3F",
-        "0xFF545454",
-        "0xFF262626"
-      ],
-      "replacements": [
-        "0xFFFFFFFF",
-        "0xFFC5EBF9",
-        "0xFF5BCEFA",
-        "0xFF377D96",
-        "0xFF49A5C6",
-        "0xFFF5A9B8"
-      ]
+      "colors": ["0xFFFFFFFF", "0xFFBFBFBF", "0xFF7F7F7F", "0xFF3F3F3F", "0xFF545454", "0xFF262626"],
+      "replacements": ["0xFFFFFFFF", "0xFFC5EBF9", "0xFF5BCEFA", "0xFF377D96", "0xFF49A5C6", "0xFFF5A9B8"]
     },
     "paletteSwap": {
-      "colors": [
-        "0xFFFFFFFF",
-        "0xFFA5A5A5",
-        "0xFF515151",
-        "0xFF636363",
-        "0xFF262626"
-      ],
-      "replacements": [
-        "0xFFFFFFFF",
-        "0xFF5BCEFA",
-        "0xFF377D96",
-        "0xFFF5A9B8",
-        "0xFFF5A9B8"
-      ]
+      "colors": ["0xFFFFFFFF", "0xFFA5A5A5", "0xFF515151", "0xFF636363", "0xFF262626"],
+      "replacements": ["0xFFFFFFFF", "0xFF5BCEFA", "0xFF377D96", "0xFFF5A9B8", "0xFFF5A9B8"]
     },
     "ssf2Version": "1.4.0.1"
   },
@@ -964,80 +938,24 @@
   {
     "info": "Trans GW v2 by Sonicant",
     "paletteSwapPA": {
-      "colors": [
-        "0xFFFFFFFF",
-        "0xFFBFBFBF",
-        "0xFF7F7F7F",
-        "0xFF3F3F3F",
-        "0xFF545454",
-        "0xFF262626"
-      ],
-      "replacements": [
-        "0xFFFFFFFF",
-        "0xFFFFD3DD",
-        "0xFFF5A9B8",
-        "0xFFA8BBD8",
-        "0xFF5BCEFA",
-        "0xFF5BCEFA"
-      ]
+      "colors": ["0xFFFFFFFF", "0xFFBFBFBF", "0xFF7F7F7F", "0xFF3F3F3F", "0xFF545454", "0xFF262626"],
+      "replacements": ["0xFFFFFFFF", "0xFFFFD3DD", "0xFFF5A9B8", "0xFFA8BBD8", "0xFF5BCEFA", "0xFF5BCEFA"]
     },
     "paletteSwap": {
-      "colors": [
-        "0xFFFFFFFF",
-        "0xFFA5A5A5",
-        "0xFF515151",
-        "0xFF636363",
-        "0xFF262626"
-      ],
-      "replacements": [
-        "0xFFFFFFFF",
-        "0xFFF5A9B8",
-        "0xFFA8BBD8",
-        "0xFF5BCEFA",
-        "0xFF5BCEFA"
-      ]
+      "colors": ["0xFFFFFFFF", "0xFFA5A5A5", "0xFF515151", "0xFF636363", "0xFF262626"],
+      "replacements": ["0xFFFFFFFF", "0xFFF5A9B8", "0xFFA8BBD8", "0xFF5BCEFA", "0xFF5BCEFA"]
     },
     "ssf2Version": "1.4.0.1"
   },
   {
     "info": "virtual watch by Brayxen 075",
     "paletteSwap": {
-      "replacements": [
-        "0xFF000000",
-        "0xFF000000",
-        "0xFF000000",
-        "0xFFBF0000",
-        "0xFFBF0000",
-        "0xFFFF0000",
-        "0xFFF1CBCD"
-      ],
-      "colors": [
-        "0xFFFFFFFF",
-        "0xFFA5A5A5",
-        "0xFF515151",
-        "0xFF636363",
-        "0xFF262626",
-        "0xFFFF0000",
-        "0xFFF1CBCD"
-      ]
+      "replacements": ["0xFF000000", "0xFF000000", "0xFF000000", "0xFFBF0000", "0xFFBF0000", "0xFFFF0000", "0xFFF1CBCD"],
+      "colors": ["0xFFFFFFFF", "0xFFA5A5A5", "0xFF515151", "0xFF636363", "0xFF262626", "0xFFFF0000", "0xFFF1CBCD"]
     },
     "paletteSwapPA": {
-      "replacements": [
-        "0xFF000000",
-        "0xFF000000",
-        "0xFF000000",
-        "0xFF000000",
-        "0xFF5F0000",
-        "0xFFBF0000"
-      ],
-      "colors": [
-        "0xFFFFFFFF",
-        "0xFFBFBFBF",
-        "0xFF7F7F7F",
-        "0xFF3F3F3F",
-        "0xFF545454",
-        "0xFF262626"
-      ]
+      "replacements": ["0xFF000000", "0xFF000000", "0xFF000000", "0xFF000000", "0xFF5F0000", "0xFFBF0000"],
+      "colors": ["0xFFFFFFFF", "0xFFBFBFBF", "0xFF7F7F7F", "0xFF3F3F3F", "0xFF545454", "0xFF262626"]
     },
     "author": "Brayxen 075",
     "ssf2Version": "1.4.0.1"
@@ -1045,80 +963,24 @@
   {
     "info": "gnw 5",
     "paletteSwap": {
-      "replacements": [
-        "0xFA37002A",
-        "0xFA37002A",
-        "0xFA37002A",
-        "0xFAD7D7D7",
-        "0xFAD7D7D7",
-        "0xFFFF0000",
-        "0xFFF1CBCD"
-      ],
-      "colors": [
-        "0xFFFFFFFF",
-        "0xFFA5A5A5",
-        "0xFF515151",
-        "0xFF636363",
-        "0xFF262626",
-        "0xFFFF0000",
-        "0xFFF1CBCD"
-      ]
+      "replacements": ["0xFA37002A", "0xFA37002A", "0xFA37002A", "0xFAD7D7D7", "0xFAD7D7D7", "0xFFFF0000", "0xFFF1CBCD"],
+      "colors": ["0xFFFFFFFF", "0xFFA5A5A5", "0xFF515151", "0xFF636363", "0xFF262626", "0xFFFF0000", "0xFFF1CBCD"]
     },
     "paletteSwapPA": {
-      "replacements": [
-        "0xFA37002A",
-        "0xFA37002A",
-        "0xFA37002A",
-        "0xFA37002A",
-        "0xFF565656",
-        "0xFAD7D7D7"
-      ],
-      "colors": [
-        "0xFFFFFFFF",
-        "0xFFBFBFBF",
-        "0xFF7F7F7F",
-        "0xFF3F3F3F",
-        "0xFF545454",
-        "0xFF262626"
-      ]
+      "replacements": ["0xFA37002A", "0xFA37002A", "0xFA37002A", "0xFA37002A", "0xFF565656", "0xFAD7D7D7"],
+      "colors": ["0xFFFFFFFF", "0xFFBFBFBF", "0xFF7F7F7F", "0xFF3F3F3F", "0xFF545454", "0xFF262626"]
     },
     "ssf2Version": "1.4.0.1"
   },
   {
     "info": "Shadow G&M by Ashlenio",
     "paletteSwapPA": {
-      "colors": [
-        "0xFFFFFFFF",
-        "0xFFBFBFBF",
-        "0xFF7F7F7F",
-        "0xFF3F3F3F",
-        "0xFF545454",
-        "0xFF262626"
-      ],
-      "replacements": [
-        "0xFF000000",
-        "0xFF000000",
-        "0xFF090909",
-        "0xFFAE00FF",
-        "0xFFAE00FF",
-        "0xFFAE00FF"
-      ]
+      "colors": ["0xFFFFFFFF", "0xFFBFBFBF", "0xFF7F7F7F", "0xFF3F3F3F", "0xFF545454", "0xFF262626"],
+      "replacements": ["0xFF000000", "0xFF000000", "0xFF090909", "0xFFAE00FF", "0xFFAE00FF", "0xFFAE00FF"]
     },
     "paletteSwap": {
-      "colors": [
-        "0xFFFFFFFF",
-        "0xFFA5A5A5",
-        "0xFF515151",
-        "0xFF636363",
-        "0xFF262626"
-      ],
-      "replacements": [
-        "0xFF000000",
-        "0xFF000000",
-        "0xFF650094",
-        "0xFF636363",
-        "0xFFAE00FF"
-      ]
+      "colors": ["0xFFFFFFFF", "0xFFA5A5A5", "0xFF515151", "0xFF636363", "0xFF262626"],
+      "replacements": ["0xFF000000", "0xFF000000", "0xFF650094", "0xFF636363", "0xFFAE00FF"]
     },
     "ssf2Version": "1.4.0.1"
   },
@@ -1393,6 +1255,71 @@
       "replacements": [4278190080, 4278190080, 4278190080, 4278190080, 4278190080, 4278255360]
     },
     "display_name": "Neon Green by Felix",
+    "ssf2Version": "1.4.0.1"
+  },
+  {
+    "info": "Neon Turquoise by Felix",
+    "paletteSwap": {
+      "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
+      "replacements": [4278190080, 4278190080, 4278190080, 4278255504, 4278255504]
+    },
+    "paletteSwapPA": {
+      "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
+      "replacements": [4278190080, 4278190080, 4278190080, 4278190080, 4278190080, 4278255504]
+    },
+    "display_name": "Neon Turquoise by Felix",
+    "ssf2Version": "1.4.0.1"
+  },
+  {
+    "info": "Neon Cyan by Felix",
+    "paletteSwap": {
+      "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
+      "replacements": [4278190080, 4278190080, 4278190080, 4278255615, 4278255615]
+    },
+    "paletteSwapPA": {
+      "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
+      "replacements": [4278190080, 4278190080, 4278190080, 4278190080, 4278190080, 4278255615]
+    },
+    "display_name": "Neon Cyan by Felix",
+    "ssf2Version": "1.4.0.1"
+  },
+  {
+    "info": "Neon Sky Blue by Felix",
+    "paletteSwap": {
+      "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
+      "replacements": [4278190080, 4278190080, 4278190080, 4278227199, 4278227199]
+    },
+    "paletteSwapPA": {
+      "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
+      "replacements": [4278190080, 4278190080, 4278190080, 4278190080, 4278190080, 4278227199]
+    },
+    "display_name": "Neon Sky Blue by Felix",
+    "ssf2Version": "1.4.0.1"
+  },
+  {
+    "info": "Neon Blue by Felix",
+    "paletteSwap": {
+      "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
+      "replacements": [4278190080, 4278190080, 4278190080, 4278190335, 4278190335]
+    },
+    "paletteSwapPA": {
+      "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
+      "replacements": [4278190080, 4278190080, 4278190080, 4278190080, 4278190080, 4278190335]
+    },
+    "display_name": "Neon Blue by Felix",
+    "ssf2Version": "1.4.0.1"
+  },
+  {
+    "info": "Neon Purple by Felix",
+    "paletteSwap": {
+      "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
+      "replacements": [4278190080, 4278190080, 4278190080, 4287627519, 4287627519]
+    },
+    "paletteSwapPA": {
+      "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
+      "replacements": [4278190080, 4278190080, 4278190080, 4278190080, 4278190080, 4287627519]
+    },
+    "display_name": "Neon Purple by Felix",
     "ssf2Version": "1.4.0.1"
   }
 ]
