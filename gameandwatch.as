@@ -1178,5 +1178,18 @@
     },
     "display_name": "1 Bit G&W by Felix",
     "ssf2Version": "1.4.0.1"
+  },
+  {
+    "info": "White Silhouette by Felix",
+    "paletteSwap": {
+      "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
+      "replacements": [2516582400, 2516582400, 2516582400, 4294967294, 4294967294]
+    },
+    "paletteSwapPA": {
+      "colors": [4294967295, 4290756543, 4286545791, 4282335039, 4283716692, 4280690214],
+      "replacements": [2516582400, 2516582400, 2516582400, 2516582400, 2516582400, 4294967294]
+    },
+    "display_name": "White Silhouette by Felix",
+    "ssf2Version": "1.4.0.1"
   }
 ]
