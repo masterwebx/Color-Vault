@@ -101,6 +101,7 @@
   },
   {
     "info": "3d Deafult G&W by Mario322",
+    "discordID": "389849154429517833",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-14079703, -15000805, -15921907, -9803158, -6448228]
@@ -176,6 +177,7 @@
   },
   {
     "info": "Phantom Ruby by ThatOneGamingDude",
+    "discordID": "621072114807734273",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-986896, -1007416, -1048168, -7339640, -12582552]
@@ -188,6 +190,7 @@
   },
   {
     "info": "Indigo Game n Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-14155626, -15073183, -15925200, -15728582, -16383978]
@@ -265,6 +268,7 @@
   },
   {
     "info": "Beta Red Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-4980736, -4980736, -4980736, -5395027, -5395027]
@@ -277,6 +281,7 @@
   },
   {
     "info": "Beta Orange Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-3059456, -3059456, -3059456, -5395027, -5395027]
@@ -289,6 +294,7 @@
   },
   {
     "info": "Beta Yellow Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-5132544, -5132544, -5132544, -5395027, -5395027]
@@ -301,6 +307,7 @@
   },
   {
     "info": "Beta Lime Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-13185024, -13185024, -13185024, -5395027, -5395027]
@@ -313,6 +320,7 @@
   },
   {
     "info": "Beta Green Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16755456, -16755456, -16755456, -5395027, -5395027]
@@ -325,6 +333,7 @@
   },
   {
     "info": "Beta Teal Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16743844, -16743844, -16743844, -5395027, -5395027]
@@ -337,6 +346,7 @@
   },
   {
     "info": "Beta Cyan Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16735572, -16735572, -16735572, -5395027, -5395027]
@@ -349,6 +359,7 @@
   },
   {
     "info": "Beta Blue Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16758324, -16758324, -16758324, -5395027, -5395027]
@@ -361,6 +372,7 @@
   },
   {
     "info": "Beta Purple-Violet Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-8191745, -8191745, -8191745, -5395027, -5395027]
@@ -373,6 +385,7 @@
   },
   {
     "info": "Beta Pink-Magenta-Rose Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-2094737, -2094737, -2094737, -5395027, -5395027]
@@ -385,6 +398,7 @@
   },
   {
     "info": "Beta Crimson-Maroon Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-8650726, -8650726, -8650726, -5395027, -5395027]
@@ -397,6 +411,7 @@
   },
   {
     "info": "Beta Navy Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16777119, -16777119, -16777119, -5395027, -5395027]
@@ -409,6 +424,7 @@
   },
   {
     "info": "Beta Emerald Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16766464, -16766464, -16766464, -5395027, -5395027]
@@ -421,6 +437,7 @@
   },
   {
     "info": "Beta Brown Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-9691904, -9691904, -9691904, -5395027, -5395027]
@@ -433,6 +450,7 @@
   },
   {
     "info": "Beta White Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-5921371, -11447983, -10263709, -14277082],
       "replacements": [-1, -1, -5395027, -5395027]
@@ -445,6 +463,7 @@
   },
   {
     "info": "Beta Gray Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-7434610, -7434610, -7434610, -5395027, -5395027]
@@ -457,6 +476,7 @@
   },
   {
     "info": "Beta Metal Palette - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-12105913, -12105913, -12105913, -5395027, -5395027]
@@ -469,6 +489,7 @@
   },
   {
     "info": "PMFE Hue 1 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-12955648, -12955648, -12955648, -5395027, -5395027]
@@ -481,6 +502,7 @@
   },
   {
     "info": "PMFE Hue 2 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-3202816, -3202816, -3202816, -5395027, -5395027]
@@ -493,6 +515,7 @@
   },
   {
     "info": "PMFE Hue 3 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-7424, -7424, -7424, -10142464, -10142464]
@@ -505,6 +528,7 @@
   },
   {
     "info": "PMFE Hue 4 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-15466497, -15466497, -15466497, -14596283, -14596283]
@@ -517,6 +541,7 @@
   },
   {
     "info": "PMFE Hue 5 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16711790, -16711790, -16711790, -15643856, -15643856]
@@ -529,6 +554,7 @@
   },
   {
     "info": "PMFE Hue 6 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-6223444, -6223444, -6223444, -5395027, -5395027]
@@ -541,6 +567,7 @@
   },
   {
     "info": "PMFE Hue 7 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-6398479, -6398479, -6398479, -5395027, -5395027]
@@ -553,6 +580,7 @@
   },
   {
     "info": "PMFE Hue 8 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-33793, -33793, -33793, -10012305, -10012305]
@@ -565,6 +593,7 @@
   },
   {
     "info": "PMFE Hue 9 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-21117, -21117, -21117, -10799052, -10799052]
@@ -577,6 +606,7 @@
   },
   {
     "info": "PMFE Hue 10 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-6211840, -6211840, -6211840, -11461888, -11461888]
@@ -589,6 +619,7 @@
   },
   {
     "info": "PMFE Hue 11 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-7434610, -7434610, -7434610, -12303292, -12303292]
@@ -601,6 +632,7 @@
   },
   {
     "info": "PMFE Hue 12 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-13092808, -13092808, -13092808, -5395027, -5395027]
@@ -613,6 +645,7 @@
   },
   {
     "info": "PMFE Hue 13 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16777216, -16777216, -16777216, -16777216, -16777216]
@@ -625,6 +658,7 @@
   },
   {
     "info": "PRSA Hue 1 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-2147483648, -2147483648, -2147483648, -2134982978, -2134982978]
@@ -637,6 +671,7 @@
   },
   {
     "info": "PRSA Hue 2 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-13808896, -13808896, -13808896, -4981142, -4981142]
@@ -649,6 +684,7 @@
   },
   {
     "info": "PRSA Hue 3 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-4845032, -4845032, -4845032, -5395027, -5395027]
@@ -661,6 +697,7 @@
   },
   {
     "info": "PRSA Hue 4 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-14392826, -14392826, -14392826, -5395027, -5395027]
@@ -673,6 +710,7 @@
   },
   {
     "info": "PRSA Hue 5 - Game & Watch by RRMG",
+    "discordID": "368488128291274762",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-14928752, -14928752, -14928752, -5395027, -5395027]
@@ -813,6 +851,7 @@
   },
   {
     "info": "Diamond G&W by Mario322",
+    "discordID": "389849154429517833",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-2883588, -7012361, -9056825, -13742517, -14665417]
@@ -825,6 +864,7 @@
   },
   {
     "info": "Original G&W Skin by Mario322",
+    "discordID": "389849154429517833",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-9048742, -14450774, -13425750, -1718480, -732114]
@@ -837,6 +877,7 @@
   },
   {
     "info": "Bronze G&W by Mario322",
+    "discordID": "389849154429517833",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-30680, -3515904, -6798336, -10146560, -12575488]
@@ -849,6 +890,7 @@
   },
   {
     "info": "Demon G&W by Mario322",
+    "discordID": "389849154429517833",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-12648443, -9764856, -4456436, -1729373, -1067334]
@@ -1115,6 +1157,7 @@
   },
   {
     "info": "Shadow G&M by Ashlenio",
+    "discordID": "1181227490304339992",
     "paletteSwapPA": {
       "colors": [
         "0xFFFFFFFF",
