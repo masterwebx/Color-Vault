@@ -2,7 +2,7 @@
   {
     "info": "by davrew322",
     "discordID": "389849154429517833",
-    "submittedAt": "2025-05-10T07:54:21Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-7168, -6254848, -9280000, -9280000, -13620476]
@@ -64,7 +64,7 @@
   {
     "info": "Golden Game & Watch by Glace's Tarot",
     "discordID": "749434936645124189",
-    "submittedAt": "2020-04-21T18:17:10Z",
+    "vaultAddedAt": "2020-04-22T03:37:55Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-2037554, -3163274, -7771383, -4878806, -13885184]
@@ -78,7 +78,7 @@
   {
     "info": "Void Game & Watch by Glace's Tarot",
     "discordID": "749434936645124189",
-    "submittedAt": "2020-04-21T18:17:11Z",
+    "vaultAddedAt": "2020-04-22T03:37:55Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-14871249, -13679479, -9006093, -7033611, -2958085]
@@ -93,6 +93,7 @@
     "info": "Multiman Smash G&W by KnightKL",
     "discordID": "425794581859401739",
     "submittedAt": "2020-05-15T00:01:33Z",
+    "vaultAddedAt": "2020-07-15T22:22:56Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16777216, -16777216, -12895429, -14079703, -10066330]
@@ -107,6 +108,7 @@
     "info": "3d Deafult G&W by Mario322",
     "discordID": "389849154429517833",
     "submittedAt": "2020-05-21T18:26:02Z",
+    "vaultAddedAt": "2020-07-15T22:22:56Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-14079703, -15000805, -15921907, -9803158, -6448228]
@@ -144,7 +146,7 @@
   {
     "info": "Mr Gum and Watch by Glace's Tarot",
     "discordID": "749434936645124189",
-    "submittedAt": "2020-11-28T20:13:42Z",
+    "vaultAddedAt": "2020-12-03T12:45:43Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-146947, -1213237, -2605678, -5168270, -9693883]
@@ -158,7 +160,7 @@
   {
     "info": "1.1 Wine G & W by Glace's Tarot",
     "discordID": "749434936645124189",
-    "submittedAt": "2020-11-28T21:12:43Z",
+    "vaultAddedAt": "2020-12-03T12:45:43Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-9502697, -9502697, -9502697, -4947575, -4947575]
@@ -173,6 +175,7 @@
     "info": "Team DanTum Game & Watch by Jack DX",
     "discordID": "519281973047459866",
     "submittedAt": "2020-12-08T21:13:25Z",
+    "vaultAddedAt": "2021-02-09T15:00:29Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-6099172, -8007678, -8007678, -14540254, -14540254]
@@ -187,6 +190,7 @@
     "info": "Phantom Ruby by ThatOneGamingDude",
     "discordID": "621072114807734273",
     "submittedAt": "2020-12-19T20:09:22Z",
+    "vaultAddedAt": "2021-02-09T15:00:29Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-986896, -1007416, -1048168, -7339640, -12582552]
@@ -201,6 +205,7 @@
     "info": "Indigo Game n Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-02-26T04:05:38Z",
+    "vaultAddedAt": "2021-09-07T12:32:38Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-14155626, -15073183, -15925200, -15728582, -16383978]
@@ -214,7 +219,7 @@
   {
     "info": "Reverse Dark Mode Discord by Glace's Tarot",
     "discordID": "749434936645124189",
-    "submittedAt": "2021-04-04T03:19:43Z",
+    "vaultAddedAt": "2021-09-07T12:32:38Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-9204777, -9204777, -9204777, -13223617, -13223617]
@@ -228,7 +233,7 @@
   {
     "info": "Reverse Discord by Glace's Tarot",
     "discordID": "749434936645124189",
-    "submittedAt": "2021-04-04T03:19:43Z",
+    "vaultAddedAt": "2021-09-07T12:32:38Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-9204777, -9204777, -9204777, -1, -1]
@@ -242,7 +247,7 @@
   {
     "info": "Discord Game and Watchi by Glace's Tarot",
     "discordID": "749434936645124189",
-    "submittedAt": "2021-04-04T03:19:43Z",
+    "vaultAddedAt": "2021-09-07T12:32:38Z",
     "paletteSwap": {
       "colors": [-5921371, -11447983, -10263709, -14277082],
       "replacements": [-1, -1, -9204777, -9204777]
@@ -256,7 +261,7 @@
   {
     "info": "Dark Mode Discord Game and Watch by Glace's Tarot",
     "discordID": "749434936645124189",
-    "submittedAt": "2021-04-04T03:19:43Z",
+    "vaultAddedAt": "2021-09-07T12:32:38Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-13223617, -13223617, -13223617, -9204777, -9204777]
@@ -271,6 +276,7 @@
     "info": "Discord background by meh_Ok",
     "discordID": "820102022829178901",
     "submittedAt": "2021-08-13T21:07:44Z",
+    "vaultAddedAt": "2021-09-07T12:32:38Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-13223616, -13223616, -13223616, -13223616, -13223616]
@@ -285,6 +291,7 @@
     "info": "Beta Red Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-4980736, -4980736, -4980736, -5395027, -5395027]
@@ -299,6 +306,7 @@
     "info": "Beta Orange Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-3059456, -3059456, -3059456, -5395027, -5395027]
@@ -313,6 +321,7 @@
     "info": "Beta Yellow Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-5132544, -5132544, -5132544, -5395027, -5395027]
@@ -327,6 +336,7 @@
     "info": "Beta Lime Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-13185024, -13185024, -13185024, -5395027, -5395027]
@@ -341,6 +351,7 @@
     "info": "Beta Green Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16755456, -16755456, -16755456, -5395027, -5395027]
@@ -355,6 +366,7 @@
     "info": "Beta Teal Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16743844, -16743844, -16743844, -5395027, -5395027]
@@ -369,6 +381,7 @@
     "info": "Beta Cyan Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16735572, -16735572, -16735572, -5395027, -5395027]
@@ -383,6 +396,7 @@
     "info": "Beta Blue Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16758324, -16758324, -16758324, -5395027, -5395027]
@@ -397,6 +411,7 @@
     "info": "Beta Purple-Violet Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-8191745, -8191745, -8191745, -5395027, -5395027]
@@ -411,6 +426,7 @@
     "info": "Beta Pink-Magenta-Rose Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-2094737, -2094737, -2094737, -5395027, -5395027]
@@ -425,6 +441,7 @@
     "info": "Beta Crimson-Maroon Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-8650726, -8650726, -8650726, -5395027, -5395027]
@@ -439,6 +456,7 @@
     "info": "Beta Navy Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16777119, -16777119, -16777119, -5395027, -5395027]
@@ -453,6 +471,7 @@
     "info": "Beta Emerald Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16766464, -16766464, -16766464, -5395027, -5395027]
@@ -467,6 +486,7 @@
     "info": "Beta Brown Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-9691904, -9691904, -9691904, -5395027, -5395027]
@@ -481,6 +501,7 @@
     "info": "Beta White Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-5921371, -11447983, -10263709, -14277082],
       "replacements": [-1, -1, -5395027, -5395027]
@@ -495,6 +516,7 @@
     "info": "Beta Gray Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-09-19T19:20:42Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-7434610, -7434610, -7434610, -5395027, -5395027]
@@ -509,6 +531,7 @@
     "info": "Beta Metal Palette - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2021-10-26T01:33:47Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-12105913, -12105913, -12105913, -5395027, -5395027]
@@ -522,6 +545,7 @@
   {
     "info": "PMFE Hue 1 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-12955648, -12955648, -12955648, -5395027, -5395027]
@@ -535,6 +559,7 @@
   {
     "info": "PMFE Hue 2 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-3202816, -3202816, -3202816, -5395027, -5395027]
@@ -548,6 +573,7 @@
   {
     "info": "PMFE Hue 3 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-7424, -7424, -7424, -10142464, -10142464]
@@ -561,6 +587,7 @@
   {
     "info": "PMFE Hue 4 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-15466497, -15466497, -15466497, -14596283, -14596283]
@@ -574,6 +601,7 @@
   {
     "info": "PMFE Hue 5 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16711790, -16711790, -16711790, -15643856, -15643856]
@@ -587,6 +615,7 @@
   {
     "info": "PMFE Hue 6 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-6223444, -6223444, -6223444, -5395027, -5395027]
@@ -600,6 +629,7 @@
   {
     "info": "PMFE Hue 7 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-6398479, -6398479, -6398479, -5395027, -5395027]
@@ -613,6 +643,7 @@
   {
     "info": "PMFE Hue 8 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-33793, -33793, -33793, -10012305, -10012305]
@@ -626,6 +657,7 @@
   {
     "info": "PMFE Hue 9 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-21117, -21117, -21117, -10799052, -10799052]
@@ -639,6 +671,7 @@
   {
     "info": "PMFE Hue 10 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-6211840, -6211840, -6211840, -11461888, -11461888]
@@ -652,6 +685,7 @@
   {
     "info": "PMFE Hue 11 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-7434610, -7434610, -7434610, -12303292, -12303292]
@@ -665,6 +699,7 @@
   {
     "info": "PMFE Hue 12 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-13092808, -13092808, -13092808, -5395027, -5395027]
@@ -678,6 +713,7 @@
   {
     "info": "PMFE Hue 13 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-16777216, -16777216, -16777216, -16777216, -16777216]
@@ -692,6 +728,7 @@
     "info": "PRSA Hue 1 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2022-04-12T03:51:00Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-2147483648, -2147483648, -2147483648, -2134982978, -2134982978]
@@ -706,6 +743,7 @@
     "info": "PRSA Hue 2 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2022-04-12T03:51:00Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-13808896, -13808896, -13808896, -4981142, -4981142]
@@ -720,6 +758,7 @@
     "info": "PRSA Hue 3 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2022-04-12T03:51:00Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-4845032, -4845032, -4845032, -5395027, -5395027]
@@ -734,6 +773,7 @@
     "info": "PRSA Hue 4 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2022-04-12T03:51:00Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-14392826, -14392826, -14392826, -5395027, -5395027]
@@ -748,6 +788,7 @@
     "info": "PRSA Hue 5 - Game & Watch by RRMG",
     "discordID": "368488128291274762",
     "submittedAt": "2022-04-12T03:51:00Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-14928752, -14928752, -14928752, -5395027, -5395027]
@@ -813,7 +854,7 @@
   {
     "info": "Ultra Instinct GAMER? by alexstartgame",
     "discordID": "489740200486895626",
-    "submittedAt": "2025-05-10T07:54:21Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-5921371, -11447983, -10263709, -14277082],
       "replacements": [-3684375, -9210987, -8026713, -12040086]
@@ -827,7 +868,7 @@
   {
     "info": "KaiokenGamer? by alexstartgame",
     "discordID": "489740200486895626",
-    "submittedAt": "2025-05-10T07:54:21Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-5921371, -11447983, -10263709, -14277082],
       "replacements": [-1019528, -7269864, -5954003, -8388608]
@@ -841,7 +882,7 @@
   {
     "info": "FisherMan From FNAF World? by alexstartgame",
     "discordID": "489740200486895626",
-    "submittedAt": "2025-05-10T07:54:21Z",
+    "vaultAddedAt": "2025-05-10T07:54:22Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-1019528, -1019528, -1019528, -8388608, -8388608]
@@ -855,6 +896,7 @@
   {
     "info": "Blue vaporwave by Cimten",
     "discordID": "590960826576404516",
+    "vaultAddedAt": "2020-04-14T08:13:16Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-5832708, -2781763, -16753308, -12819299, -16764892]
@@ -893,6 +935,7 @@
     "info": "Diamond G&W by Mario322",
     "discordID": "389849154429517833",
     "submittedAt": "2020-05-29T12:55:45Z",
+    "vaultAddedAt": "2020-07-15T22:22:56Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-2883588, -7012361, -9056825, -13742517, -14665417]
@@ -907,6 +950,7 @@
     "info": "Original G&W Skin by Mario322",
     "discordID": "389849154429517833",
     "submittedAt": "2020-05-29T13:38:21Z",
+    "vaultAddedAt": "2020-07-15T22:22:56Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-9048742, -14450774, -13425750, -1718480, -732114]
@@ -921,6 +965,7 @@
     "info": "Bronze G&W by Mario322",
     "discordID": "389849154429517833",
     "submittedAt": "2020-05-29T14:03:50Z",
+    "vaultAddedAt": "2020-07-15T22:22:56Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-30680, -3515904, -6798336, -10146560, -12575488]
@@ -935,6 +980,7 @@
     "info": "Demon G&W by Mario322",
     "discordID": "389849154429517833",
     "submittedAt": "2020-05-29T18:33:28Z",
+    "vaultAddedAt": "2020-07-15T22:22:56Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-12648443, -9764856, -4456436, -1729373, -1067334]
@@ -948,6 +994,7 @@
   {
     "info": "Emerald G&W by Glace's Tarot",
     "discordID": "749434936645124189",
+    "vaultAddedAt": "2020-07-15T22:22:56Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-3735582, -9244245, -13859489, -13461396, -15185098]
@@ -961,6 +1008,7 @@
   {
     "info": "Phantom Ruby by Glace's Tarot",
     "discordID": "749434936645124189",
+    "vaultAddedAt": "2020-07-15T22:22:56Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-13041635, -7532972, -2917728, -3315821, -1592119]
@@ -974,6 +1022,7 @@
   {
     "info": "Outline Game & Watch by Zaaravugotasxicesuelpicudactibie",
     "discordID": "700343257305055252",
+    "vaultAddedAt": "2020-07-15T22:22:56Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [986895, 986895, 986895, -16382458, -16645630]
@@ -987,6 +1036,7 @@
   {
     "info": "Dozo Haiki GnW by Glace's Tarot",
     "discordID": "749434936645124189",
+    "vaultAddedAt": "2020-12-03T12:45:43Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-3928296, -11074037, -15071734, -4884, -3856]
@@ -1013,6 +1063,7 @@
     "info": "Trans GW by Sonicant",
     "discordID": "757311014747373708",
     "submittedAt": "2025-05-22T20:46:07Z",
+    "vaultAddedAt": "2025-05-22T20:46:08Z",
     "paletteSwapPA": {
       "colors": [
         "0xFFFFFFFF",
@@ -1053,6 +1104,7 @@
     "info": "Nickelodeon Game and Watch by Sonicant",
     "discordID": "757311014747373708",
     "submittedAt": "2025-06-28T13:18:49Z",
+    "vaultAddedAt": "2025-06-28T13:18:51Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-36096, -36096, -36096, -460552, -460552]
@@ -1067,6 +1119,7 @@
     "info": "Heartless GW by Sonicant",
     "discordID": "757311014747373708",
     "submittedAt": "2025-06-29T01:02:53Z",
+    "vaultAddedAt": "2025-06-29T01:02:54Z",
     "paletteSwap": {
       "colors": [-1, -5921371, -11447983, -10263709, -14277082],
       "replacements": [-14866876, -15524806, -16578020, -858310, -858310]
@@ -1081,6 +1134,7 @@
     "info": "Trans GW v2 by Sonicant",
     "discordID": "757311014747373708",
     "submittedAt": "2025-06-29T14:12:33Z",
+    "vaultAddedAt": "2025-06-29T14:12:34Z",
     "paletteSwapPA": {
       "colors": [
         "0xFFFFFFFF",
@@ -1121,6 +1175,7 @@
     "info": "virtual watch by Brayxen 075",
     "discordID": "859671103520768031",
     "submittedAt": "2026-08-17T02:19:53Z",
+    "vaultAddedAt": "2026-08-17T02:19:53Z",
     "paletteSwap": {
       "replacements": [
         "0xFF000000",
@@ -1208,6 +1263,7 @@
     "info": "Shadow G&M by Ashlenio",
     "discordID": "1181227490304339992",
     "submittedAt": "2026-08-21T08:33:05Z",
+    "vaultAddedAt": "2026-08-21T08:33:06Z",
     "paletteSwapPA": {
       "colors": [
         "0xFFFFFFFF",
@@ -1248,6 +1304,7 @@
     "info": "gnw 3 by brayxen 075",
     "discordID": "859671103520768031",
     "submittedAt": "2026-08-26T20:42:36Z",
+    "vaultAddedAt": "2026-08-26T20:42:37Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4280517259, 4279651183, 4278521916, 4278986063, 4278190626]
@@ -1263,6 +1320,7 @@
     "info": "gnw 2 by brayxen 075",
     "discordID": "859671103520768031",
     "submittedAt": "2026-08-26T20:42:36Z",
+    "vaultAddedAt": "2026-08-26T20:42:37Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4282918288, 4282717812, 4282582861, 4282519132, 4281860148]
@@ -1278,6 +1336,7 @@
     "info": "gnw 8 by brayxen 075",
     "discordID": "859671103520768031",
     "submittedAt": "2026-08-26T20:42:36Z",
+    "vaultAddedAt": "2026-08-26T20:42:37Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4294798335, 4292953827, 4290913477, 4292220952, 4289396993]
@@ -1293,6 +1352,7 @@
     "info": "gnw 7 by brayxen 075",
     "discordID": "859671103520768031",
     "submittedAt": "2026-08-26T20:42:36Z",
+    "vaultAddedAt": "2026-08-26T20:42:37Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4280095602, 4279701086, 4278977861, 4293104143, 4289621252]
@@ -1308,6 +1368,7 @@
     "info": "gnw 4 by brayxen 075",
     "discordID": "859671103520768031",
     "submittedAt": "2026-08-26T20:42:36Z",
+    "vaultAddedAt": "2026-08-26T20:42:37Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4291856968, 4289028126, 4286923008, 4284815951, 4280418328]
@@ -1323,6 +1384,7 @@
     "info": "gnw 10 by brayxen 075",
     "discordID": "859671103520768031",
     "submittedAt": "2026-08-26T20:42:45Z",
+    "vaultAddedAt": "2026-08-26T20:42:46Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4294946964, 4294937184, 4291584315, 4279571476, 4278190080]
@@ -1338,6 +1400,7 @@
     "info": "gnw 9 by brayxen 075",
     "discordID": "859671103520768031",
     "submittedAt": "2026-08-26T20:42:45Z",
+    "vaultAddedAt": "2026-08-26T20:42:46Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4294961590, 4294105243, 4291276662, 4279704479, 4278190947]
@@ -1353,6 +1416,7 @@
     "info": "platino gwn by brayxen 075",
     "discordID": "859671103520768031",
     "submittedAt": "2026-08-26T20:42:45Z",
+    "vaultAddedAt": "2026-08-26T20:42:46Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4294967295, 4282468242, 4280295996, 4281217368, 4279243038]
@@ -1368,6 +1432,7 @@
     "info": "gnw 12 by brayxen 075",
     "discordID": "859671103520768031",
     "submittedAt": "2026-08-26T20:42:45Z",
+    "vaultAddedAt": "2026-08-26T20:42:46Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4286644161, 4283818910, 4280597362, 4294950953, 4293107712]
@@ -1383,6 +1448,7 @@
     "info": "gnw 11 by brayxen 075",
     "discordID": "859671103520768031",
     "submittedAt": "2026-08-26T20:42:45Z",
+    "vaultAddedAt": "2026-08-26T20:42:46Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4285640191, 4283073746, 4281295009, 4291414473, 4288322202]
@@ -1398,6 +1464,7 @@
     "info": "Ms. G&W by Felix",
     "discordID": "403040538858618882",
     "submittedAt": "2026-11-05T17:56:59Z",
+    "vaultAddedAt": "2026-11-05T17:57:00Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4294940378, 4294940378, 4294940378, 4294901925, 4294901925]
@@ -1413,6 +1480,7 @@
     "info": "Mr Gameboy & Watch by Felix",
     "discordID": "403040538858618882",
     "submittedAt": "2026-11-05T17:56:59Z",
+    "vaultAddedAt": "2026-11-05T17:57:00Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4290104848, 4288396303, 4279187471, 4283399947, 4278395142]
@@ -1428,6 +1496,7 @@
     "info": "LCD G&W by Felix",
     "discordID": "403040538858618882",
     "submittedAt": "2026-11-05T17:56:59Z",
+    "vaultAddedAt": "2026-11-05T17:57:00Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4289250894, 4289250894, 4289250894, 4282138924, 4282138924]
@@ -1443,6 +1512,7 @@
     "info": "Game & Water by Felix",
     "discordID": "403040538858618882",
     "submittedAt": "2026-11-05T17:56:59Z",
+    "vaultAddedAt": "2026-11-05T17:57:00Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4290379007, 4286766580, 4278241513, 4278222230, 4278214000]
@@ -1458,6 +1528,7 @@
     "info": "1 Bit G&W by Felix",
     "discordID": "403040538858618882",
     "submittedAt": "2026-11-05T17:56:59Z",
+    "vaultAddedAt": "2026-11-05T17:57:00Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4289707951, 4289707951, 4283466053, 4283466053, 4283466053]
@@ -1472,6 +1543,7 @@
   {
     "info": "White Silhouette by Felix",
     "discordID": "403040538858618882",
+    "vaultAddedAt": "2026-11-05T17:57:22Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [2516582400, 2516582400, 2516582400, 4294967294, 4294967294]
@@ -1487,6 +1559,7 @@
     "info": "Neon Red by Felix",
     "discordID": "403040538858618882",
     "submittedAt": "2026-11-05T18:00:55Z",
+    "vaultAddedAt": "2026-11-05T18:00:58Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4278190080, 4278190080, 4278190080, 4294901760, 4294901760]
@@ -1502,6 +1575,7 @@
     "info": "Neon Orange by Felix",
     "discordID": "403040538858618882",
     "submittedAt": "2026-11-05T18:00:55Z",
+    "vaultAddedAt": "2026-11-05T18:00:58Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4278190080, 4278190080, 4278190080, 4294934784, 4294934784]
@@ -1517,6 +1591,7 @@
     "info": "Neon Yellow by Felix",
     "discordID": "403040538858618882",
     "submittedAt": "2026-11-05T18:00:55Z",
+    "vaultAddedAt": "2026-11-05T18:00:58Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4278190080, 4278190080, 4278190080, 4294967040, 4294967040]
@@ -1532,6 +1607,7 @@
     "info": "Neon Lime by Felix",
     "discordID": "403040538858618882",
     "submittedAt": "2026-11-05T18:00:55Z",
+    "vaultAddedAt": "2026-11-05T18:00:58Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4278190080, 4278190080, 4278190080, 4289658624, 4289658624]
@@ -1547,6 +1623,7 @@
     "info": "Neon Green by Felix",
     "discordID": "403040538858618882",
     "submittedAt": "2026-11-05T18:00:55Z",
+    "vaultAddedAt": "2026-11-05T18:00:58Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4278190080, 4278190080, 4278190080, 4278255360, 4278255360]
@@ -1562,6 +1639,7 @@
     "info": "Neon Turquoise by Felix",
     "discordID": "403040538858618882",
     "submittedAt": "2026-11-05T18:02:42Z",
+    "vaultAddedAt": "2026-11-05T18:02:43Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4278190080, 4278190080, 4278190080, 4278255504, 4278255504]
@@ -1577,6 +1655,7 @@
     "info": "Neon Cyan by Felix",
     "discordID": "403040538858618882",
     "submittedAt": "2026-11-05T18:02:42Z",
+    "vaultAddedAt": "2026-11-05T18:02:43Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4278190080, 4278190080, 4278190080, 4278255615, 4278255615]
@@ -1592,6 +1671,7 @@
     "info": "Neon Sky Blue by Felix",
     "discordID": "403040538858618882",
     "submittedAt": "2026-11-05T18:02:42Z",
+    "vaultAddedAt": "2026-11-05T18:02:43Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4278190080, 4278190080, 4278190080, 4278227199, 4278227199]
@@ -1607,6 +1687,7 @@
     "info": "Neon Blue by Felix",
     "discordID": "403040538858618882",
     "submittedAt": "2026-11-05T18:02:42Z",
+    "vaultAddedAt": "2026-11-05T18:02:43Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4278190080, 4278190080, 4278190080, 4278190335, 4278190335]
@@ -1622,6 +1703,7 @@
     "info": "Neon Purple by Felix",
     "discordID": "403040538858618882",
     "submittedAt": "2026-11-05T18:02:42Z",
+    "vaultAddedAt": "2026-11-05T18:02:43Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4278190080, 4278190080, 4278190080, 4287627519, 4287627519]
@@ -1636,6 +1718,7 @@
   {
     "info": "Neon Magenta by Felix",
     "discordID": "403040538858618882",
+    "vaultAddedAt": "2026-11-05T18:03:34Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4278190080, 4278190080, 4278190080, 4294901972, 4294901972]
@@ -1650,6 +1733,7 @@
   {
     "info": "Neon Fucsia by Felix",
     "discordID": "403040538858618882",
+    "vaultAddedAt": "2026-11-05T18:03:34Z",
     "paletteSwap": {
       "colors": [4294967295, 4289045925, 4283519313, 4284703587, 4280690214],
       "replacements": [4278190080, 4278190080, 4278190080, 4294901895, 4294901895]
