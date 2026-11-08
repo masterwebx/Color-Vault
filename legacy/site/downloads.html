@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Downloads - SSF2 Sandbox</title>
+  <link rel="icon" href="images/sandbox_logo.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="images/sandbox_logo.ico" type="image/x-icon" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url('images/Sandbox_big.png'), url('images/shadowexport.png');
+      background-repeat: no-repeat, no-repeat;
+      background-position: top left, bottom right;
+      background-size: 25% auto, 25% auto;
+    }
+
+    .custom-container {
+      flex: 1;
+      max-width: 900px;
+      margin: auto;
+      padding: 40px 20px;
+      width: 100%;
+    }
+
+    .nav-links a {
+      color: #bbbbbb;
+      margin-right: 20px;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    .collapsible {
+      width: 100%;
+      background-color: #1f1f1f;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: left;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .collapsible img {
+      width: 32px;
+      height: 32px;
+      margin-right: 10px;
+    }
+
+    .collapsible.active {
+      background-color: #333;
+    }
+
+    .content {
+      display: none;
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 0 0 8px 8px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+      border: 1px solid #333;
+      color: #ddd;
+    }
+
+    .content a {
+      color: #4da3ff;
+      text-decoration: none;
+    }
+
+    .content a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      background-color: #0e0d0d;
+      color: #888;
+      text-align: center;
+      padding: 15px;
+      border-top: 1px solid #333;
+    }
+
+    footer img {
+      height: 24px;
+      vertical-align: middle;
+      margin-left: 5px;
+    }
+
+    .footer-gif {
+      position: fixed;
+      bottom: 90px;  /* Adjusted to stay above the footer */
+      left: 20px;
+      z-index: 10;
+    }
+
+    .footer-gif img {
+      max-width: 150px;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    /* Bubble Speech */
+    .speech-bubble {
+      position: absolute;
+      bottom: 260px; /* Adjust position to appear above the GIF */
+      left: 100px;
+      background-color: #ffffff;
+      color: #000000;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 14px;
+      max-width: 200px;
+      z-index: 11;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .speech-bubble:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      margin-left: -10px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: #ffffff transparent transparent transparent;
+    }
+
+    hr {
+      border-top: 1px solid #444;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed Speech Bubble above the GIF (desktop only) -->
+  <div class="d-none d-md-block">
+    <div class="speech-bubble">
+      <span style="color: red; font-weight: bold;">*WARNING*</span> SSF2 Sandbox is no longer a work in progress mod; the latest update marks its final release. That's if Val ever returns. - CherriChao
+    </div>
+  </div>
+
+  <!-- Fixed GIF above footer (desktop only) -->
+  <div class="d-none d-md-block">
+    <div class="footer-gif">
+      <img src="https://i.pinimg.com/originals/0c/d0/c6/0cd0c6cadfc0129020206690644b763e.gif" alt="Sonic GIF">
+    </div>
+  </div>
+
+  <div class="custom-container">
+    <h1 class="text-center mb-4">SSF2 Sandbox</h1>
+
+    <div class="d-flex justify-content-center nav-links mb-4 flex-wrap text-center">
+      <a href="index.html">Home</a>
+      <a href="https://www.youtube.com/@SSF2ColorVault" target="_blank">SSF2 Color Vault</a>
+      <a href="https://discord.gg/xZtTqX4" target="_blank"> Discord</a>
+    </div>
+
+    <p class="mb-4">To download SSF2 Sandbox, please select the appropriate version below. 𒁂</p>
+
+    <!-- Patch Section -->
+    <button class="collapsible">
+      <img src="images/sandbox.png" alt="Icon"> SSF2 Sandbox Patch 6.? <strong class="ms-2 text-warning">NEW</strong>
+    </button>
+    <div class="content">
+      <ul>
+        <li><strong>Full game Win32/64:</strong> <a href="https://drive.google.com/file/d/10ddcpzSPuUrza-DDXJrnZzdTaD0x_CLE/view?usp=sharing" target="_blank">Download</a></li>
+      </ul>
+      <hr>
+      <p><strong>Patch 6.? - v1.3.1.2</strong><br>
+      <p><strong>Changes:</strong><br>
+        - Costume Selector + Color Vault<br>
+        - XP Chars can now use costumes<br>
+        - New stage selector (drag and drop)<br>
+        - v9b characters work in events<br>
+      </p>
+      <p><strong>Other:</strong> Discord Rich Presence added</p>
+    </div>
+
+    <!-- Version 6.6.2 -->
+    <button class="collapsible">
+      <img src="images/sandbox.png" alt="Icon"> SSF2 Sandbox 6.6.2 + QoL changes <strong class="ms-2 text-secondary">OLD</strong>
+    </button>
+    <div class="content">
+      <ul>
+        <li><strong>Full game + mod:</strong> <a href="https://drive.google.com/file/d/1vAK7P5vGReZ5fSlMdLwkIlUcgQKdfB4v/view?usp=sharing" target="_blank">Download</a></li>
+        <li><strong>Mod only:</strong> <a href="https://drive.google.com/file/d/1fxsf6LTgFJGX0DipfsdfMYPLA3A9L5n5/view?usp=sharing" target="_blank">Download</a></li>
+      </ul>
+      <hr>
+      <p><strong>Patch 6.6.2 + QoL - v1.3.1.2</strong><br>
+      <p><strong>Changes:</strong><br>
+        - v9b stage support<br>
+        - New stages: Sliph Co., Shadow Moses Island, etc<br>
+        - Menus, HUD, costumes, pixel art<br>
+        <strong>Starters:</strong><br> 
+        Jotaro, X, Zero, Skibidi-Toilet
+      </p>
+      <p><strong>QoL:</strong><br>
+        - Simplified costume import<br>
+        - Hue filters for workshop chars<br>
+        - Alt stage restrictions removed
+      </p>
+    </div>
+
+    <!-- Overhaul -->
+    <button class="collapsible">
+      <img src="images/sandbox.png" alt="Icon"> SSF2 Sandbox Overhaul <strong class="ms-2 text-secondary">OLD</strong>
+    </button>
+    <div class="content">
+      <ul>
+        <li><s><strong>Google Drive:</strong> Deleted will be updated later</s></li>
+        <li><strong>MediaFire:</strong> <a href="https://www.mediafire.com/file/v0tajcc2uvlezsq/ssf2-sandbox-overhaul-full.rar/file" target="_blank">Download</a></li>
+      </ul>
+      <hr>
+      <p><strong>Patch Overhaul - v1.3.1.2</strong><br>
+      <p><strong>Changes:</strong><br>
+        - Easy XP chars, no slot limits<br>
+        - Final Smash Meter<br>
+        - SSBU-style matchup screen<br>
+        - Len update, assist fixes, crash fixes
+      </p>
+    </div>
+
+    <!-- Legacy -->
+    <button class="collapsible">
+      <img src="images/sandbox.png" alt="Icon"> SSF2 Sandbox 6.6.2 <strong class="ms-2 text-secondary">OLD</strong>
+    </button>
+    <div class="content">
+      <ul>
+        <li><s><strong>Google Drive:</strong> Deleted will be updated later</s></li>
+        <li><strong>MediaFire:</strong> <a href="https://www.mediafire.com/file/z0mgl56e9ruhynu/SSF2Sandbox6.6.2.rar/file" target="_blank">Download</a></li>
+      </ul>
+      <hr>
+      <p><strong>Patch 6.6.2 - v1.3.1.2</strong><br>
+      <p><strong>Changes:</strong><br>
+        - XP support for chars & stages<br>
+        - 6 custom stages<br>
+        - Characters: Jotaro, Dio, X, Zero, Len<br>
+        - Custom music, UI, announcer, and more
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    <p>Managed by JaiCherryCola ♥</p>
+    <p>Hosted by GitHub Pages <img src="images/github.png" alt="GitHub logo"></p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const collapsibles = document.querySelectorAll('.collapsible');
+      collapsibles.forEach(btn => {
+        btn.addEventListener('click', () => {
+          btn.classList.toggle('active');
+          const content = btn.nextElementSibling;
+          content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        });
+      });
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <audio id="hoverSound" preload="auto">
+    <source src="sounds/hover.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const gif = document.querySelector('.footer-gif img');
+    const audio = document.getElementById('hoverSound');
+
+    gif?.addEventListener('mouseenter', () => {
+      audio.currentTime = 0;
+      audio.play();
+    });
+  </script>
+
+</body>
+</html>

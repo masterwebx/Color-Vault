@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Analyzer 1.4</title>
+    <style>
+        /* Keep the base container styles */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .page-container {
+            width: 98%;
+            max-width: 1400px;
+            height: 98vh;
+            margin: 1vh auto;
+            padding: 8px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #f5f5f5;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .app-container {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+            height: 100%; /* Fill parent height */
+        }
+
+        .left-panel {
+            width: 280px;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            overflow-y: auto;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .right-panel {
+            width: 680px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            overflow: hidden;
+        }
+
+        .canvas-section {
+            flex: 1;
+            min-height: 200px;
+            padding: 4px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        /* Adjust content to fit within fixed containers */
+        .viewer-container {
+            position: relative;
+            flex: 1;
+            background: #333;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            overflow: hidden;
+            min-height: 0;
+            aspect-ratio: 16/9;
+        }
+
+        .controls-container {
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin: 0;
+        }
+
+        #paletteSwapField {
+            height: 50px;
+            resize: none;
+        }
+
+        .global-sequence-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+        }
+
+        .global-sequence-controls button {
+            flex: 1;
+            min-width: 100px;
+            white-space: nowrap;
+        }
+
+        /* Make sequence containers more compact */
+        .sequence-container {
+            padding: 3px;
+            margin: 2px 0;
+        }
+
+        /* Adjust zoom controls to fit width */
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px;
+            margin: 0;
+        }
+
+        #zoomSlider {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        /* Make inputs fit container width */
+        input[type="file"],
+        select {
+            width: calc(100% - 10px);
+            margin: 2px 5px;
+        }
+
+        /* Update heading sizes */
+        h1 {
+            font-size: 1.1rem;
+            margin: 0 0 3px 0;
+        }
+
+        h2 {
+            font-size: 0.85rem;
+            margin: 0 0 3px 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f5f5f5;
+        }
+
+        h1 {
+            color: #333;
+            margin: 0;
+            font-size: 1.5rem;
+            padding: 5px;
+        }
+
+        h2 {
+            color: #333;
+            margin: 0 0 5px 0;
+            font-size: 0.9rem;
+        }
+
+        button {
+            padding: 4px 8px;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 4px;
+            font-size: 11px;
+        }
+
+        button:hover {
+            background: #357abd;
+        }
+
+        #imageCanvas {
+            display: block;
+            position: absolute;
+            cursor: grab;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .color-box {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            margin: 1px;
+            border: 1px solid #000;
+            border-radius: 1px;
+        }
+
+        .sequence-container {
+            margin: 2px 0;
+            padding: 3px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .zoom-controls {
+            flex: 1;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 5px;
+            border-radius: 4px;
+            margin: 0;
+        }
+
+        #zoomSlider {
+            width: 200px;
+        }
+
+        .sequence-controls {
+            margin: 10px 0;
+        }
+
+        .edit-dialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            border-radius: 4px;
+        }
+
+        .edit-dialog textarea {
+            width: 100%;
+            min-height: 100px;
+            margin: 10px 0;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .edit-dialog-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        #paletteSwapField {
+            width: 100%;
+            padding: 4px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 2px 0;
+            height: 80px;
+            resize: none;
+        }
+
+        select {
+            padding: 4px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin: 2px 0;
+            width: 200px;
+        }
+
+        .global-sequence-controls {
+            margin: 2px 0;
+            padding: 5px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        input[type="file"] {
+            padding: 4px;
+            margin: 2px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        /* Add labels for accessibility */
+        label {
+            display: block;
+            margin-bottom: 1px;
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .canvas-container {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            margin: 20px 0;
+        }
+
+        .canvas-section {
+            flex: 1;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .controls-container {
+            display: flex;
+            gap: 5px;
+            margin: 0;
+        }
+
+        .upload-section {
+            flex: 1;
+        }
+
+        /* Update/add these layout styles */
+        .app-container {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+            margin-top: 0;
+        }
+
+        .left-panel {
+            width: 400px;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            overflow-y: auto;
+        }
+
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .canvas-section {
+            flex: 1;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .viewer-container {
+            width: 100%;
+            margin: 0;
+        }
+
+        /* Adjust controls container for left panel */
+        .controls-container {
+            flex-direction: column;
+            margin: 0;
+        }
+
+        .upload-section {
+            width: 100%;
+        }
+
+        .zoom-controls {
+            width: 100%;
+            margin: 0;
+        }
+
+        /* Make XP canvas container match main canvas */
+        #xpImageCanvas {
+            display: block;
+            position: absolute;
+            cursor: grab;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        /* Make sequence titles smaller and more compact */
+        .sequence-container h3 {
+            font-size: 0.8rem;
+            margin: 0 0 2px 0;
+        }
+
+        /* Adjust XP canvas section width */
+        .canvas-section:last-child {
+            height: 46%;
+            width: 95%; /* Make XP canvas container slightly narrower */
+            margin-left: auto; /* Center it */
+            margin-right: auto;
+        }
+
+        /* Add these new styles */
+        .canvas-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2px;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .canvas-title {
+            margin: 0;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .canvas-zoom-controls {
+            display: none;  /* Hidden by default */
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .canvas-zoom-controls input[type="range"] {
+            width: 100px;
+        }
+
+        /* Remove old zoom controls styles */
+        .zoom-controls {
+            display: none;
+        }
+
+        #hexDataField {
+            width: 100%;
+            padding: 4px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 2px 0;
+            height: 80px;
+            resize: none;
+        }
+
+        .copy-button {
+            padding: 2px 8px;
+            font-size: 11px;
+            height: 20px;
+        }
+
+        #comparisonResult {
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+
+        /* Add media queries for responsive layout */
+        @media (max-width: 1200px) {
+            .right-panel {
+                min-width: 250px;
+            }
+            
+            .canvas-section {
+                min-height: 150px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .right-panel {
+                min-width: 200px;
+            }
+        }
+
+        /* Add responsive styles for zoom controls */
+        @media (max-width: 600px) {
+            .canvas-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .canvas-zoom-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .canvas-zoom-controls input[type="range"] {
+                flex: 1;
+                min-width: 60px;
+                margin: 0 5px;
+            }
+
+            .canvas-zoom-controls span {
+                white-space: nowrap;
+            }
+        }
+
+        /* Add this CSS to the style section */
+        .rainbow-wave {
+            animation: wave 1s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .matrix {
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        .glitch {
+            animation: glitch 1s ease-in-out infinite;
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translate(0, 0);
+                color: #ff0000;
+            }
+            50% {
+                transform: translate(2px, -2px);
+                color: #0000ff;
+            }
+            100% {
+                transform: translate(0, 0);
+                color: #00ff00;
+            }
+        }
+
+        h1 {
+            user-select: none;  /* Prevent text selection during effects */
+            -webkit-user-select: none;  /* Support for Safari */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);  /* Add subtle drop shadow */
+        }
+
+        .blurb {
+            position: absolute;
+            z-index: 1001;
+            color: hsl(hue, 80%, 50%);
+            font-size: 14px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            animation: fadeOut 1s forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        /* Add this CSS for the overlay */
+        .dvd-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            cursor: pointer;
+        }
+
+        /* Add these styles for the zoom controls */
+        .canvas-zoom-controls {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .zoom-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            position: relative;
+        }
+
+        .zoom-value {
+            font-size: 12px;
+            color: #666;
+            min-width: 45px;
+            position: absolute;
+            right: -50px;  /* Position next to the + sign */
+        }
+
+        .zoom-minus, .zoom-plus {
+            font-size: 14px;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Update the zoom control styles */
+        .zoom-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .zoom-value {
+            font-size: 12px;
+            color: #666;
+            min-width: 45px;
+            margin-left: 5px;
+        }
+
+        .zoom-minus, .zoom-plus {
+            font-size: 14px;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .canvas-zoom-controls input[type="range"] {
+            flex: 1;
+            min-width: 100px;
+            max-width: 200px;
+        }
+
+        .canvas-zoom-controls {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .zoom-value {
+            font-size: 12px;
+            color: #666;
+            min-width: 40px;
+            margin: 0 5px;
+        }
+
+        .zoom-minus, .zoom-plus {
+            font-size: 14px;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .canvas-zoom-controls input[type="range"] {
+            width: 150px;
+        }
+
+        .canvas-zoom-controls button {
+            padding: 6px 15px;
+            font-size: 13px;
+            height: 30px;
+        }
+
+        /* Add these styles */
+        .sync-toggle {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: #f0f0f0;
+        }
+
+        .sync-toggle input[type="checkbox"] {
+            margin: 0;
+        }
+
+        .sync-toggle label {
+            font-size: 12px;
+            color: #666;
+            margin: 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="app-container">
+            <div class="left-panel">
+                <h1>Image Analyzer 1.4</h1>
+                <div class="controls-container">
+                    <div class="upload-section">
+                        <label for="imageUpload">Upload Recolor Sheet</label>
+                        <input type="file" id="imageUpload" accept="image/*" title="Upload an image to analyze">
+                    </div>
+                    <button id="createRecolorButton">Or Create a Recolor</button>
+                    
+                    <div class="upload-section" id="xpUploadSection" style="display: none;">
+                        <label for="xpImageUpload">Upload XP Character Image</label>
+                        <input type="file" id="xpImageUpload" accept="image/*" title="Upload an XP character image">
+                    </div>
+
+                    <div class="zoom-controls">
+                        <span>Zoom:</span>
+                        <input type="range" id="zoomSlider" min="0.1" max="5" step="0.1" value="1" title="Adjust zoom level">
+                        <button id="resetZoom">Reset</button>
+                    </div>
+                </div>
+
+                <div id="characterSelectSection" style="display: none;">
+                    <label for="infoDropdown">Select Character</label>
+                    <select id="infoDropdown" title="Select a character"></select>
+                </div>
+                
+                <div style="display: none; align-items: center; gap: 5px; margin-bottom: 5px;">
+                    <label for="paletteSwapField">Palette Swap Data</label>
+                    <button id="copyPaletteSwap" class="copy-button">Copy</button>
+                </div>
+                <textarea id="paletteSwapField" readonly rows="10" cols="50" title="Palette swap data" style="display: none"></textarea>
+                <div style="margin-top: 10px; background: white; padding: 10px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    <div style="margin-bottom: 5px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
+                            <span style="font-size: 0.8rem; color: #666;"></span>
+                            <span id="progressText" style="font-size: 0.8rem; color: #666;">No code yet - need to load images in</span>
+                        </div>
+                        <div style="height: 6px; background: #eee; border-radius: 3px; overflow: hidden;">
+                            <div id="progressBar" style="width: 0%; height: 100%; transition: width 0.3s ease, background-color 0.3s ease;"></div>
+                        </div>
+                    </div>
+                    <button id="appendCode" style="display: none; width: 100%; height: 40px; margin-top: 10px; font-size: 14px;">Append Code to End of File</button>
+                    <input type="file" id="fileInput" style="display: none;">
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="canvas-section">
+                    <div class="canvas-header">
+                        <h2 class="canvas-title">Color Swap Canvas 'replacements'</h2>
+                        <div class="canvas-zoom-controls">
+                            <div class="zoom-slider-container">
+                                <span class="zoom-minus">-</span>
+                                <input type="range" id="mainZoomSlider" min="1" max="10" step="0.5" value="1" title="Adjust zoom level">
+                                <span class="zoom-plus">+</span>
+                                <span class="zoom-value" id="mainZoomValue">100%</span>
+                                <button id="mainResetZoom">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="viewer-container" id="imageCanvasContainer" style="display:none;">
+                        <canvas id="imageCanvas"></canvas>
+                    </div>
+                </div>
+                
+                <div class="canvas-section">
+                    <div class="canvas-header">
+                        <h2 class="canvas-title">XP Character/Character Canvas 'colors'</h2>
+                        <div class="canvas-zoom-controls">
+                            <div class="zoom-slider-container">
+                                <span class="zoom-minus">-</span>
+                                <input type="range" id="xpZoomSlider" min="1" max="10" step="0.5" value="1" title="Adjust zoom level">
+                                <span class="zoom-plus">+</span>
+                                <span class="zoom-value" id="xpZoomValue">100%</span>
+                                <button id="xpResetZoom">Reset</button>
+                                <div class="sync-toggle">
+                                    <input type="checkbox" id="syncZoomPan" title="Sync zoom and pan with main canvas">
+                                    <label for="syncZoomPan">Sync Controls</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="viewer-container" id="xpImageCanvasContainer" style="display:none;">
+                        <canvas id="xpImageCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="colorCreatorModal" class="overlay" style="display: none;">
+        <div class="edit-dialog" style="width: 100%; height: 100%;">
+            <iframe src="color creator/colorcreator2.html" style="width: 100%; height: calc(100% - 40px); border: none;"></iframe>
+            <div class="edit-dialog-buttons">
+                <button id="closeModalButton">Close</button>
+                <button id="uploadToCanvasButton">Upload Image to Color Canvas</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let scale = 1;
+        let panning = false;
+        let pointX = 0;
+        let pointY = 0;
+        let start = { x: 0, y: 0 };
+        let originalImageData = null;
+        let originalSequences = {
+            first: null,
+            second: null,
+            third: null,
+            fourth: null
+        };
+        let lastCopiedSequences = null;
+        let firstSequence = null;
+        let secondSequence = null;
+        let thirdSequence = null;
+        let fourthSequence = null;
+        let firstSequencePixels = [];
+        let secondSequencePixels = [];
+        let thirdSequencePixels = [];
+        let fourthSequencePixels = [];
+        let xpScale = 1;
+        let xpPointX = 0;
+        let xpPointY = 0;
+        let mainPanning = false;
+        let xpPanning = false;
+        let isMobileView = window.innerWidth <= 778;
+        let touchEnabled = false;
+        let rightClickTimer = null;
+        let dvdAnimation = null;
+        let dvdPosition = { x: 0, y: 0 };
+        let dvdVelocity = { x: 2, y: 2 };
+        let hue = 0;
+        let syncEnabled = false;
+
+        const cornerBlurbs = [
+            "Almost there!",
+            "So close!",
+            "Just missed it!",
+            "Keep watching...",
+            "Will it hit?",
+            "Getting closer!",
+            "Maybe this time!",
+            "Nearly perfect!",
+            "Oh! Oh! Oh!",
+            "Could this be it?"
+        ];
+
+        function intToHex(int) {
+            if (int < 0) {
+                return (int + 0x100000000).toString(16).toUpperCase();
+            }
+            return int.toString(16).toUpperCase();
+        }
+
+        function createSequenceDisplay(sequence, title, index) {
+            if (!sequence) return document.createElement('div');
+            const container = document.createElement('div');
+            container.className = 'sequence-container';
+            container.innerHTML = `<h3>${title} (${sequence.length} colors):</h3>`;
+            
+            const boxesDiv = document.createElement('div');
+            boxesDiv.style.display = 'flex';
+            boxesDiv.style.flexWrap = 'wrap';
+            
+            // Store the actual colors used in the boxes
+            const boxColors = [];
+            sequence.forEach(color => {
+                const box = document.createElement('div');
+                box.className = 'color-box';
+                box.style.backgroundColor = color;
+                box.title = color;
+                boxesDiv.appendChild(box);
+                boxColors.push(color);
+            });
+            container.appendChild(boxesDiv);
+
+            // Update hex data immediately after creating boxes
+            const hexDataField = document.getElementById('hexDataField');
+            if (hexDataField) {
+                let hexData;
+                try {
+                    hexData = JSON.parse(hexDataField.value || '{}');
+                } catch (e) {
+                    hexData = {
+                        paletteSwap: { colors: [], replacements: [] },
+                        paletteSwapPA: { colors: [], replacements: [] }
+                    };
+                }
+
+                // Ensure the structure exists
+                if (!hexData.paletteSwap) hexData.paletteSwap = { colors: [], replacements: [] };
+                if (!hexData.paletteSwapPA) hexData.paletteSwapPA = { colors: [], replacements: [] };
+
+                // Update the appropriate array based on which sequence this is
+                if (index === 3) hexData.paletteSwap.colors = boxColors;
+                else if (index === 2) hexData.paletteSwapPA.colors = boxColors;
+                else if (index === 1) hexData.paletteSwap.replacements = boxColors;
+                else if (index === 0) hexData.paletteSwapPA.replacements = boxColors;
+
+                hexDataField.value = JSON.stringify(hexData, null, 2);
+            }
+
+            return container;
+        }
+
+        function hexToInt(hex) {
+            return parseInt(hex.replace('#', ''), 16);
+        }
+
+        function hexToSigned32BitInt(hex) {
+            const intValue = parseInt(hex.replace('#', ''), 16);
+            if (intValue > 0) {
+                return intValue | 0xFF000000;
+            }
+            
+            return intValue | 0xFF000000;
+        }
+
+        function updateSequenceDisplay(selectedItem = null) {
+            // Get the current paletteSwapField value
+            const paletteSwapField = document.getElementById('paletteSwapField');
+            let replacements = {
+                paletteSwap: { colors: [], replacements: [] },
+                paletteSwapPA: { colors: [], replacements: [] }
+            };
+
+            // Update colors arrays if XP sequences exist (third and fourth)
+            if (thirdSequence) replacements.paletteSwapPA.colors = thirdSequence.map(hexToSigned32BitInt);
+            if (fourthSequence) replacements.paletteSwap.colors = fourthSequence.map(hexToSigned32BitInt);
+
+            // Update replacements arrays if main sequences exist (first and second)
+            if (firstSequence) replacements.paletteSwapPA.replacements = firstSequence.map(hexToSigned32BitInt);
+            if (secondSequence) replacements.paletteSwap.replacements = secondSequence.map(hexToSigned32BitInt);
+
+            // Update the paletteSwapField textarea
+            paletteSwapField.value = JSON.stringify(replacements, null, 2);
+        }
+
+        document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
+        document.getElementById('xpImageUpload').addEventListener('change', handleImageUpload);
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            console.log('Processing image upload...');
+
+            const isXPCanvas = event.target.id === 'xpImageUpload';
+            const img = new Image();
+            
+            img.onload = function() {
+                // Get appropriate canvas and container
+                const canvas = document.getElementById(isXPCanvas ? 'xpImageCanvas' : 'imageCanvas');
+                const container = document.getElementById(isXPCanvas ? 'xpImageCanvasContainer' : 'imageCanvasContainer');
+                const zoomControls = isXPCanvas ? 
+                    document.querySelector('.canvas-section:last-child .canvas-zoom-controls') : 
+                    document.querySelector('.canvas-section:first-child .canvas-zoom-controls');
+                
+                // Get the context with willReadFrequently option
+                const ctx = canvas.getContext('2d', { willReadFrequently: true });
+                
+                // Set canvas dimensions to image dimensions
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+
+                // Show container and zoom controls
+                container.style.display = 'block';
+                zoomControls.style.display = 'flex';
+
+                // Calculate scale to fit image in container
+                const containerRect = container.getBoundingClientRect();
+                const containerWidth = containerRect.width;
+                const containerHeight = containerRect.height;
+                
+                const imageWidth = canvas.width;
+                const imageHeight = canvas.height;
+                
+                const scaleX = containerWidth / imageWidth;
+                const scaleY = containerHeight / imageHeight;
+                const newScale = Math.min(scaleX, scaleY); // Fit to container
+                
+                // Set scale and update slider
+                if (isXPCanvas) {
+                    xpScale = newScale;
+                    document.getElementById('xpZoomSlider').value = newScale;
+                    document.getElementById('xpZoomValue').textContent = `${Math.round(newScale * 100)}%`;
+                    
+                    // Snap the image to the upper-left corner
+                    xpPointX = 0;
+                    xpPointY = 0;
+                    
+                    canvas.style.transform = `translate(${xpPointX}px, ${xpPointY}px) scale(${xpScale})`;
+                } else {
+                    scale = newScale;
+                    document.getElementById('mainZoomSlider').value = newScale;
+                    document.getElementById('mainZoomValue').textContent = `${Math.round(newScale * 100)}%`;
+                    
+                    // Snap the image to the upper-left corner
+                    pointX = 0;
+                    pointY = 0;
+                    
+                    canvas.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+
+                    // Clear XP canvas and reset dropdown
+                    const xpCanvas = document.getElementById('xpImageCanvas');
+                    const xpCtx = xpCanvas.getContext('2d', { willReadFrequently: true });
+                    xpCtx.clearRect(0, 0, xpCanvas.width, xpCanvas.height);
+                    document.getElementById('xpImageCanvasContainer').style.display = 'none';
+                    document.getElementById('infoDropdown').selectedIndex = 0; // Reset dropdown
+                }
+
+                // Reset any previous transformations
+                canvas.style.transformOrigin = 'top left';
+
+                // Show the XP upload and character select sections after main image is loaded
+                if (!isXPCanvas && firstSequence && secondSequence) {
+                    document.getElementById('xpUploadSection').style.display = 'block';
+                    document.getElementById('characterSelectSection').style.display = 'block';
+                }
+
+                // Only store original data for main canvas
+                if (!isXPCanvas) {
+                    originalImageData = ctx.getImageData(0, 0, img.width, img.height);
+                    // Reset sequences for main canvas
+                    firstSequence = null;
+                    secondSequence = null;
+                    thirdSequence = null;
+                    fourthSequence = null;
+                    firstSequencePixels = [];
+                    secondSequencePixels = [];
+                    thirdSequencePixels = [];
+                    fourthSequencePixels = [];
+                    originalSequences = {
+                        first: null,
+                        second: null,
+                        third: null,
+                        fourth: null
+                    };
+                }
+
+                // Process the image
+                processImageDataForSequences(ctx, img, isXPCanvas);
+            };
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function resetToOriginal() {
+            const canvas = document.getElementById('imageCanvas');
+            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+            
+            // Reset image data
+            ctx.putImageData(originalImageData, 0, 0);
+            
+            // Reset sequences
+            firstSequence = originalSequences.first ? [...originalSequences.first] : null;
+            secondSequence = originalSequences.second ? [...originalSequences.second] : null;
+            thirdSequence = originalSequences.third ? [...originalSequences.third] : null;
+            fourthSequence = originalSequences.fourth ? [...originalSequences.fourth] : null;
+            
+            // Reset image data array reference
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            data = imageData.data;
+            updateProgress();
+        }
+
+        // Replace zoom controls with slider
+        const canvas = document.getElementById('imageCanvas');
+        const zoomSlider = document.getElementById('zoomSlider');
+        
+        zoomSlider.addEventListener('input', function(e) {
+            scale = parseFloat(e.target.value);
+            canvas.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+        });
+
+        document.getElementById('resetZoom').addEventListener('click', function() {
+            scale = 1;
+            pointX = 0;
+            pointY = 0;
+            zoomSlider.value = "1";
+            canvas.style.transform = `translate(0px, 0px) scale(1)`;
+        });
+
+        canvas.addEventListener('mousedown', function(e) {
+            panning = true;
+            start = { x: e.clientX - pointX, y: e.clientY - pointY };
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (!panning) return;
+            pointX = e.clientX - start.x;
+            pointY = e.clientY - start.y;
+            canvas.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+        });
+
+        document.addEventListener('mouseup', function() {
+            panning = false;
+        });
+
+        document.getElementById('appendCode').addEventListener('click', () => {
+            console.log('Append Code button clicked');
+            document.getElementById('fileInput').click();
+        });
+
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                console.log('No file selected');
+                return;
+            }
+
+            console.log(`File selected: ${file.name}`);
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    // Try to parse existing file
+                    let fileContent;
+                    try {
+                        fileContent = JSON.parse(e.target.result);
+                        console.log('File content parsed successfully');
+                    } catch (e) {
+                        alert('Invalid JSON file detected. Creating new file.');
+                        fileContent = [];
+                        console.log('Invalid JSON, starting with an empty array');
+                    }
+
+                    const newObject = JSON.parse(document.getElementById('paletteSwapField').value);
+                    console.log('New object parsed from paletteSwapField');
+
+                    if (Array.isArray(fileContent)) {
+                        fileContent.push(newObject);
+                        console.log('New object appended to file content');
+                    } else {
+                        alert('Invalid file structure. Creating new file with array structure.');
+                        fileContent = [newObject];
+                        console.log('Invalid file structure, starting with a new array');
+                    }
+
+                    const newContent = JSON.stringify(fileContent, null, 2);
+                    console.log('New content stringified');
+
+                    // Create download using data URI instead of Blob
+                    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(newContent);
+                    const downloadAnchor = document.createElement('a');
+                    downloadAnchor.setAttribute("href", dataStr); // Removed timestamp
+                    downloadAnchor.setAttribute("download", file.name);
+                    document.body.appendChild(downloadAnchor);
+                    console.log('Initiating download...');
+                    downloadAnchor.click();
+                    console.log('Download triggered');
+                    document.body.removeChild(downloadAnchor);
+
+                    // Reset file input to allow the same file to be selected again
+                    event.target.value = '';
+                    console.log('File input reset');
+
+                } catch (error) {
+                    alert('Failed to append code: ' + error.message);
+                    console.error('Error appending code:', error);
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        // Ensure this function is called when the page loads
+        async function populateDropdown() {
+            console.log('Populating dropdown...');
+            try {
+                // Fetch URLs from a static JSON file
+                const response = await fetch('urls.json'); // Ensure this file is accessible in your static site
+                const urls = await response.json();
+                console.log('Loaded URLs:', urls);
+                
+                const dropdown = document.getElementById('infoDropdown');
+                
+                // Clear existing options
+                dropdown.innerHTML = '';
+
+                // Add "choose a character" option
+                const defaultOption = document.createElement('option');
+                defaultOption.value = "";
+                defaultOption.textContent = "Choose an image";
+                dropdown.appendChild(defaultOption);
+
+                // Populate dropdown with URLs
+                urls.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.url;  // Store the URL as the value
+                    option.textContent = item.name; // Display the name
+                    dropdown.appendChild(option);
+                });
+
+                console.log('Dropdown populated successfully');
+            } catch (error) {
+                console.error('Error populating dropdown:', error);
+            }
+        }
+
+        // Call populateDropdown when the page loads
+        document.addEventListener('DOMContentLoaded', populateDropdown);
+
+        document.getElementById('infoDropdown').addEventListener('change', function(event) {
+            const selectedUrl = event.target.value;
+            
+            if (!selectedUrl) {
+                console.log('No image selected');
+                return;
+            }
+
+            // Load the selected image file
+            const img = new Image();
+            img.crossOrigin = 'Anonymous'; // Set crossOrigin attribute
+            img.src = selectedUrl;
+            img.onload = function() {
+                // Get the XP canvas and container
+                const canvas = document.getElementById('xpImageCanvas');
+                const container = document.getElementById('xpImageCanvasContainer');
+                const zoomControls = document.querySelector('.canvas-section:last-child .canvas-zoom-controls');
+                
+                // Get the context with willReadFrequently option
+                const ctx = canvas.getContext('2d', { willReadFrequently: true });
+                
+                // Set canvas dimensions to image dimensions
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+
+                // Show container and zoom controls
+                container.style.display = 'block';
+                zoomControls.style.display = 'flex';
+
+                // Calculate scale to fit image in container
+                const containerRect = container.getBoundingClientRect();
+                const containerWidth = containerRect.width;
+                const containerHeight = containerRect.height;
+
+                const imageWidth = img.width;
+                const imageHeight = img.height;
+
+                const scaleX = containerWidth / imageWidth;
+                const scaleY = containerHeight / imageHeight;
+                const newScale = Math.min(scaleX, scaleY); // Fit to container
+
+                // Set scale and update slider
+                xpScale = newScale;
+                document.getElementById('xpZoomSlider').value = newScale;
+                document.getElementById('xpZoomValue').textContent = `${Math.round(newScale * 100)}%`;
+
+                // Center the image in the container
+                xpPointX = (containerWidth - imageWidth * xpScale) / 2;
+                xpPointY = (containerHeight - imageHeight * xpScale) / 2;
+
+                canvas.style.transform = `translate(${xpPointX}px, ${xpPointY}px) scale(${xpScale})`;
+                canvas.style.transformOrigin = 'top left';
+
+                // Process the image as a recolor sheet
+                processImageDataForSequences(ctx, img, true);
+            };
+        });
+
+        document.getElementById('mainZoomSlider').addEventListener('input', function(e) {
+            scale = parseFloat(e.target.value);
+            document.getElementById('mainZoomValue').textContent = `${Math.round(scale * 100)}%`;
+            document.getElementById('imageCanvas').style.transform = 
+                `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+        });
+
+        document.getElementById('mainZoomSlider').addEventListener('change', function(e) {
+            scale = parseFloat(e.target.value);
+            document.getElementById('mainZoomValue').textContent = `${Math.round(scale * 100)}%`;
+        });
+
+        document.getElementById('xpZoomSlider').addEventListener('input', function(e) {
+            xpScale = parseFloat(e.target.value);
+            document.getElementById('xpZoomValue').textContent = `${Math.round(xpScale * 100)}%`;
+            document.getElementById('xpImageCanvas').style.transform = 
+                `translate(${xpPointX}px, ${xpPointY}px) scale(${xpScale})`;
+        });
+
+        document.getElementById('xpZoomSlider').addEventListener('change', function(e) {
+            xpScale = parseFloat(e.target.value);
+            document.getElementById('xpZoomValue').textContent = `${Math.round(xpScale * 100)}%`;
+        });
+
+        document.getElementById('mainResetZoom').addEventListener('click', function() {
+            const canvas = document.getElementById('imageCanvas');
+            const container = document.getElementById('imageCanvasContainer');
+            
+            // Reset zoom
+            scale = 1;
+            document.getElementById('mainZoomSlider').value = "1";
+            document.getElementById('mainZoomValue').textContent = "100%";
+            
+            // Center the image in container
+            const containerRect = container.getBoundingClientRect();
+            pointX = (containerRect.width - canvas.width) / 2;
+            pointY = (containerRect.height - canvas.height) / 2;
+            
+            canvas.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+        });
+
+        document.getElementById('xpResetZoom').addEventListener('click', function() {
+            const canvas = document.getElementById('xpImageCanvas');
+            const container = document.getElementById('xpImageCanvasContainer');
+            
+            // Reset zoom
+            xpScale = 1;
+            document.getElementById('xpZoomSlider').value = "1";
+            document.getElementById('xpZoomValue').textContent = "100%";
+            
+            // Center the image in container
+            const containerRect = container.getBoundingClientRect();
+            xpPointX = (containerRect.width - canvas.width) / 2;
+            xpPointY = (containerRect.height - canvas.height) / 2;
+            
+            canvas.style.transform = `translate(${xpPointX}px, ${xpPointY}px) scale(${xpScale})`;
+        });
+
+        document.getElementById('imageCanvas').addEventListener('mousedown', function(e) {
+            mainPanning = true;
+            start = { x: e.clientX - pointX, y: e.clientY - pointY };
+        });
+
+        document.getElementById('xpImageCanvas').addEventListener('mousedown', function(e) {
+            xpPanning = true;
+            start = { x: e.clientX - xpPointX, y: e.clientY - xpPointY };
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (mainPanning) {
+                pointX = e.clientX - start.x;
+                pointY = e.clientY - start.y;
+                document.getElementById('imageCanvas').style.transform = 
+                    `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+            } else if (xpPanning) {
+                xpPointX = e.clientX - start.x;
+                xpPointY = e.clientY - start.y;
+                document.getElementById('xpImageCanvas').style.transform = 
+                    `translate(${xpPointX}px, ${xpPointY}px) scale(${xpScale})`;
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            mainPanning = false;
+            xpPanning = false;
+        });
+
+        document.getElementById('imageCanvas').addEventListener('mouseout', function() {
+            mainPanning = false;
+        });
+
+        document.getElementById('xpImageCanvas').addEventListener('mouseout', function() {
+            xpPanning = false;
+        });
+
+        document.getElementById('copyPaletteSwap').addEventListener('click', function() {
+            const text = document.getElementById('paletteSwapField').value;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text)
+                    .catch(e => {
+                        fallbackCopyTextToClipboard(text);
+                    });
+            } else {
+                fallbackCopyTextToClipboard(text);
+            }
+        });
+
+        // Add fallback copy function
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                textArea.remove();
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                alert('Failed to copy to clipboard');
+            }
+            textArea.remove();
+        }
+
+        // Update the updateProgress function to include color changes
+        function updateProgress() {
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const appendButton = document.getElementById('appendCode');
+            const xpUploadSection = document.getElementById('xpUploadSection');
+            const characterSelectSection = document.getElementById('characterSelectSection');
+            const paletteSwapContainer = document.querySelector('[for="paletteSwapField"]').parentElement;
+            const paletteSwapField = document.getElementById('paletteSwapField');
+            
+            const mainSequencesExist = firstSequence !== null && secondSequence !== null;
+            const xpSequencesExist = thirdSequence !== null && fourthSequence !== null;
+            
+            console.log('Progress Update:', {
+                firstSequence: firstSequence !== null,
+                secondSequence: secondSequence !== null,
+                thirdSequence: thirdSequence !== null,
+                fourthSequence: fourthSequence !== null,
+                mainSequencesExist,
+                xpSequencesExist
+            });
+            
+            // Hide palette swap data by default
+            paletteSwapContainer.style.display = 'none';
+            paletteSwapField.style.display = 'none';
+            
+            if (!mainSequencesExist && !xpSequencesExist) {
+                console.log('Setting progress: 0%');
+                progressBar.style.width = '0%';
+                progressBar.style.backgroundColor = '#4a90e2';
+                progressText.textContent = 'Step 1: Upload a recolor image using the "Upload Image" button above';
+                appendButton.style.display = 'none';
+                xpUploadSection.style.display = 'none';
+                characterSelectSection.style.display = 'none';
+            } else if (mainSequencesExist && !xpSequencesExist) {
+                console.log('Setting progress: 33%');
+                progressBar.style.width = '33%';
+                progressBar.style.backgroundColor = '#ffa500'; // Orange
+                progressText.textContent = 'Step 2: Either select a character from the dropdown or upload a custom XP character image';
+                appendButton.style.display = 'none';
+                xpUploadSection.style.display = 'block';
+                characterSelectSection.style.display = 'block';
+            } else if (!mainSequencesExist && xpSequencesExist) {
+                console.log('Setting progress: 66%');
+                progressBar.style.width = '66%';
+                progressBar.style.backgroundColor = '#9370db'; // Purple
+                progressText.textContent = 'Step 2: Now upload your recolor image using the "Upload Image" button';
+                appendButton.style.display = 'none';
+                xpUploadSection.style.display = 'block';
+                characterSelectSection.style.display = 'block';
+            } else if (mainSequencesExist && xpSequencesExist) {
+                console.log('Setting progress: 100%');
+                progressBar.style.width = '100%';
+                progressBar.style.backgroundColor = '#4caf50'; // Green
+                progressText.textContent = 'Step 3: All set! Click "Append Code to End of File" to save your recolor';
+                appendButton.style.display = 'block';
+                xpUploadSection.style.display = 'block';
+                characterSelectSection.style.display = 'block';
+                paletteSwapContainer.style.display = 'flex';
+                paletteSwapField.style.display = 'block';
+            }
+        }
+
+        function markSequenceLines(startX, endX, y, canvas) {
+            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+            const width = canvas.width;
+
+            function setPixelRed(x, y) {
+                if (x < 0 || x >= width || y < 0 || y >= canvas.height) return;
+                const i = (y * width + x) * 4;
+                data[i] = 255;     // R
+                data[i + 1] = 0;   // G
+                data[i + 2] = 0;   // B
+                data[i + 3] = 255; // A
+            }
+
+            // Mark the lines
+            for (let x = startX; x <= endX; x++) {
+                setPixelRed(x, y - 1);
+                setPixelRed(x, y + 1);
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        // Add this function to handle canvas container resizing
+        function fitImageToContainer(canvas, container) {
+            if (!canvas.width || !canvas.height) return;
+            
+            const containerRect = container.getBoundingClientRect();
+            const containerWidth = containerRect.width;
+            const containerHeight = containerRect.height;
+            
+            const imageWidth = canvas.width;
+            const imageHeight = canvas.height;
+            
+            // Calculate aspect ratios
+            const containerAspect = containerWidth / containerHeight;
+            const imageAspect = imageWidth / imageHeight;
+            
+            let newScale;
+            
+            if (imageAspect > containerAspect) {
+                // Image is wider relative to container
+                newScale = (containerWidth / imageWidth) * 0.85;
+            } else {
+                // Image is taller relative to container
+                newScale = (containerHeight / imageHeight) * 0.85;
+            }
+            
+            return newScale;
+        }
+
+        // Update the setupTouchEvents function
+        function setupTouchEvents() {
+            const mainCanvas = document.getElementById('imageCanvas');
+            const xpCanvas = document.getElementById('xpImageCanvas');
+            
+            function handleTouchStart(e, isXP) {
+                if (!isMobileView) return;
+                e.preventDefault();
+                const touch = e.touches[0];
+                if (isXP) {
+                    xpPanning = true;
+                    start = { x: touch.clientX - xpPointX, y: touch.clientY - xpPointY };
+                } else {
+                    mainPanning = true;
+                    start = { x: touch.clientX - pointX, y: touch.clientY - pointY };
+                }
+            }
+
+            function handleTouchMove(e, isXP) {
+                if (!isMobileView) return;
+                e.preventDefault();
+                const touch = e.touches[0];
+                if (isXP && xpPanning) {
+                    xpPointX = touch.clientX - start.x;
+                    xpPointY = touch.clientY - start.y;
+                    xpCanvas.style.transform = `translate(${xpPointX}px, ${xpPointY}px) scale(${xpScale})`;
+                } else if (!isXP && mainPanning) {
+                    pointX = touch.clientX - start.x;
+                    pointY = touch.clientY - start.y;
+                    mainCanvas.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+                }
+            }
+
+            function handleTouchEnd(e, isXP) {
+                if (!isMobileView) return;
+                e.preventDefault();
+                if (isXP) {
+                    xpPanning = false;
+                } else {
+                    mainPanning = false;
+                }
+            }
+
+            // Add touch event listeners with passive option
+            mainCanvas.addEventListener('touchstart', e => handleTouchStart(e, false), { passive: true });
+            mainCanvas.addEventListener('touchmove', e => handleTouchMove(e, false), { passive: true });
+            mainCanvas.addEventListener('touchend', e => handleTouchEnd(e, false), { passive: true });
+
+            xpCanvas.addEventListener('touchstart', e => handleTouchStart(e, true), { passive: true });
+            xpCanvas.addEventListener('touchmove', e => handleTouchMove(e, true), { passive: true });
+            xpCanvas.addEventListener('touchend', e => handleTouchEnd(e, true), { passive: true });
+        }
+
+        // Update the window resize handler to toggle mobile touch support
+        window.addEventListener('resize', function() {
+            // Update mobile view state
+            isMobileView = window.innerWidth <= 778;
+            
+            // Get elements
+            const mainCanvas = document.getElementById('imageCanvas');
+            const xpCanvas = document.getElementById('xpImageCanvas');
+            const mainContainer = document.getElementById('imageCanvasContainer');
+            const xpContainer = document.getElementById('xpImageCanvasContainer');
+
+            // Use reset buttons to handle resizing
+            if (mainCanvas.width && mainContainer.style.display !== 'none') {
+                document.getElementById('mainResetZoom').click();
+            }
+
+            if (xpCanvas.width && xpContainer.style.display !== 'none') {
+                document.getElementById('xpResetZoom').click();
+            }
+
+            // Setup touch events if not already set up
+            if (!touchEnabled) {
+                setupTouchEvents();
+                touchEnabled = true;
+            }
+        });
+
+        // Call setupTouchEvents on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setupTouchEvents();
+            touchEnabled = true;
+        });
+
+        // Add this function after the other functions
+        function applyRandomEffect() {
+            const title = document.querySelector('h1');
+            if (dvdAnimation) return;
+            
+            // Clear any existing intervals or timeouts
+            if (title.dataset.effectInterval) {
+                clearInterval(parseInt(title.dataset.effectInterval));
+                title.dataset.effectInterval = '';
+            }
+            
+            // Reset title to default state
+            function resetTitle() {
+                title.style.fontFamily = 'system-ui';
+                title.style.color = '';
+                title.style.transform = '';
+                title.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.2)';
+                title.textContent = 'Image Analyzer 1.4';
+            }
+            
+            const fonts = [
+                'Impact',
+                'Comic Sans MS',
+                'Courier New',
+                'Arial Black',
+                'Trebuchet MS',
+                'Papyrus',
+                'Verdana',
+                'Times New Roman',
+                'Georgia',
+                'Brush Script MT'
+            ];
+            
+            const effects = [
+                // Glitch effect with random font
+                () => {
+                    const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
+                    title.style.fontFamily = randomFont;
+                    const originalText = title.textContent;
+                    let iterations = 0;
+                    const interval = setInterval(() => {
+                        title.style.transform = `translate(${Math.random()*2-1}px, ${Math.random()*2-1}px)`;
+                        if (Math.random() < 0.1) {
+                            title.style.color = ['#ff0000', '#0000ff', '#00ff00'][Math.floor(Math.random() * 3)];
+                        }
+                        if (iterations > 20) {
+                            clearInterval(interval);
+                            resetTitle();
+                        }
+                        iterations++;
+                    }, 50);
+                    title.dataset.effectInterval = interval;
+                }
+            ];
+
+            // Apply random effect
+            effects[Math.floor(Math.random() * effects.length)]();
+        }
+
+        // Add the event listener after the DOMContentLoaded event
+        document.querySelector('h1').addEventListener('contextmenu', function(e) {
+            e.preventDefault();  // Prevent the context menu from appearing
+            applyRandomEffect();
+        });
+
+        // Update the startDVDEffect function
+        function startDVDEffect() {
+            // Create and add overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'dvd-overlay';
+            document.body.appendChild(overlay);
+            
+            // Fade in overlay
+            setTimeout(() => {
+                overlay.style.opacity = '1';
+            }, 0);
+            
+            // Add click handler to stop effect
+            overlay.addEventListener('click', () => {
+                stopDVDEffect();
+            });
+
+            const title = document.querySelector('h1');
+            const container = document.querySelector('.page-container');
+            let containerRect = container.getBoundingClientRect();
+            let blurb = null;
+            
+            // Update title styles
+            title.style.position = 'fixed';  // Change to fixed positioning
+            title.style.zIndex = '1000';
+            title.style.transition = 'none';
+            title.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.2)';
+            
+            // Set initial position
+            dvdPosition = {
+                x: Math.random() * (containerRect.width - title.offsetWidth),
+                y: Math.random() * (containerRect.height - title.offsetHeight)
+            };
+            
+            function showBlurb() {
+                if (blurb) blurb.remove();
+                blurb = document.createElement('div');
+                blurb.textContent = cornerBlurbs[Math.floor(Math.random() * cornerBlurbs.length)];
+                blurb.style.position = 'absolute';
+                blurb.style.zIndex = '1001';
+                blurb.style.color = `hsl(${hue}, 80%, 50%)`;
+                blurb.style.fontSize = '14px';
+                blurb.style.fontWeight = 'bold';
+                blurb.style.textShadow = '1px 1px 2px rgba(0,0,0,0.3)';
+                blurb.style.transition = 'opacity 0.5s ease';
+                blurb.style.left = `${dvdPosition.x}px`;
+                blurb.style.top = `${dvdPosition.y - 20}px`;
+                container.appendChild(blurb);
+                
+                // Wait 3 seconds before starting fade out
+                setTimeout(() => {
+                    blurb.style.opacity = '0';
+                    // Remove after fade out completes
+                    setTimeout(() => {
+                        if (blurb) blurb.remove();
+                    }, 500);
+                }, 3000);
+            }
+            
+            function updatePosition() {
+                containerRect = container.getBoundingClientRect();
+                const prevX = dvdPosition.x;
+                const prevY = dvdPosition.y;
+                
+                // Update position
+                dvdPosition.x += dvdVelocity.x;
+                dvdPosition.y += dvdVelocity.y;
+                
+                // Check for near corners (20 pixels threshold)
+                const nearCorner = (
+                    (Math.abs(dvdPosition.x) < 20 || Math.abs(dvdPosition.x + title.offsetWidth - containerRect.width) < 20) &&
+                    (Math.abs(dvdPosition.y) < 20 || Math.abs(dvdPosition.y + title.offsetHeight - containerRect.height) < 20)
+                );
+                
+                // Show blurb when near corner
+                if (nearCorner) {
+                    showBlurb();
+                }
+                
+                // Check for collisions
+                if (dvdPosition.x <= 0 || dvdPosition.x + title.offsetWidth >= containerRect.width) {
+                    dvdVelocity.x *= -1;
+                    if (dvdPosition.x <= 0) dvdPosition.x = 0;
+                    if (dvdPosition.x + title.offsetWidth >= containerRect.width) {
+                        dvdPosition.x = containerRect.width - title.offsetWidth;
+                    }
+                }
+                
+                if (dvdPosition.y <= 0 || dvdPosition.y + title.offsetHeight >= containerRect.height) {
+                    dvdVelocity.y *= -1;
+                    if (dvdPosition.y <= 0) dvdPosition.y = 0;
+                    if (dvdPosition.y + title.offsetHeight >= containerRect.height) {
+                        dvdPosition.y = containerRect.height - title.offsetHeight;
+                    }
+                }
+                
+                // Check if hit corner exactly
+                if ((dvdPosition.x <= 0 || dvdPosition.x + title.offsetWidth >= containerRect.width) &&
+                    (dvdPosition.y <= 0 || dvdPosition.y + title.offsetHeight >= containerRect.height)) {
+                    // Gold effect before stopping
+                    title.style.color = '#FFD700';
+                    title.style.textShadow = '0 0 10px rgba(255, 215, 0, 0.5)';
+                    if (blurb) blurb.remove();
+                    setTimeout(() => stopDVDEffect(), 1000);
+                    return;
+                }
+                
+                // Update hue
+                hue = (hue + 1) % 360;
+                title.style.color = `hsl(${hue}, 80%, 50%)`;
+                
+                // Apply position
+                title.style.transform = `translate(${dvdPosition.x}px, ${dvdPosition.y}px)`;
+                
+                dvdAnimation = requestAnimationFrame(updatePosition);
+            }
+            
+            dvdAnimation = requestAnimationFrame(updatePosition);
+        }
+
+        // Update the stopDVDEffect function
+        function stopDVDEffect() {
+            const title = document.querySelector('h1');
+            const overlay = document.querySelector('.dvd-overlay');
+            
+            if (dvdAnimation) {
+                cancelAnimationFrame(dvdAnimation);
+                dvdAnimation = null;
+            }
+            
+            // Fade out overlay
+            if (overlay) {
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.remove();
+                }, 500);
+            }
+            
+            title.style.position = '';
+            title.style.transform = '';
+            title.style.color = '';
+            title.style.transition = 'all 0.5s ease';
+            title.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.2)';
+        }
+
+        // Update the title event listeners
+        document.querySelector('h1').addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            if (dvdAnimation) return;
+            
+            rightClickTimer = setTimeout(() => {
+                // Force close any open context menus by clicking elsewhere
+                window.addEventListener('click', function closeContextMenu() {
+                    window.removeEventListener('click', closeContextMenu);
+                });
+                window.dispatchEvent(new MouseEvent('click'));
+                
+                // Start DVD effect
+                startDVDEffect();
+                rightClickTimer = null;
+            }, 5000);
+        });
+
+        document.querySelector('h1').addEventListener('mouseup', function(e) {
+            if (e.button === 2 && rightClickTimer) {
+                clearTimeout(rightClickTimer);
+                rightClickTimer = null;
+                if (!dvdAnimation) {
+                    applyRandomEffect();
+                }
+            }
+        });
+
+        // Add this to prevent context menu from appearing anywhere on the title
+        document.querySelector('h1').addEventListener('mousedown', function(e) {
+            if (e.button === 2) {  // Right click
+                e.preventDefault();
+            }
+        });
+
+        // Add resize handler for DVD effect
+        window.addEventListener('resize', function() {
+            if (dvdAnimation) {
+                stopDVDEffect();
+            }
+        });
+
+        // Add this function to sync the canvases
+        function syncCanvases() {
+            if (!syncEnabled) return;
+            
+            const mainCanvas = document.getElementById('imageCanvas');
+            const xpCanvas = document.getElementById('xpImageCanvas');
+            
+            // Sync zoom
+            xpScale = scale;
+            document.getElementById('xpZoomSlider').value = scale;
+            document.getElementById('xpZoomValue').textContent = `${Math.round(scale * 100)}%`;
+            
+            // Sync position
+            xpPointX = pointX;
+            xpPointY = pointY;
+            
+            // Update XP canvas transform
+            xpCanvas.style.transform = `translate(${xpPointX}px, ${xpPointY}px) scale(${xpScale})`;
+        }
+
+        // Add sync toggle event listener
+        document.getElementById('syncZoomPan').addEventListener('change', function(e) {
+            syncEnabled = e.target.checked;
+            if (syncEnabled) {
+                // Reset both canvases when sync is enabled
+                document.getElementById('mainResetZoom').click();
+                document.getElementById('xpResetZoom').click();
+            }
+        });
+
+        // Update main zoom slider event
+        document.getElementById('mainZoomSlider').addEventListener('input', function(e) {
+            scale = parseFloat(e.target.value);
+            document.getElementById('mainZoomValue').textContent = `${Math.round(scale * 100)}%`;
+            document.getElementById('imageCanvas').style.transform = 
+                `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+            syncCanvases();
+        });
+
+        // Update main canvas panning
+        document.addEventListener('mousemove', function(e) {
+            if (mainPanning) {
+                pointX = e.clientX - start.x;
+                pointY = e.clientY - start.y;
+                document.getElementById('imageCanvas').style.transform = 
+                    `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+                syncCanvases();
+            } else if (xpPanning && !syncEnabled) {
+                xpPointX = e.clientX - start.x;
+                xpPointY = e.clientY - start.y;
+                document.getElementById('xpImageCanvas').style.transform = 
+                    `translate(${xpPointX}px, ${xpPointY}px) scale(${xpScale})`;
+            }
+        });
+
+        // Disable XP canvas controls when sync is enabled
+        document.getElementById('xpZoomSlider').addEventListener('input', function(e) {
+            if (syncEnabled) {
+                e.preventDefault();
+                return;
+            }
+            xpScale = parseFloat(e.target.value);
+            document.getElementById('xpZoomValue').textContent = `${Math.round(xpScale * 100)}%`;
+            document.getElementById('xpImageCanvas').style.transform = 
+                `translate(${xpPointX}px, ${xpPointY}px) scale(${xpScale})`;
+        });
+
+        // Add this function to find the two most frequent colors in the image
+        function findMostFrequentColors(data) {
+            const colorCount = new Map();
+            for (let i = 0; i < data.length; i += 4) {
+                const color = `${data[i]},${data[i + 1]},${data[i + 2]}`;
+                if (colorCount.has(color)) {
+                    colorCount.set(color, colorCount.get(color) + 1);
+                } else {
+                    colorCount.set(color, 1);
+                }
+            }
+            const sortedColors = [...colorCount.entries()].sort((a, b) => b[1] - a[1]);
+            return sortedColors.slice(0, 2).map(entry => entry[0]);
+        }
+
+        // Refactor the sequence processing logic into a separate function
+        function processImageDataForSequences(ctx, img, isXPCanvas) {
+            const imageData = ctx.getImageData(0, 0, img.width, img.height);
+            const data = imageData.data;
+            const width = img.width;
+            const height = img.height;
+
+            // Reset sequences for XP canvas
+            if (isXPCanvas) {
+                thirdSequence = null;
+                fourthSequence = null;
+            } else {
+                firstSequence = null;
+                secondSequence = null;
+            }
+
+            // Check for transparency
+            let hasTransparency = false;
+            for (let i = 3; i < data.length; i += 4) {
+                if (data[i] === 0) {
+                    hasTransparency = true;
+                    break;
+                }
+            }
+
+            // If no transparency, find the two most frequent colors
+            let transparentColors = [];
+            if (!hasTransparency) {
+                transparentColors = findMostFrequentColors(data);
+            }
+
+            let currentSequence = [];
+            let uniqueColors = new Set();
+            let rowSequences = new Map();
+            let sequenceStartX = -1;
+            let lastFoundSequenceRow = -1;
+
+            function isPixelTransparent(x, y) {
+                if (x < 0 || x >= width || y < 0 || y >= height) return true;
+                const i = (y * width + x) * 4;
+                const color = `${data[i]},${data[i + 1]},${data[i + 2]}`;
+                return data[i + 3] === 0 || transparentColors.includes(color);
+            }
+
+            function areBoundaryLinesClear(startX, endX, y) {
+                for (let x = startX; x <= endX; x++) {
+                    if (!isPixelTransparent(x, y - 1) || !isPixelTransparent(x, y + 1)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            function areSequencesEqual(seq1, seq2) {
+                if (!seq1 || !seq2 || seq1.length !== seq2.length) return false;
+                return seq1.every((color, index) => color === seq2[index]);
+            }
+
+            function getRowSequence(row) {
+                return rowSequences.get(row);
+            }
+
+            function isUniqueSequence(sequence, currentRow) {
+                if (Math.abs(currentRow - lastFoundSequenceRow) === 1) {
+                    return false;
+                }
+                const aboveSequence = getRowSequence(currentRow - 1);
+                if (areSequencesEqual(sequence, aboveSequence)) return false;
+                
+                const belowSequence = getRowSequence(currentRow + 1);
+                if (areSequencesEqual(sequence, belowSequence)) return false;
+                
+                return true;
+            }
+
+            // Scan row by row
+            for (let y = 0; y < height; y++) {
+                let rowStarted = false;
+                sequenceStartX = -1;
+                currentSequence = [];
+                uniqueColors.clear();
+
+                for (let x = 0; x < width; x++) {
+                    const i = (y * width + x) * 4;
+                    const a = data[i + 3];
+
+                    if (a === 0 || transparentColors.includes(`${data[i]},${data[i + 1]},${data[i + 2]}`)) {
+                        if (uniqueColors.size >= 3 && rowStarted) {
+                            if (areBoundaryLinesClear(sequenceStartX + 1, x - 1, y) && 
+                                isUniqueSequence(currentSequence, y)) {
+                                
+                                markSequenceLines(sequenceStartX + 1, x - 1, y, ctx.canvas);
+                                
+                                if (isXPCanvas) {
+                                    if (!thirdSequence) {
+                                        thirdSequence = [...currentSequence];
+                                        lastFoundSequenceRow = y;
+                                        updateProgress();
+                                    } else if (!fourthSequence && Math.abs(y - lastFoundSequenceRow) > 1) {
+                                        fourthSequence = [...currentSequence];
+                                        updateSequenceDisplay();
+                                        updateProgress();
+                                        return;
+                                    }
+                                } else {
+                                    if (!firstSequence) {
+                                        firstSequence = [...currentSequence];
+                                        lastFoundSequenceRow = y;
+                                        updateProgress();
+                                    } else if (!secondSequence && Math.abs(y - lastFoundSequenceRow) > 1) {
+                                        secondSequence = [...currentSequence];
+                                        updateSequenceDisplay();
+                                        updateProgress();
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                        if (currentSequence.length > 0) {
+                            rowSequences.set(y, [...currentSequence]);
+                        }
+                        currentSequence = [];
+                        uniqueColors.clear();
+                        rowStarted = false;
+                        sequenceStartX = x;
+                    } else {
+                        if (!rowStarted) {
+                            sequenceStartX = x - 1;
+                            rowStarted = true;
+                        }
+                        const hexColor = `#${((1 << 24) + (data[i] << 16) + (data[i + 1] << 8) + data[i + 2]).toString(16).slice(1).toUpperCase()}`;
+                        currentSequence.push(hexColor);
+                        uniqueColors.add(hexColor);
+                    }
+                }
+            }
+
+            // Final update of the canvas
+            ctx.putImageData(imageData, 0, 0);
+            
+            updateProgress();
+        }
+
+        // Add event listeners for the new buttons
+        document.getElementById('createRecolorButton').addEventListener('click', function() {
+            document.getElementById('colorCreatorModal').style.display = 'block';
+        });
+
+        document.getElementById('closeModalButton').addEventListener('click', function() {
+            document.getElementById('colorCreatorModal').style.display = 'none';
+        });
+
+        document.getElementById('uploadToCanvasButton').addEventListener('click', function() {
+            // Request image data from the iframe
+            const iframe = document.querySelector('#colorCreatorModal iframe');
+            iframe.contentWindow.postMessage({ action: 'requestImageData' }, '*');
+        });
+
+        // Listen for messages from the iframe
+        window.addEventListener('message', function(event) {
+            if (event.data.action === 'uploadImageToCanvas') {
+                const imageDataUrl = event.data.imageData;
+                const imageCanvas = document.getElementById('imageCanvas');
+                const container = document.getElementById('imageCanvasContainer');
+                const zoomControls = document.querySelector('.canvas-section:first-child .canvas-zoom-controls');
+
+                const img = new Image();
+                img.onload = function() {
+                    const ctx = imageCanvas.getContext('2d', { willReadFrequently: true });
+                    imageCanvas.width = img.width;
+                    imageCanvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    container.style.display = 'block';
+                    zoomControls.style.display = 'flex';
+
+                    // Close the modal
+                    document.getElementById('colorCreatorModal').style.display = 'none';
+
+                    // Calculate scale to fit image in container
+                    const containerRect = container.getBoundingClientRect();
+                    const containerWidth = containerRect.width;
+                    const containerHeight = containerRect.height;
+
+                    const imageWidth = imageCanvas.width;
+                    const imageHeight = imageCanvas.height;
+
+                    const scaleX = containerWidth / imageWidth;
+                    const scaleY = containerHeight / imageHeight;
+                    const newScale = Math.min(scaleX, scaleY); // Fit to container
+
+                    // Set scale and update slider
+                    scale = newScale;
+                    document.getElementById('mainZoomSlider').value = newScale;
+                    document.getElementById('mainZoomValue').textContent = `${Math.round(newScale * 100)}%`;
+
+                    // Center the image in the container
+                    pointX = (containerWidth - imageWidth * scale) / 2;
+                    pointY = (containerHeight - imageHeight * scale) / 2;
+
+                    imageCanvas.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+                    imageCanvas.style.transformOrigin = 'top left';
+
+                    // Process the image as a recolor sheet
+                    processImageDataForSequences(ctx, img, false);
+                };
+                img.src = imageDataUrl;
+            }
+        });
+    </script>
+</body>
+</html>

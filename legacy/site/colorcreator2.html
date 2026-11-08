@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Color Adjuster</title>
+    <link rel="stylesheet" href="style/styles2.css">
+</head>
+<body>
+    <div id="group-name-popup" style="display:none;">
+        <label for="image-name-input">Image Name:</label>
+        <input type="text" id="image-name-input" value="">
+        <label for="group-name-input">Enter Group Name:</label>
+        <input type="text" id="group-name-input">
+        <label for="author-name-input">Author Name:</label>
+        <input type="text" id="author-name-input" value="Creator">
+        <button id="save-group-name-btn">Save</button>
+        <button id="cancel-group-name-btn">Cancel</button>
+    </div>
+<div id="group-dropdown-container" style="display:none;">
+    <label for="group-select">Select Group:</label>
+    <select id="group-select"></select>
+    </div>
+    <div id="container">
+        <div id="controls">
+            <input type="file" id="upload" accept="image/*">
+            <select id="url-select">
+                <option value="">Select an image</option>
+            </select> 
+            <div>
+                <input type="range" id="hue-slider" min="-180" max="180" value="0">
+                <label for="hue-slider">Hue</label>
+                <span id="hue-value">0</span>
+            </div>
+            <div>
+                <input type="range" id="brightness-slider" min="-100" max="100" value="0">
+                <label for="brightness-slider">Brightness</label>
+                <span id="brightness-value">0</span>
+            </div>
+            <div>
+                <input type="range" id="contrast-slider" min="-100" max="100" value="0">
+                <label for="contrast-slider">Contrast</label>
+                <span id="contrast-value">0</span>
+            </div>
+            <div>
+                <input type="range" id="saturation-slider" min="-100" max="100" value="0">
+                <label for="saturation-slider">Saturation</label>
+                <span id="saturation-value">0</span>
+            </div>
+            <div>
+                <input type="color" id="tint-color" value="#ffffff">
+                <label for="tint-color">Tint Color</label>
+            </div>
+            <div>
+                <input type="range" id="tint-slider" min="0" max="100" value="0">
+                <label for="tint-slider">Tint Strength</label>
+                <span id="tint-value">0</span>
+            </div>
+            
+            <button id="download-groups-btn">Download Groups</button>
+            <input type="file" id="upload-groups"accept=".js">
+            </div>
+        <div id="palette-container">
+            <div id="palette"></div>
+            <div id="groups"></div>
+        </div>
+    </div>
+    <div id="canvas-container">
+        <canvas id="canvas"></canvas>
+        <div id="color-preview"></div>
+    </div>
+
+    <script src="defaultColors.js"></script>
+    <script src="app2.js"></script>    
+</body>
+</html>

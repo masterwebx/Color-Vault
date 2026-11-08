@@ -1,0 +1,6 @@
+{
+  "name": "Pixel Art Recolor Tool",
+  "description": "Upload pixel art, extract its color palette, and dynamically recolor it using HSL and tint adjustments.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}

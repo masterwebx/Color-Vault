@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Color Changer</title>
+    <link rel="stylesheet" href="style/styles.css">
+    <style>
+        .container {
+            margin-top: -300px; /* Move the container 30 pixels up */
+        }
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0;
+        }
+        #controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #controls label, #controls button {
+            margin: 10px 0;
+        }
+        .header {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .version {
+            font-size: 0.9em;
+            color: #555;
+            margin-right: 15px;
+        }
+        .home-button {
+            text-decoration: none;
+            font-size: 0.9em;
+            color: #555;
+            border: 1px solid #555;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .home-button:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="version">Version 0.0.1</div>
+        <a href="index.html" class="home-button">Home</a>
+    </div>
+    <div class="container">
+        <h1>Image Color Changer</h1>
+        <center>This color creator for SSF2 is a huge work in progress and subject to change.</center>
+        <p>
+        <input type="file" id="upload" accept="image/*">
+        <button id="download-groups-btn">Download Groups</button>
+        <input type="file" id="upload-groups" accept=".json">
+        <div class="canvas-container">
+            <canvas id="canvas"></canvas>
+            <div id="palette"></div>
+            <div id="groups"></div>
+        </div>
+        <div id="color-preview"></div>
+        <div id="controls">
+            <label for="hue-slider">Hue: </label>
+            <input type="range" id="hue-slider" min="0" max="360" value="0">
+            <button id="create-group-btn">Create Group</button>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

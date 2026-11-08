@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Color Vault</title>
+  <style>
+    :root {
+      --bg: #12141a;
+      --fg: #e8eaef;
+      --muted: #9aa3b2;
+      --accent: #6eb6ff;
+      --panel: #1c212b;
+      --border: #2c3442;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(ellipse 80% 50% at 10% -10%, #243044 0%, transparent 55%),
+        radial-gradient(ellipse 60% 40% at 100% 0%, #1a2838 0%, transparent 50%),
+        var(--bg);
+      color: var(--fg);
+      line-height: 1.55;
+    }
+    main {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 3rem;
+    }
+    h1 {
+      font-size: clamp(1.75rem, 5vw, 2.35rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin: 0 0 0.5rem;
+    }
+    .lede {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin: 0 0 1.75rem;
+    }
+    .primary {
+      display: block;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 1.25rem 1.35rem;
+      text-decoration: none;
+      color: var(--fg);
+      margin-bottom: 1.75rem;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .primary:hover,
+    .primary:focus-visible {
+      border-color: var(--accent);
+      background: #222836;
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .primary strong {
+      display: block;
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+    nav[aria-label="Secondary"] ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.65rem;
+    }
+    nav[aria-label="Secondary"] a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 0.15em;
+    }
+    nav[aria-label="Secondary"] a:hover,
+    nav[aria-label="Secondary"] a:focus-visible {
+      color: #a8d4ff;
+    }
+    .label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 0.15rem;
+    }
+    footer {
+      margin-top: 2.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Color Vault</h1>
+    <p class="lede">Home of SSF2 costume tools and the live palette vault.</p>
+
+    <a class="primary" href="dist/index.html">
+      <strong>Pixel Art Recolor Tool</strong>
+      Open the current recolor editor (main tool).
+    </a>
+
+    <nav aria-label="Secondary">
+      <ul>
+        <li>
+          <a href="legacy/site/">Archived older tools</a>
+          <span class="label">Legacy Color Vault site and older creators</span>
+        </li>
+        <li>
+          <a href="https://github.com/masterwebx/Color-Vault">GitHub repository</a>
+          <span class="label">Source, palettes, and site files</span>
+        </li>
+        <li>
+          <a href="https://github.com/masterwebx/Color-Vault/releases">Releases</a>
+          <span class="label">Costume injector and downloads</span>
+        </li>
+        <li>
+          <a href="https://discord.gg/xZtTqX4">Discord</a>
+          <span class="label">Community server</span>
+        </li>
+      </ul>
+    </nav>
+
+    <footer>
+      <p>Site hosted on GitHub Pages.</p>
+    </footer>
+  </main>
+</body>
+</html>
